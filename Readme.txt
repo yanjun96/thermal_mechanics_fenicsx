@@ -1,1 +1,2 @@
-This is a exercise file for FEniCSx
+This is a exercise file for FEniCSx!
+Hello world!
