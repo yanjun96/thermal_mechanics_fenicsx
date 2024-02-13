@@ -47346,3 +47346,19 @@ Tetrahedra
 3618 7898 3607 4047 1 
 
 End
+//+
+Physical Surface(13) = {3};
+//+
+Physical Surface(13) = {3};
+//+
+Physical Surface(14) = {3, 12};
+//+
+Physical Surface(15) = {10};
+//+
+Hide "*";
+//+
+Show {
+  Volume{1}; 
+}
+//+
+Physical Volume(16) = {1};
