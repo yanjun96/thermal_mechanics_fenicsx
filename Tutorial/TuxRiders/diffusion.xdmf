@@ -4,10 +4,10 @@
   <Domain>
     <Grid Name="mesh" GridType="Uniform">
       <Topology TopologyType="Tetrahedron" NumberOfElements="26648" NodesPerElement="4">
-        <DataItem Dimensions="26648 4" NumberType="Int" Format="HDF">mesh.h5:/Mesh/mesh/topology</DataItem>
+        <DataItem Dimensions="26648 4" NumberType="Int" Format="HDF">diffusion.h5:/Mesh/mesh/topology</DataItem>
       </Topology>
       <Geometry GeometryType="XYZ">
-        <DataItem Dimensions="7982 3" Format="HDF">mesh.h5:/Mesh/mesh/geometry</DataItem>
+        <DataItem Dimensions="7982 3" Format="HDF">diffusion.h5:/Mesh/mesh/geometry</DataItem>
       </Geometry>
     </Grid>
   </Domain>

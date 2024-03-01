@@ -1,1 +1,23 @@
-<Xdmf Version="3.0"><Domain><Grid Name="Grid"><Geometry GeometryType="XYZ"><DataItem DataType="Float" Dimensions="7982 3" Format="HDF" Precision="8">helix.h5:/data0</DataItem></Geometry><Topology TopologyType="Tetrahedron" NumberOfElements="26648" NodesPerElement="4"><DataItem DataType="Int" Dimensions="26648 4" Format="HDF" Precision="4">helix.h5:/data1</DataItem></Topology><Attribute Name="name_to_read" AttributeType="Scalar" Center="Cell"><DataItem DataType="Int" Dimensions="26648" Format="HDF" Precision="4">helix.h5:/data2</DataItem></Attribute></Grid></Domain></Xdmf>
+<?xml version="1.0"?>
+<!DOCTYPE Xdmf SYSTEM "Xdmf.dtd" []>
+<Xdmf Version="3.0" xmlns:xi="https://www.w3.org/2001/XInclude">
+  <Domain>
+    <Grid Name="mesh" GridType="Uniform">
+      <Topology TopologyType="Tetrahedron" NumberOfElements="26648" NodesPerElement="4">
+        <DataItem Dimensions="26648 4" NumberType="Int" Format="HDF">helix.h5:/Mesh/mesh/topology</DataItem>
+      </Topology>
+      <Geometry GeometryType="XYZ">
+        <DataItem Dimensions="7982 3" Format="HDF">helix.h5:/Mesh/mesh/geometry</DataItem>
+      </Geometry>
+    </Grid>
+    <Grid Name="uh" GridType="Collection" CollectionType="Temporal">
+      <Grid Name="uh" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="0" />
+        <Attribute Name="uh" AttributeType="Scalar" Center="Node">
+          <DataItem Dimensions="7982 1" Format="HDF">helix.h5:/Function/uh/0</DataItem>
+        </Attribute>
+      </Grid>
+    </Grid>
+  </Domain>
+</Xdmf>
