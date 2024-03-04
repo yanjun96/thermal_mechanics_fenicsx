@@ -47362,3 +47362,35 @@ Show {
 }
 //+
 Physical Volume(16) = {1};
+//+
+Physical Surface(13) = {3};
+//+
+Physical Surface(13) = {3};
+//+
+Physical Surface(14) = {10};
+//+
+Physical Surface(15) = {12};
+//+
+Physical Volume(16) = {1};
+//+
+Physical Surface(13) = {3};
+//+
+Physical Surface(1) = {3};
+//+
+Physical Surface(13) = {10};
+//+
+Physical Surface(2) = {12};
+//+
+Physical Surface(13) -= {10};
+//+
+Physical Surface(3) = {10};
+//+
+Physical Volume("4", 14) = {1};
+//+
+Physical Volume(15) = {1};
+//+
+Physical Volume(15) -= {1};
+//+
+Physical Volume(" 4", 14) -= {1};
+//+
+Physical Volume("4", 16) = {1};
