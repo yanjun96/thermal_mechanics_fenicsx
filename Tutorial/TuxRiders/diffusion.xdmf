@@ -18,6 +18,13 @@
           <DataItem Dimensions="6181 1" Format="HDF">diffusion.h5:/Function/uh/0</DataItem>
         </Attribute>
       </Grid>
+      <Grid Name="uh" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="0.40000000000000002" />
+        <Attribute Name="uh" AttributeType="Scalar" Center="Node">
+          <DataItem Dimensions="6181 1" Format="HDF">diffusion.h5:/Function/uh/0_40000000000000002</DataItem>
+        </Attribute>
+      </Grid>
     </Grid>
   </Domain>
 </Xdmf>
