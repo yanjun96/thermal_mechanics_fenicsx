@@ -13,16 +13,23 @@
     <Grid Name="uh" GridType="Collection" CollectionType="Temporal">
       <Grid Name="uh" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0" />
+        <Time Value="0.40000000000000002" />
         <Attribute Name="uh" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="6181 1" Format="HDF">diffusion.h5:/Function/uh/0</DataItem>
+          <DataItem Dimensions="6181 1" Format="HDF">diffusion.h5:/Function/uh/0_40000000000000002</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="uh" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.40000000000000002" />
+        <Time Value="0.80000000000000004" />
         <Attribute Name="uh" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="6181 1" Format="HDF">diffusion.h5:/Function/uh/0_40000000000000002</DataItem>
+          <DataItem Dimensions="6181 1" Format="HDF">diffusion.h5:/Function/uh/0_80000000000000004</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="uh" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="1.2000000000000002" />
+        <Attribute Name="uh" AttributeType="Scalar" Center="Node">
+          <DataItem Dimensions="6181 1" Format="HDF">diffusion.h5:/Function/uh/1_2000000000000002</DataItem>
         </Attribute>
       </Grid>
     </Grid>
