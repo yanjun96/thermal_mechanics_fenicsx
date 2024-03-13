@@ -36,3 +36,7 @@ Symmetry {1, 0, 0, 1} {
 Symmetry {1, 0, 0, 1} {
   Duplicata { Volume{2}; }
 }
+//+
+Physical Volume("1", 88) += {1};
+//+
+Physical Volume("1", 88) += {1};
