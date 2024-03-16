@@ -21,7 +21,8 @@ rub16 = gmsh.model.occ.addCylinder(105.58,237.44, z1,   0, 0, z2,  r_rub)
 rub17 = gmsh.model.occ.addCylinder(148.68,240, z1,      0, 0, z2,  r_rub)
 rub18 = gmsh.model.occ.addCylinder(63.53, 206.27, z1,   0, 0, z2,  r_rub)
 """
-
+   x_coor = [214.0, 258.0, 252.0, 197.0, 262.0, 222.0, 240.0, 202.0, 168.0, 66.25, 138.27, 167.81, 187.21, 135.83, 98.99, 105.58, 148.68, 63.53]
+   y_coor = [27.0, 22.0, 63.0, 66.0, 105.0, 99.0, 148.0, 135.0, 111.0, 250.47, 146.38, 175.7, 210.86, 201.65, 182.76, 237.44, 240.0, 206.27]
 # Regular expression pattern to extract x and y coordinates
    pattern = r"addCylinder\(([\d.]+),\s*([\d.]+),"
 
