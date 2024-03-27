@@ -20,37 +20,30 @@
       </Grid>
       <Grid Name="f" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.25" />
+        <Time Value="0.29999999999999999" />
         <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/0_25</DataItem>
+          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/0_29999999999999999</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="f" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.5" />
+        <Time Value="0.59999999999999998" />
         <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/0_5</DataItem>
+          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/0_59999999999999998</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="f" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="0.75" />
+        <Time Value="0.89999999999999991" />
         <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/0_75</DataItem>
+          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/0_89999999999999991</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="f" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="1" />
+        <Time Value="1.2" />
         <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/1</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="1.25" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/1_25</DataItem>
+          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/1_2</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="f" GridType="Uniform">
@@ -62,205 +55,170 @@
       </Grid>
       <Grid Name="f" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="1.75" />
+        <Time Value="1.8" />
         <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/1_75</DataItem>
+          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/1_8</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="f" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="2" />
+        <Time Value="2.1000000000000001" />
         <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/2</DataItem>
+          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/2_1000000000000001</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="f" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="2.25" />
+        <Time Value="2.3999999999999999" />
         <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/2_25</DataItem>
+          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/2_3999999999999999</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="f" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="2.5" />
+        <Time Value="2.6999999999999997" />
         <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/2_5</DataItem>
+          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/2_6999999999999997</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="f" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="2.75" />
+        <Time Value="2.9999999999999996" />
         <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/2_75</DataItem>
+          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/2_9999999999999996</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="f" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="3" />
+        <Time Value="3.2999999999999994" />
         <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/3</DataItem>
+          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/3_2999999999999994</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="f" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="3.25" />
+        <Time Value="3.5999999999999992" />
         <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/3_25</DataItem>
+          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/3_5999999999999992</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="f" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="3.5" />
+        <Time Value="3.899999999999999" />
         <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/3_5</DataItem>
+          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/3_899999999999999</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="f" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="3.75" />
+        <Time Value="4.1999999999999993" />
         <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/3_75</DataItem>
+          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/4_1999999999999993</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="f" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="4" />
+        <Time Value="4.4999999999999991" />
         <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/4</DataItem>
+          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/4_4999999999999991</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="f" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="4.25" />
+        <Time Value="4.7999999999999989" />
         <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/4_25</DataItem>
+          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/4_7999999999999989</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="f" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="4.5" />
+        <Time Value="5.0999999999999988" />
         <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/4_5</DataItem>
+          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/5_0999999999999988</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="f" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="4.75" />
+        <Time Value="5.3999999999999986" />
         <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/4_75</DataItem>
+          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/5_3999999999999986</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="f" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="5" />
+        <Time Value="5.6999999999999984" />
         <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/5</DataItem>
+          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/5_6999999999999984</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="f" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="5.25" />
+        <Time Value="5.9999999999999982" />
         <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/5_25</DataItem>
+          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/5_9999999999999982</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="f" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="5.5" />
+        <Time Value="6.299999999999998" />
         <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/5_5</DataItem>
+          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/6_299999999999998</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="f" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="5.75" />
+        <Time Value="6.5999999999999979" />
         <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/5_75</DataItem>
+          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/6_5999999999999979</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="f" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="6" />
+        <Time Value="6.8999999999999977" />
         <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/6</DataItem>
+          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/6_8999999999999977</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="f" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="6.25" />
+        <Time Value="7.1999999999999975" />
         <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/6_25</DataItem>
+          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/7_1999999999999975</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="f" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="6.5" />
+        <Time Value="7.4999999999999973" />
         <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/6_5</DataItem>
+          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/7_4999999999999973</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="f" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="6.75" />
+        <Time Value="7.7999999999999972" />
         <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/6_75</DataItem>
+          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/7_7999999999999972</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="f" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="7" />
+        <Time Value="8.0999999999999979" />
         <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/7</DataItem>
+          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/8_0999999999999979</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="f" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="7.25" />
+        <Time Value="8.3999999999999986" />
         <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/7_25</DataItem>
+          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/8_3999999999999986</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="f" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="7.5" />
+        <Time Value="8.6999999999999993" />
         <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/7_5</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="7.75" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/7_75</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="8" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/8</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="8.25" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/8_25</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="8.5" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/8_5</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="8.75" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/8_75</DataItem>
+          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/8_6999999999999993</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="f" GridType="Uniform">
@@ -272,1150 +230,142 @@
       </Grid>
       <Grid Name="f" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="9.25" />
+        <Time Value="9.3000000000000007" />
         <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/9_25</DataItem>
+          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/9_3000000000000007</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="f" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="9.5" />
+        <Time Value="9.6000000000000014" />
         <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/9_5</DataItem>
+          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/9_6000000000000014</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="f" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="9.75" />
+        <Time Value="9.9000000000000021" />
         <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/9_75</DataItem>
+          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/9_9000000000000021</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="f" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="10" />
+        <Time Value="10.200000000000003" />
         <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/10</DataItem>
+          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/10_200000000000003</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="f" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="10.25" />
+        <Time Value="10.500000000000004" />
         <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/10_25</DataItem>
+          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/10_500000000000004</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="f" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="10.5" />
+        <Time Value="10.800000000000004" />
         <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/10_5</DataItem>
+          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/10_800000000000004</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="f" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="10.75" />
+        <Time Value="11.100000000000005" />
         <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/10_75</DataItem>
+          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/11_100000000000005</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="f" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="11" />
+        <Time Value="11.400000000000006" />
         <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/11</DataItem>
+          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/11_400000000000006</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="f" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="11.25" />
+        <Time Value="11.700000000000006" />
         <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/11_25</DataItem>
+          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/11_700000000000006</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="f" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="11.5" />
+        <Time Value="12.000000000000007" />
         <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/11_5</DataItem>
+          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/12_000000000000007</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="f" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="11.75" />
+        <Time Value="12.300000000000008" />
         <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/11_75</DataItem>
+          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/12_300000000000008</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="f" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="12" />
+        <Time Value="12.600000000000009" />
         <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/12</DataItem>
+          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/12_600000000000009</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="f" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="12.25" />
+        <Time Value="12.900000000000009" />
         <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/12_25</DataItem>
+          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/12_900000000000009</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="f" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="12.5" />
+        <Time Value="13.20000000000001" />
         <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/12_5</DataItem>
+          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/13_20000000000001</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="f" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="12.75" />
+        <Time Value="13.500000000000011" />
         <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/12_75</DataItem>
+          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/13_500000000000011</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="f" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="13" />
+        <Time Value="13.800000000000011" />
         <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/13</DataItem>
+          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/13_800000000000011</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="f" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="13.25" />
+        <Time Value="14.100000000000012" />
         <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/13_25</DataItem>
+          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/14_100000000000012</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="f" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="13.5" />
+        <Time Value="14.400000000000013" />
         <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/13_5</DataItem>
+          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/14_400000000000013</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="f" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="13.75" />
+        <Time Value="14.700000000000014" />
         <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/13_75</DataItem>
+          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/14_700000000000014</DataItem>
         </Attribute>
       </Grid>
       <Grid Name="f" GridType="Uniform">
         <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="14" />
+        <Time Value="15.000000000000014" />
         <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/14</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="14.25" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/14_25</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="14.5" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/14_5</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="14.75" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/14_75</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="15" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/15</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="15.25" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/15_25</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="15.5" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/15_5</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="15.75" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/15_75</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="16" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/16</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="16.25" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/16_25</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="16.5" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/16_5</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="16.75" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/16_75</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="17" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/17</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="17.25" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/17_25</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="17.5" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/17_5</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="17.75" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/17_75</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="18" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/18</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="18.25" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/18_25</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="18.5" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/18_5</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="18.75" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/18_75</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="19" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/19</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="19.25" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/19_25</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="19.5" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/19_5</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="19.75" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/19_75</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="20" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/20</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="20.25" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/20_25</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="20.5" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/20_5</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="20.75" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/20_75</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="21" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/21</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="21.25" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/21_25</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="21.5" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/21_5</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="21.75" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/21_75</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="22" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/22</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="22.25" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/22_25</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="22.5" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/22_5</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="22.75" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/22_75</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="23" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/23</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="23.25" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/23_25</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="23.5" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/23_5</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="23.75" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/23_75</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="24" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/24</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="24.25" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/24_25</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="24.5" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/24_5</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="24.75" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/24_75</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="25" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/25</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="25.25" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/25_25</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="25.5" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/25_5</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="25.75" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/25_75</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="26" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/26</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="26.25" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/26_25</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="26.5" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/26_5</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="26.75" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/26_75</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="27" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/27</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="27.25" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/27_25</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="27.5" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/27_5</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="27.75" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/27_75</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="28" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/28</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="28.25" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/28_25</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="28.5" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/28_5</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="28.75" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/28_75</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="29" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/29</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="29.25" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/29_25</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="29.5" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/29_5</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="29.75" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/29_75</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="30" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/30</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="30.25" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/30_25</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="30.5" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/30_5</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="30.75" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/30_75</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="31" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/31</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="31.25" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/31_25</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="31.5" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/31_5</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="31.75" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/31_75</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="32" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/32</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="32.25" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/32_25</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="32.5" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/32_5</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="32.75" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/32_75</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="33" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/33</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="33.25" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/33_25</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="33.5" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/33_5</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="33.75" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/33_75</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="34" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/34</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="34.25" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/34_25</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="34.5" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/34_5</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="34.75" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/34_75</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="35" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/35</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="35.25" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/35_25</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="35.5" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/35_5</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="35.75" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/35_75</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="36" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/36</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="36.25" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/36_25</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="36.5" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/36_5</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="36.75" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/36_75</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="37" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/37</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="37.25" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/37_25</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="37.5" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/37_5</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="37.75" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/37_75</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="38" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/38</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="38.25" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/38_25</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="38.5" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/38_5</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="38.75" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/38_75</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="39" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/39</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="39.25" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/39_25</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="39.5" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/39_5</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="39.75" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/39_75</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="40" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/40</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="40.25" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/40_25</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="40.5" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/40_5</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="40.75" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/40_75</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="41" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/41</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="41.25" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/41_25</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="41.5" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/41_5</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="41.75" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/41_75</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="42" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/42</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="42.25" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/42_25</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="42.5" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/42_5</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="42.75" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/42_75</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="43" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/43</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="43.25" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/43_25</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="43.5" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/43_5</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="43.75" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/43_75</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="44" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/44</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="44.25" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/44_25</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="44.5" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/44_5</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="44.75" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/44_75</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="45" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/45</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="45.25" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/45_25</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="45.5" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/45_5</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="45.75" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/45_75</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="46" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/46</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="46.25" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/46_25</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="46.5" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/46_5</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="46.75" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/46_75</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="47" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/47</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="47.25" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/47_25</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="47.5" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/47_5</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="47.75" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/47_75</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="48" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/48</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="48.25" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/48_25</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="48.5" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/48_5</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="48.75" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/48_75</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="49" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/49</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="49.25" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/49_25</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="49.5" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/49_5</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="49.75" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/49_75</DataItem>
-        </Attribute>
-      </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="50" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/50</DataItem>
+          <DataItem Dimensions="10751 1" Format="HDF">temperatures.h5:/Function/f/15_000000000000014</DataItem>
         </Attribute>
       </Grid>
     </Grid>
