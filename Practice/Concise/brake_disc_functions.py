@@ -1,68 +1,162 @@
-def rub_rotation(x, y, rotation_degree):
-   import numpy as np
-  
-   # Define the rotation angle in radians (rotation_degree per second)
-   rotation_radian = rotation_degree / 360 * 2 * np.pi
-   angle = rotation_radian  # 1 radian
+def vehicle_initial(angular_r, v_vehicle, c_contact, c_acc):
+    import numpy as np
+    v_ini = v_vehicle/3.6   /   (920/2/1000) 
+    # D_wheel = 920 mm, v = D_wheel /2 /1000 * v_ini *3.6   # km/h
+    # Start time, Final time  
+    t = 0
+    t_brake = 49
+    t_lag = 4
+    # rubbing element radius, Contact area 
+    r_rub = 18.8
+    S_rub_circle = r_rub**2 * c_contact
+    S_total = S_rub_circle * np.pi * 18  #mm2
+    # initial and brake pad temperature
+    Ti = 60
+    Tm = 60
+    # density (kg.m^-3), capacity (J/Kg.K), conductivity (W/m.K)
+    t_u = 1e3 # m to mm
+    rho = 7850 /(t_u**3)
+    c = 462
+    k = 48 / t_u
+    # mu, P_brake,  r_disc , heat_distribution  
+    mu = 0.376
+    P_initial = 274000
+    r_disc = 0.25
+    heat_distribution = 0.88
+    # calculate total num_steps
+    if c_acc == 1:  # constant acc for the whole process
+        acc = v_ini/t_brake
+        v_lag_end = (v_ini - (acc *t_lag) )   
+        angular_r_rad = angular_r/180*np.pi  
+        dt_lag = angular_r_rad  /  ( ( v_ini + v_lag_end  ) /2 )
+        n_lag = round (t_lag / dt_lag) + 1 
+        dt_a_lag = angular_r_rad  /  ( v_lag_end /2 )
+        n_a_lag =  round ( (t_brake - t_lag) / dt_a_lag ) + 1
+        num_steps = n_lag + n_a_lag
+        dt = []
+        v_angular = [v_ini]
+        for i in range(num_steps):
+            dt.append ( angular_r_rad / v_angular[i] )
+            v_angular.append (  v_ini- sum(dt) * acc )           
+        P = []
+        for i in range(num_steps):
+            if i <= n_lag:
+                P.append( P_initial/ n_lag * i )
+            else:
+                P.append( P_initial) 
+                
+    else:  
+        acc = v_ini/(t_brake-t_lag)
+        v_lag_end = (v_ini - (acc *t_lag)*c_acc ) 
+        acc_a_lag = v_lag_end / (t_brake-t_lag)
+       
+        angular_r_rad = angular_r/180*np.pi  
+        dt_lag = angular_r_rad  /  ( ( v_ini + v_lag_end  ) /2 )
+        # number of time step needed during lag
+        n_lag = round (t_lag / dt_lag) + 1   
+        dt_a_lag = angular_r_rad  /  ( v_lag_end /2 )
+        n_a_lag =  round ( (t_brake - t_lag) / dt_a_lag ) + 1
+        # number of time step needed after lag
+        num_steps = n_lag + n_a_lag
+        P = []
+        for i in range(num_steps):
+            if i <= n_lag:
+                P.append( P_initial/ n_lag * i )
+            else:
+                P.append( P_initial) 
+        dt = []
+        v_angular = [v_ini]
+        for i in range(num_steps):
+            if i <= n_lag:
+               dt.append ( angular_r_rad / v_angular[i] )
+               v_angular.append (  v_ini-sum(dt)*acc*c_acc )
+            else:
+               dt.append ( angular_r_rad / v_angular[i] )
+               v_angular.append (  v_lag_end- (sum(dt) - t_lag) * acc_a_lag )
+        
+    # S_or is the original brake pad rubbing area, 200 cm2. 
+    S_or = 200
+    S_new = S_total/100 #mm2 to cm2
+    # g is the heat source,unit is w/mm2 
+    g = []
+    for i in range(num_steps):
+        g.append ( mu * P[i] * v_angular[i] * r_disc * heat_distribution *2 /(t_u**2)  * (S_or/S_new) )
+        
+    #  h is the heat convection coefficient, unit is W/mm2 K  
+    h = 7.75e-5
+    # radiation is the radiation heat coefficient, unit is W/mm2 K
+    # stefan-Boltzmann constant theta = 5.67*10e-8 w/m2 k-4,   0.64 is the emmissivity
+    radiation = 5.670*(10e-8)/(t_u**2)  * 0.64
 
-   # Define the rotation matrix
-   r_matrix = np.array([[np.cos(angle), -np.sin(angle)],
+    return dt,P,g,num_steps,h,radiation,v_angular,Ti,Tm,S_rub_circle,t,rho,c,k,t_brake,S_total
+
+
+#################################################################################################################3
+def rub_rotation(x, y, rotation_degree):
+    import numpy as np
+  
+    # Define the rotation angle in radians (rotation_degree per second)
+    rotation_radian = rotation_degree / 360 * 2 * np.pi
+    angle = rotation_radian  # 1 radian
+
+    # Define the rotation matrix
+    r_matrix = np.array([[np.cos(angle), -np.sin(angle)],
                     [np.sin(angle), np.cos(angle)]])
     
-   points = np.vstack((x, y))
+    points = np.vstack((x, y))
 
     # Perform the rotation
-   r_points = r_matrix @ points
+    r_points = r_matrix @ points
 
     # Separate the rotated x and y coordinates
-   x1 = r_points[0, :]
-   y1 = r_points[1, :]
-   return x1, y1
+    x1 = r_points[0, :]
+    y1 = r_points[1, :]
+    return x1, y1
 
-
+#################################################################################################################3
 def get_rub_coordinate():
-   import re
-# Sample text containing cylinder data
-   text = """
-rub1  = gmsh.model.occ.addCylinder(214,27,z1,           0, 0, z2,  r_rub)
-rub2  = gmsh.model.occ.addCylinder(258,22,z1,           0, 0, z2,  r_rub)
-rub3  = gmsh.model.occ.addCylinder(252,63,z1,           0, 0, z2,  r_rub)
-rub4  = gmsh.model.occ.addCylinder(197, 66, z1,         0, 0, z2,  r_rub)
-rub5  = gmsh.model.occ.addCylinder(262, 105, z1,        0, 0, z2,  r_rub)
-rub6  = gmsh.model.occ.addCylinder(222,99, z1,          0, 0, z2,  r_rub)
-rub7  = gmsh.model.occ.addCylinder(240,148, z1,         0, 0, z2,  r_rub)
-rub8  = gmsh.model.occ.addCylinder(202,135, z1,         0, 0, z2,  r_rub)
-rub9  = gmsh.model.occ.addCylinder(168,111, z1,         0, 0, z2,  r_rub)
-rub10 = gmsh.model.occ.addCylinder(66.25,250.47,z1,     0, 0, z2,  r_rub)
-rub11 = gmsh.model.occ.addCylinder(138.27,146.38,z1,    0, 0, z2,  r_rub)
-rub12 = gmsh.model.occ.addCylinder(167.81,175.7, z1,    0, 0, z2,  r_rub)
-rub13 = gmsh.model.occ.addCylinder(187.21, 210.86, z1,  0, 0, z2,  r_rub)
-rub14 = gmsh.model.occ.addCylinder(135.83,201.65, z1,   0, 0, z2,  r_rub)
-rub15 = gmsh.model.occ.addCylinder(98.99,182.76, z1,    0, 0, z2,  r_rub)
-rub16 = gmsh.model.occ.addCylinder(105.58,237.44, z1,   0, 0, z2,  r_rub)
-rub17 = gmsh.model.occ.addCylinder(148.68,240, z1,      0, 0, z2,  r_rub)
-rub18 = gmsh.model.occ.addCylinder(63.53, 206.27, z1,   0, 0, z2,  r_rub)
-"""
-   x_coor = [214.0, 258.0, 252.0, 197.0, 262.0, 
+    import re
+    # Sample text containing cylinder data
+    text = """
+    rub1  = gmsh.model.occ.addCylinder(214,27,z1,           0, 0, z2,  r_rub)
+    rub2  = gmsh.model.occ.addCylinder(258,22,z1,           0, 0, z2,  r_rub)
+    rub3  = gmsh.model.occ.addCylinder(252,63,z1,           0, 0, z2,  r_rub)
+    rub4  = gmsh.model.occ.addCylinder(197, 66, z1,         0, 0, z2,  r_rub)
+    rub5  = gmsh.model.occ.addCylinder(262, 105, z1,        0, 0, z2,  r_rub)
+    rub6  = gmsh.model.occ.addCylinder(222,99, z1,          0, 0, z2,  r_rub)
+    rub7  = gmsh.model.occ.addCylinder(240,148, z1,         0, 0, z2,  r_rub)
+    rub8  = gmsh.model.occ.addCylinder(202,135, z1,         0, 0, z2,  r_rub)
+    rub9  = gmsh.model.occ.addCylinder(168,111, z1,         0, 0, z2,  r_rub)
+    rub10 = gmsh.model.occ.addCylinder(66.25,250.47,z1,     0, 0, z2,  r_rub)
+    rub11 = gmsh.model.occ.addCylinder(138.27,146.38,z1,    0, 0, z2,  r_rub)
+    rub12 = gmsh.model.occ.addCylinder(167.81,175.7, z1,    0, 0, z2,  r_rub)
+    rub13 = gmsh.model.occ.addCylinder(187.21, 210.86, z1,  0, 0, z2,  r_rub)
+    rub14 = gmsh.model.occ.addCylinder(135.83,201.65, z1,   0, 0, z2,  r_rub)
+    rub15 = gmsh.model.occ.addCylinder(98.99,182.76, z1,    0, 0, z2,  r_rub)
+    rub16 = gmsh.model.occ.addCylinder(105.58,237.44, z1,   0, 0, z2,  r_rub)
+    rub17 = gmsh.model.occ.addCylinder(148.68,240, z1,      0, 0, z2,  r_rub)
+    rub18 = gmsh.model.occ.addCylinder(63.53, 206.27, z1,   0, 0, z2,  r_rub)
+    """
+    x_coor = [214.0, 258.0, 252.0, 197.0, 262.0, 
              222.0, 240.0, 202.0, 168.0, 
              66.25, 138.27, 167.81, 187.21, 135.83, 
              98.99, 105.58, 148.68, 63.53]
-   y_coor = [27.0, 22.0, 63.0, 66.0, 105.0,
+    y_coor = [27.0, 22.0, 63.0, 66.0, 105.0,
              99.0, 148.0, 135.0, 111.0,
              250.47, 146.38, 175.7, 210.86, 201.65,
              182.76, 237.44, 240.0, 206.27]
-# Regular expression pattern to extract x and y coordinates
-   pattern = r"addCylinder\(([\d.]+),\s*([\d.]+),"
+    # Regular expression pattern to extract x and y coordinates
+    pattern = r"addCylinder\(([\d.]+),\s*([\d.]+),"
 
-# Find all matches in the text
-   matches = re.findall(pattern, text)
+    # Find all matches in the text
+    matches = re.findall(pattern, text)
 
-# Extract x and y coordinates from matches
-   x_co = [float(match[0]) for match in matches]
-   y_co = [float(match[1]) for match in matches]
-   return x_co, y_co
+    # Extract x and y coordinates from matches
+    x_co = [float(match[0]) for match in matches]
+    y_co = [float(match[1]) for match in matches]
+    return x_co, y_co
 
-
+#####################################################################################################################
 def find_common_e(bcs, bcs_lists):
     # Create set for bcs
     
@@ -84,7 +178,7 @@ def find_common_e(bcs, bcs_lists):
     
     return common_e_list
 
-
+#########################################################################################################################
 def mesh_brake_disc(min_mesh, max_mesh, filename):   
     import gmsh
     import sys
@@ -172,7 +266,7 @@ def mesh_brake_disc(min_mesh, max_mesh, filename):
     return c
     return notice
 
-
+#########################33333333333333333###########################################################################33
 def target_facets(domain,x_co,y_co,S_rub_circle):
     from dolfinx.mesh import locate_entities
     from dolfinx import mesh
