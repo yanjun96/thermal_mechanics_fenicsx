@@ -325,3 +325,35 @@ def target_facets(domain,x_co,y_co,S_rub_circle):
     sorted_indices3 = np.argsort(common_indices3)
 
     return common_indices3, facet_markers3, sorted_indices3
+
+def read_msh_file(filename):
+    nodes = []
+    nodes_c = []
+    node_tag = []
+    reading_nodes = False
+    with open(filename, 'r') as f:
+        for line in f:
+            if line.startswith('2 6 0 '):
+                reading_nodes = True             
+                continue
+            elif line.startswith('2 7 0 '):
+                reading_nodes = False             
+                break
+            elif reading_nodes:
+                parts = line.split()         
+                if len(parts) == 1:  # This line contains only node tag
+                    node_tag.append ( int(parts[0]) )
+                elif len(parts) == 3:  # This line contains node coordinates
+                    x = float(parts[0])
+                    y = float(parts[1])
+                    z = float(parts[2])
+                    nodes_c.append((x, y, z))
+    for i in range(len(node_tag)):
+        nodes.append( (node_tag[i], nodes_c[i])  )
+
+    
+    return nodes,node_tag
+
+def filter_nodes_by_z(nodes, z_value):
+    filtered_nodes = [node for node in nodes if node[1][2] == z_value]
+    return filtered_nodes
