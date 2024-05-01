@@ -1,3 +1,12 @@
+# This file is the library functions for Disc calculatioin
+# Author:      yanjun
+# Start:       2024-03-01
+# Last update: 2024-05-01
+# Location:    Stockholm
+# Institute:   KTH Royal Institute of TEchnology
+# Github:      https://github.com/Yanjun96/FEniCSx.git
+
+
 def vehicle_initial(angular_r, v_vehicle, c_contact, c_acc):
     import numpy as np
     v_ini = v_vehicle/3.6   /   (920/2/1000) 
@@ -325,7 +334,7 @@ def target_facets(domain,x_co,y_co,S_rub_circle):
     sorted_indices3 = np.argsort(common_indices3)
 
     return common_indices3, facet_markers3, sorted_indices3
-
+#######################################################################################################################
 def read_msh_file(filename):
     nodes = []
     nodes_c = []
@@ -353,7 +362,96 @@ def read_msh_file(filename):
 
     
     return nodes,node_tag
-
+###############################################################################################################
 def filter_nodes_by_z(nodes, z_value):
     filtered_nodes = [node for node in nodes if node[1][2] == z_value]
     return filtered_nodes
+
+##############################################################################################################
+def got_T_check_location(A1):
+    ## A1 should like [247.5, 0]
+    import numpy as np
+    z = 19
+    A2_b =  (  (A1[0]-40), 0 )
+    A3_b =  (  (A1[1]+40), 0 )
+
+    x = np.array(A1[0])
+    y = np.array(A1[1])
+    # Define the rotation angle in radians (1 radian per second)
+    r_points = []
+    for i in [0,1]:
+      angle = 120*(i+1)   / 180 * np.pi
+     
+      # Define the rotation matrix
+      r_matrix = np.array([[np.cos(angle), -np.sin(angle)],
+                      [np.sin(angle), np.cos(angle)]])
+      # Stack x and y into a single array of shape (2, n) where n is the number of points
+      points = np.vstack((x, y))
+
+      # Perform the rotation
+      r_points.append( r_matrix @ points )
+
+    # Separate the rotated x and y coordinates
+    A2 = r_points[0]
+    A3 = r_points[1]
+    A2_fin = ( round( A2[0][0],2) , round(A2[1][0],2), z)
+    A3_fin = ( round( A3[0][0],2) , round(A3[1][0],2), z)
+    A1_fin = ( round( A1[0],1) , round(A1[1],2), z)
+    print( "A1 location is ",A1_fin, 
+         "\nA2 location is ",A2_fin, 
+         "\nA3 location is ",A3_fin)
+
+    return A1_fin, A2_fin, A3_fin
+##################################################################################################################
+
+def save_t_T (csv_name, T_array):
+    import csv
+    t = []
+    T = []
+    for value in T_array:
+        t.append(value[0])
+        T.append(value[1])   
+    # Specify the file path
+    file_path = csv_name  # File path for CSV file
+    # Write t and T to a CSV file
+    with open(file_path, "w", newline='') as csvfile:
+        csv_writer = csv.writer(csvfile)
+        csv_writer.writerow(["t", "T"])  # Write header
+        for t_value, T_values in zip(t, T):
+            for T_value in T_values:
+                csv_writer.writerow([t_value, T_value])  # Write each value of t and corresponding value(s) of T
+
+    # Confirmation message
+    print("t and T have been successfully saved as", file_path)
+
+#####################################################################################################################
+def read_t_T (csv_name):
+    ## csv_name = "xxxxx.csv"
+
+    import csv
+    from collections import defaultdict
+
+    # Specify the file path
+    file_path = csv_name  # File path for CSV file
+
+    # Initialize a dictionary to store t and corresponding values of T
+    t_T_dict = defaultdict(list)
+
+    # Read t and T from the CSV file
+    with open(file_path, "r", newline='') as csvfile:
+        csv_reader = csv.reader(csvfile)
+        next(csv_reader)  # Skip header row
+        for row in csv_reader:
+            t_value = float(row[0])  # Assuming t values are floats
+            T_value = float(row[1])  # Assuming T values are floats
+            t_T_dict[t_value].append(T_value)
+
+    # Extract unique values of t and corresponding values of T
+    t1 = list(t_T_dict.keys())
+    T1 = [t_T_dict[t_value] for t_value in t1 ]
+
+    # Confirmation message
+    print("t and T have been successfully extracted from", file_path)
+    return (t1,T1)
+
+#####################################################################################################################
