@@ -342,10 +342,10 @@ def read_msh_file(filename):
     reading_nodes = False
     with open(filename, 'r') as f:
         for line in f:
-            if line.startswith('2 6 0 '):
+            if line.startswith('$Nodes'):
                 reading_nodes = True             
                 continue
-            elif line.startswith('2 7 0 '):
+            elif line.startswith('$EndNodes'):
                 reading_nodes = False             
                 break
             elif reading_nodes:
@@ -397,9 +397,9 @@ def got_T_check_location(A1):
     A2_fin = ( round( A2[0][0],2) , round(A2[1][0],2), z)
     A3_fin = ( round( A3[0][0],2) , round(A3[1][0],2), z)
     A1_fin = ( round( A1[0],1) , round(A1[1],2), z)
-    print( "A1 location is ",A1_fin, 
-         "\nA2 location is ",A2_fin, 
-         "\nA3 location is ",A3_fin)
+    #print( "A1 location is ",A1_fin, 
+         #"\nA2 location is ",A2_fin, 
+         #"\nA3 location is ",A3_fin)
 
     return A1_fin, A2_fin, A3_fin
 ##################################################################################################################
@@ -455,3 +455,61 @@ def read_t_T (csv_name):
     return (t1,T1)
 
 #####################################################################################################################
+
+def find_3_coord(filename):
+    import numpy as np
+    ## below labels should always add if new mesh has result
+    coord_lib = {'m-1-15.msh': [2201, 1590, 260 ],
+                 'm-3-10.msh': [3157, 7018, 2141],
+                
+                
+                }
+    
+    if filename in coord_lib:
+        print('Lables already exists, for mesh',filename, "is ", coord_lib[filename])
+        return coord_lib[filename]
+    
+    else:
+        read_msh_file(filename)
+        nodes = []
+        nodes_c = []
+        closest_coordinate = []
+        node_tag = []
+        reading_nodes = False
+        with open(filename, 'r') as f:
+                for line in f:
+                    if line.startswith('$Nodes'):
+                        reading_nodes = True             
+                        continue
+                    elif line.startswith('$EndNodes'):
+                        reading_nodes = False             
+                        break
+                    elif reading_nodes:
+                        parts = line.split()         
+                        if len(parts) == 1:  # This line contains only node tag
+                            node_tag.append ( int(parts[0]) )
+                        elif len(parts) == 3:  # This line contains node coordinates
+                            x = float(parts[0])
+                            y = float(parts[1])
+                            z = float(parts[2])
+                            nodes_c.append((x, y, z))
+        for i in range(len(node_tag)):
+                nodes.append( (node_tag[i], nodes_c[i])  )
+
+        A1_fin, A2_fin, A3_fin = got_T_check_location([247.5, 0])
+        Three_points = [A1_fin, A2_fin, A3_fin]
+        for target in  Three_points:
+            A_point = target
+            coordinates = nodes_c
+            distances = [np.sqrt((x - A_point[0])**2 + (y - A_point[1])**2 
+                         + (z - A_point[2])**2) for x, y, z in coordinates]
+            closest_index = np.argmin(distances)
+            closest_coordinate.append(  coordinates[closest_index] )
+
+        # Print the closest coordinate
+        print("Closest coordinate is \n",
+              tuple(round(coord, 2) for coord in closest_coordinate[0]),
+             "\n", tuple(round(coord, 2) for coord in closest_coordinate[1]),
+             "\n", tuple(round(coord, 2) for coord in closest_coordinate[2]),
+             "\nPlease open the xdmf file in paraview, and find the labels for above three nodes and input as",
+             "\nT_3_labels = [label1, label2, label3]. \nPlease also add in labels dictionary, functions in brake_disc_functions.py ")
