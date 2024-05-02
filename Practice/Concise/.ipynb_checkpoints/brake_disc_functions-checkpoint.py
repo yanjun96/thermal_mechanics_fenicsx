@@ -100,7 +100,7 @@ def vehicle_initial(angular_r, v_vehicle, c_contact, c_acc):
     return dt,P,g,num_steps,h,radiation,v_angular,Ti,Tm,S_rub_circle,t,rho,c,k,t_brake,S_total
 
 
-#################################################################################################################3
+#################################################################################################################  2
 def rub_rotation(x, y, rotation_degree):
     import numpy as np
   
@@ -122,7 +122,7 @@ def rub_rotation(x, y, rotation_degree):
     y1 = r_points[1, :]
     return x1, y1
 
-#################################################################################################################3
+#################################################################################################################  3
 def get_rub_coordinate():
     import re
     # Sample text containing cylinder data
@@ -165,7 +165,7 @@ def get_rub_coordinate():
     y_co = [float(match[1]) for match in matches]
     return x_co, y_co
 
-#####################################################################################################################
+#####################################################################################################################  4
 def find_common_e(bcs, bcs_lists):
     # Create set for bcs
     
@@ -187,7 +187,7 @@ def find_common_e(bcs, bcs_lists):
     
     return common_e_list
 
-#########################################################################################################################
+#########################################################################################################################   5
 def mesh_brake_disc(min_mesh, max_mesh, filename):   
     import gmsh
     import sys
@@ -275,7 +275,7 @@ def mesh_brake_disc(min_mesh, max_mesh, filename):
     return c
     return notice
 
-#########################33333333333333333###########################################################################33
+#########################33333333333333333###########################################################################  6
 def target_facets(domain,x_co,y_co,S_rub_circle):
     from dolfinx.mesh import locate_entities
     from dolfinx import mesh
@@ -305,7 +305,7 @@ def target_facets(domain,x_co,y_co,S_rub_circle):
         D.append( B[rows_A1] )
     facet_markers1 = np.concatenate(D)
 
-    ####################################
+    ####################################   7
     boundary20 = (200, lambda x:  x[2] == 20)
     facet_indices2, facet_markers2 = [], [] 
     fdim = 2  
@@ -326,7 +326,7 @@ def target_facets(domain,x_co,y_co,S_rub_circle):
         D.append( B[rows_A1] )
     facet_markers2 = np.concatenate(D) 
     
-    ####################################
+    ####################################   8
     common_indices3 = [common_indices1,common_indices2]
     facet_markers3  = [facet_markers1,facet_markers2]
     common_indices3 = np.concatenate(common_indices3)
@@ -334,7 +334,7 @@ def target_facets(domain,x_co,y_co,S_rub_circle):
     sorted_indices3 = np.argsort(common_indices3)
 
     return common_indices3, facet_markers3, sorted_indices3
-#######################################################################################################################
+#######################################################################################################################   9
 def read_msh_file(filename):
     nodes = []
     nodes_c = []
@@ -362,12 +362,12 @@ def read_msh_file(filename):
 
     
     return nodes,node_tag
-###############################################################################################################
+###############################################################################################################  10
 def filter_nodes_by_z(nodes, z_value):
     filtered_nodes = [node for node in nodes if node[1][2] == z_value]
     return filtered_nodes
 
-##############################################################################################################
+##############################################################################################################  11
 def got_T_check_location(A1):
     ## A1 should like [247.5, 0]
     import numpy as np
@@ -402,7 +402,7 @@ def got_T_check_location(A1):
          #"\nA3 location is ",A3_fin)
 
     return A1_fin, A2_fin, A3_fin
-##################################################################################################################
+##################################################################################################################  12
 
 def save_t_T (csv_name, T_array):
     import csv
@@ -424,7 +424,7 @@ def save_t_T (csv_name, T_array):
     # Confirmation message
     print("t and T have been successfully saved as", file_path)
 
-#####################################################################################################################
+#####################################################################################################################  13
 def read_t_T (csv_name):
     ## csv_name = "xxxxx.csv"
 
@@ -454,7 +454,7 @@ def read_t_T (csv_name):
     print("t and T have been successfully extracted from", file_path)
     return (t1,T1)
 
-#####################################################################################################################
+#####################################################################################################################  14
 
 def find_3_coord(filename):
     import numpy as np
@@ -513,3 +513,45 @@ def find_3_coord(filename):
              "\n", tuple(round(coord, 2) for coord in closest_coordinate[2]),
              "\nPlease open the xdmf file in paraview, and find the labels for above three nodes and input as",
              "\nT_3_labels = [label1, label2, label3]. \nPlease also add in labels dictionary, functions in brake_disc_functions.py ")
+
+
+######################################  15
+def collect_csv_files(directory):
+    import os
+    csv_files = []
+    for root, dirs, files in os.walk(directory):
+        for file in files:
+            if file.endswith('.csv'):
+                csv_files.append(os.path.join(root, file))
+    return csv_files
+
+########################################  16
+
+def extract_mesh_labels(file_name):
+    import re
+    match = re.search(r'-m-(\d+-\d+)', file_name)
+    if match:
+        mesh_labels = match.group(1)
+        return f'm-{mesh_labels}.msh'
+    else:
+        return None
+
+##########################################  17
+
+def extract_elements_labels(file_name, type_is):
+    import re
+    if type_is == 'mesh':
+       match = re.search(r'e-(\d+)', file_name)
+       if match:
+          return int(match.group(1))
+       return 0 
+    if type_is == 'time':
+       match = re.search(r's-(\d+)', file_name)
+       if match:
+          return int(match.group(1))
+       return 0 
+    if type_is == 'contact':
+       match = re.search(r'c-(\d+)', file_name)
+       if match:
+          return int(match.group(1))
+       return 0 
