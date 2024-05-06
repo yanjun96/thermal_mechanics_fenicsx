@@ -457,11 +457,16 @@ def read_t_T (csv_name):
 
 def find_3_coord(filename):
     import numpy as np
+    
     ## below labels should always add if new mesh has result
     coord_lib = {'m-1-15.msh': [2201, 1590, 260 ],
                  'm-3-10.msh': [3157, 7018, 2141],
-                
-                
+                 'm-3-15.msh': [2201, 1590, 260],
+                 'm-3-7.msh':  [12266, 11501, 617],
+                 'm-3-5.msh':  [19098, 34079, 7351],
+                 'm-3-3.msh':  [94411, 114209, 8995],
+                 
+                                
                 }
     
     if filename in coord_lib:
@@ -469,7 +474,6 @@ def find_3_coord(filename):
         return coord_lib[filename]
     
     else:
-        read_msh_file(filename)
         nodes = []
         nodes_c = []
         closest_coordinate = []
@@ -537,20 +541,56 @@ def extract_mesh_labels(file_name):
 
 ##########################################  17
 
-def extract_elements_labels(file_name, type_is):
+def extract_file_labels(file_name, type_is):
     import re
-    if type_is == 'mesh':
+    if type_is == 'mesh_size':
        match = re.search(r'e-(\d+)', file_name)
        if match:
           return int(match.group(1))
        return 0 
-    if type_is == 'time':
+    if type_is == 'time_step':
        match = re.search(r's-(\d+)', file_name)
        if match:
           return int(match.group(1))
        return 0 
-    if type_is == 'contact':
+    if type_is == 'contact_area':
        match = re.search(r'c-(\d+)', file_name)
        if match:
           return int(match.group(1))
        return 0 
+
+################################################
+def add_indentation(old_notebook, new_notebook):
+    ## example: add_indentation('Disc4_Concise.py', 'Disc4_Concise2.py' ) 
+    with open(old_notebook, 'r') as f:
+        lines = f.readlines()
+    indented_lines = ['      ' + line for line in lines]
+    with open(new_notebook, 'w') as f:
+        f.writelines(indented_lines)
+
+
+##############################################
+def get_time_step_from_angular(angular2,mesh_max2,c_contact2):
+      # import basic   
+  
+      import numpy as np  
+      
+      # import own functions
+      from brake_disc_functions import vehicle_initial    
+          
+      # mesh-size, contact area coefficient
+      mesh_min = 3
+      mesh_max = mesh_max2
+      c_contact = c_contact2
+      
+      # Each time step rotation angular, and acc during lag, 1 is full acc, 0 is no acc.
+      angular_r = angular2
+      v_vehicle = 160
+      c_acc = 1
+      
+      # calling local functions to get all parameters
+      ( dt, P, g, num_steps,  h,  radiation,  v_angular, Ti, Tm,    S_rub_circle,
+       t, rho,  c,  k,  t_brake,   S_total ) = vehicle_initial(angular_r, v_vehicle, c_contact, c_acc)  
+      print("1: Total tims is ", round(sum(dt), 2), "s")
+      print("2: Total numb steps is ", num_steps)
+      return (num_steps)
