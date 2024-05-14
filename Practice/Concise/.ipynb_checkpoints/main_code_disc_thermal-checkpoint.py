@@ -65,6 +65,7 @@ def main_code_disc_thermal(c, type, angular1, mesh_max1, c_contact1):
           dirichletbc,
           Function,
           FunctionSpace,
+          functionspace,
           form,
           locate_dofs_topological,
       )
@@ -154,7 +155,7 @@ def main_code_disc_thermal(c, type, angular1, mesh_max1, c_contact1):
           )
       
       # Define variational problem, Here Lagrange changes to CG, what is CG?
-      V = fem.FunctionSpace(domain, ("CG", 1))
+      V = fem.functionspace(domain, ("CG", 1))
       
       
       # initialization
@@ -169,7 +170,7 @@ def main_code_disc_thermal(c, type, angular1, mesh_max1, c_contact1):
       
       # u_n is for initial condition and uh is the solver result.
       # variable, need to be projected form Q onto V
-      Q = FunctionSpace(domain, ("DG", 0))
+      Q = functionspace(domain, ("DG", 0))
       T_init = Function(Q)
       T_init.name = "u_n"
       T_init.x.array[:] = np.full_like(1, Ti, dtype=default_scalar_type)

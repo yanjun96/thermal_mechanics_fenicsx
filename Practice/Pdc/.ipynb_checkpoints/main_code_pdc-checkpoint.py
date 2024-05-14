@@ -1,4 +1,4 @@
-def main_code_disc_thermal(c, type, angular1, mesh_max1, c_contact1):
+def main_code_pdc(c, type, angular1, mesh_max1, c_contact1):
 
   # type should ""time_step"" , "mesh_size" , "contact_area"
   # angular1,  is degree per time step, 
@@ -88,7 +88,7 @@ def main_code_disc_thermal(c, type, angular1, mesh_max1, c_contact1):
       from mpi4py import MPI
       
       # import own functions
-      from brake_disc_functions import (vehicle_initial,
+      from brake_libs_pdc import (vehicle_initial,
       rub_rotation,get_rub_coordinate,find_common_e,mesh_brake_disc,
       mesh_brake_disc,read_msh_nodes,got_T_check_location,
       filter_nodes_by_z,save_t_T,save_t_T,find_3_coord,
@@ -439,16 +439,20 @@ def main_code_disc_thermal(c, type, angular1, mesh_max1, c_contact1):
       
       #### move files
       # Define the source directory
-      source_dir = "/home/yanjun/Documents/FEniCSx/Practice/Concise"
+      #source_dir = "/home/yanjun/Documents/FEniCSx/Practice/Concise"
+      source_dir = "/cfs/klemming/projects/supr/naiss2023-5-559/project/main-code"
       # Define the destination directory
       if type == "time_step" :
-          destination_dir = "/home/yanjun/Documents/FEM_results/python_results/time_step"
+          #destination_dir = "/home/yanjun/Documents/FEM_results/python_results/time_step"
+          destination_dir = "/cfs/klemming/projects/supr/naiss2023-5-559/project/result/time_step"
 
       if type == "mesh_size" :
-          destination_dir = "/home/yanjun/Documents/FEM_results/python_results/mesh_size"
+          #destination_dir = "/home/yanjun/Documents/FEM_results/python_results/mesh_size"
+          destination_dir = "/cfs/klemming/projects/supr/naiss2023-5-559/project/result/mesh_size"
 
       if type == "contact_area" :
-          destination_dir = "/home/yanjun/Documents/FEM_results/python_results/contact_area"
+          #destination_dir = "/home/yanjun/Documents/FEM_results/python_results/contact_area"
+          destination_dir = "/cfs/klemming/projects/supr/naiss2023-5-559/project/result/contact_area"
     
       
       # Create the new folder in the destination directory
