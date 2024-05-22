@@ -1,0 +1,13 @@
+1: Start at: 2024-05-22 14:35:05
+2: End at: 2024-05-22 14:40:24
+3: Simulation time is 0 hours 5 minutes
+4: First time step dt is 1.98706 s
+5: Convection heat transfer coefficient is 7.75e-05 W/mm2 K
+6: Radiation is 3.6e-13 W/mm2 K-4
+7: Each rotation degree is 11000 per time step or 30.6 circle
+8: The first rotation degree is 47996.6
+9: The mid rotation degree is 47996.6
+10: The last rotation degree is 47996.6
+11: Total contact area of 18 rubbing element is 199.9 cm2
+12: The mesh element size is between 3-10 mm
+13: Total elements number is 43604
