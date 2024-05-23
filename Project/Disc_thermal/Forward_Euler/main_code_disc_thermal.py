@@ -237,20 +237,24 @@ def main_code_disc_thermal(c, type, angular1, mesh_max1, c_contact1):
       n_vector = FacetNormal(domain)
 
       F = (
-       - (rho * c) / dt[0] * inner(u, v) * dx
-       - k * inner(grad(u_n), grad(v)) * dx
-       + inner(f, v) * dx
-       + inner(u_n, v) * dx
-       - (rho * c) / dt[0] * (
-       + h * (u_n - Tm) * v * ds(200)
-       + radiation * (u_n**4 - Tm**4) * v * ds(200)  )
-       )
-
-
+       (rho * c) / dt[0] * inner(u, v) * dx
+       + k * inner(grad(u_n), grad(v)) * dx
+       + h * inner(u_n, v) * ds(200)
+       + radiation * inner(u_n**4, v) * ds(200)
+       - (
+          inner(f, v) * dx
+          + (rho * c) / dt[0] * inner(u_n, v) * dx
+          + h * Tm * v * ds(200)
+          + radiation * (Tm**4) * v * ds(200)
+         )
+          )
       for i in list(range(1, 19)):
-      #F += -k * dot(grad(u) * v, n_vector) * ds(10 * i) - inner(g[0], v) * ds(10 * i)
-      F +=  - inner(g[0], v) * ds(10 * i) 
-      
+              F += ( 
+          + inner(g[0], v) * ds(10 * i) 
+          - h * inner( u_n, v) * ds(10 * i)  
+          - radiation * inner( (u_n**4 - Tm**4), v) * ds(10 * i) 
+          )
+         
       problem = NonlinearProblem(F, u, bcs=[bc])
       
       ## 7: Using petsc4py to create a linear solver
@@ -333,36 +337,26 @@ def main_code_disc_thermal(c, type, angular1, mesh_max1, c_contact1):
               domain, fdim, common_indices3[sorted_indices3], facet_markers3[sorted_indices3]
           )
           ds = Measure("ds", domain=domain, subdomain_data=facet_tag)
-      
+
+
           F = (
-              (rho * c) / dt[i] * inner(u, v) * dx
-              + k * inner(grad(u), grad(v)) * dx
-              + h * inner(u, v) * ds(200)
-              + radiation * inner(u**4, v) * ds(200)
-              - (
-                  inner(f, v) * dx
-                  + (rho * c) / dt[i] * inner(u_n, v) * dx
-                  + h * 25 * v * ds(200)
-                  + radiation * (25**4) * v * ds(200)
+           (rho * c) / dt[i] * inner(u, v) * dx
+           + k * inner(grad(u_n), grad(v)) * dx
+            + h * inner(u_n, v) * ds(200)
+            + radiation * inner(u_n**4, v) * ds(200)
+            - (
+               inner(f, v) * dx
+               + (rho * c) / dt[i] * inner(u_n, v) * dx
+               + h * Tm * v * ds(200)
+               + radiation * (Tm**4) * v * ds(200)
               )
-          )
-      
+               )
           for j in list(range(1, 19)):
-              F += -k * dot(grad(u) * v, n_vector) * ds(10 * j) - inner(g[i], v) * ds(10 * j)
-
-          F = (
-           - (rho * c) / dt[0] * inner(u, v) * dx
-           - k * inner(grad(u_n), grad(v)) * dx
-           + inner(f, v) * dx
-           + inner(u_n, v) * dx
-           - (rho * c) / dt[0] * (
-           + h * (u_n - Tm) * v * ds(200)
-           + radiation * (u_n**4 - Tm**4) * v * ds(200)  )
-           )
-
-          for i in list(range(1, 19)):
-          #F += -k * dot(grad(u) * v, n_vector) * ds(10 * i) - inner(g[0], v) * ds(10 * i)
-          F +=  - inner(g[0], v) * ds(10 * i) 
+              F += ( 
+              + inner(g[i], v) * ds(10 * j) 
+              - h * inner( u_n, v) * ds(10 * j)  
+              - radiation * inner( (u_n**4 - Tm**4), v) * ds(10 * j) 
+                   )
       
           problem = NonlinearProblem(F, u, bcs=[bc])
       
@@ -451,7 +445,7 @@ def main_code_disc_thermal(c, type, angular1, mesh_max1, c_contact1):
       
       #### move files
       # Define the source directory
-      source_dir = "/home/yanjun/Documents/FEniCSx/Practice/Concise"
+      source_dir = "/home/yanjun/Documents/FEniCSx/Project/Disc_thermal/Forward_Euler/"
       # Define the destination directory
       if type == "time_step" :
           destination_dir = "/home/yanjun/Documents/FEM_results/python_results/time_step"
