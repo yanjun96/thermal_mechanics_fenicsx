@@ -249,10 +249,13 @@ def main_code_disc_thermal(c, type, angular1, mesh_max1, c_contact1):
           )
       )
       
-      
       for i in list(range(1, 19)):
-          F += -k * dot(grad(u) * v, n_vector) * ds(10 * i) - inner(g[0], v) * ds(10 * i)
-      
+          F += ( 
+            - inner(g[0], v) * ds(10 * i) 
+            - h * inner( u, v) * ds(10 * i)  
+            - radiation * inner( (u**4 - Tm**4), v) * ds(10 * i) 
+            )
+     
       problem = NonlinearProblem(F, u, bcs=[bc])
       
       ## 7: Using petsc4py to create a linear solver
@@ -344,13 +347,18 @@ def main_code_disc_thermal(c, type, angular1, mesh_max1, c_contact1):
               - (
                   inner(f, v) * dx
                   + (rho * c) / dt[i] * inner(u_n, v) * dx
-                  + h * 25 * v * ds(200)
-                  + radiation * (25**4) * v * ds(200)
+                  + h * Tm * v * ds(200)
+                  + radiation * (Tm**4) * v * ds(200)
               )
           )
       
           for j in list(range(1, 19)):
-              F += -k * dot(grad(u) * v, n_vector) * ds(10 * j) - inner(g[i], v) * ds(10 * j)
+              F += ( 
+                  - inner(g[i], v) * ds(10 * j) 
+                  - h * inner( u, v) * ds(10 * j)  
+                  - radiation * inner( (u**4 - Tm**4), v) * ds(10 * j) 
+                    )
+             
       
           problem = NonlinearProblem(F, u, bcs=[bc])
       
@@ -439,16 +447,16 @@ def main_code_disc_thermal(c, type, angular1, mesh_max1, c_contact1):
       
       #### move files
       # Define the source directory
-      source_dir = "/home/yanjun/Documents/FEniCSx/Practice/Concise"
+      source_dir = "/home/yanjun/Documents/FEniCSx/Practice/Concise/Backward_Euler/change_k"
       # Define the destination directory
       if type == "time_step" :
-          destination_dir = "/home/yanjun/Documents/FEM_results/python_results/time_step"
+          destination_dir = "/home/yanjun/Documents/FEM_results/python_results/Backward_Euler/change_k/time_step"
 
       if type == "mesh_size" :
-          destination_dir = "/home/yanjun/Documents/FEM_results/python_results/mesh_size"
+          destination_dir = "/home/yanjun/Documents/FEM_results/python_results/Backward_Euler/change_k/mesh_size"
 
       if type == "contact_area" :
-          destination_dir = "/home/yanjun/Documents/FEM_results/python_results/contact_area"
+          destination_dir = "/home/yanjun/Documents/FEM_results/python_results/Backward_Euler/change_k/contact_area"
     
       
       # Create the new folder in the destination directory
