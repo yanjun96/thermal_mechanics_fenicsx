@@ -253,7 +253,7 @@ def main_code_disc_thermal(c, type, angular1, mesh_max1, c_contact1):
           + inner(g[0], v) * ds(10 * i) 
           - h * inner( u_n, v) * ds(10 * i)  
           - radiation * inner( (u_n**4 - Tm**4), v) * ds(10 * i) 
-          )
+                   )
          
       problem = NonlinearProblem(F, u, bcs=[bc])
       
@@ -340,8 +340,8 @@ def main_code_disc_thermal(c, type, angular1, mesh_max1, c_contact1):
 
 
           F = (
-           (rho * c) / dt[i] * inner(u, v) * dx
-           + k * inner(grad(u_n), grad(v)) * dx
+              (rho * c) / dt[i] * inner(u, v) * dx
+            + k * inner(grad(u_n), grad(v)) * dx
             + h * inner(u_n, v) * ds(200)
             + radiation * inner(u_n**4, v) * ds(200)
             - (
@@ -351,11 +351,12 @@ def main_code_disc_thermal(c, type, angular1, mesh_max1, c_contact1):
                + radiation * (Tm**4) * v * ds(200)
               )
                )
+          
           for j in list(range(1, 19)):
               F += ( 
-              + inner(g[i], v) * ds(10 * j) 
-              - h * inner( u_n, v) * ds(10 * j)  
-              - radiation * inner( (u_n**4 - Tm**4), v) * ds(10 * j) 
+                    + inner(g[i], v) * ds(10 * j) 
+                    - h * inner( u_n, v) * ds(10 * j)  
+                    - radiation * inner( (u_n**4 - Tm**4), v) * ds(10 * j) 
                    )
       
           problem = NonlinearProblem(F, u, bcs=[bc])
