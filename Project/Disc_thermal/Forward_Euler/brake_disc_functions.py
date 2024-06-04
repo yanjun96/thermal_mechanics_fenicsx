@@ -188,7 +188,7 @@ def find_common_e(bcs, bcs_lists):
     return common_e_list
 
 #########################################################################################################################   5
-def mesh_brake_disc(min_mesh, max_mesh, filename):   
+def mesh_brake_disc(min_mesh, max_mesh, filename, mesh_type):   
     import gmsh
     import sys
     import math
@@ -258,6 +258,10 @@ def mesh_brake_disc(min_mesh, max_mesh, filename):
     rublist = list(range(32,50))
     for rub in rublist:
         gmsh.model.addPhysicalGroup(2, (2, rub), rub-31)
+
+    if mesh_type == 'hexa':
+       gmsh.option.setNumber("Mesh.SubdivisionAlgorithm", 2)
+       
     
     # for the rubbing elements, P13 of UIC 541-3
     # Sinter material, 200 cm2, 18 rubbing elemets, r = 1.88 cm

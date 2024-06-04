@@ -1,4 +1,4 @@
-def main_code_disc_thermal(c, type, angular1, mesh_max1, c_contact1):
+def main_code_disc_thermal(c, type, angular1, mesh_max1, c_contact1, mesh_type):
 
   # type should ""time_step"" , "mesh_size" , "contact_area"
   # angular1,  is degree per time step, 
@@ -149,7 +149,7 @@ def main_code_disc_thermal(c, type, angular1, mesh_max1, c_contact1):
       else:
           # Run this command if the file does not exist
           print(f"The file '{mesh_filename1}' does not exist, start building:")
-          mesh_brake_disc(mesh_min, mesh_max, mesh_filename2)
+          mesh_brake_disc(mesh_min, mesh_max, mesh_filename2, mesh_type)
           domain, cell_markers, facet_markers = gmshio.read_from_msh(
               mesh_filename1, MPI.COMM_WORLD, 0, gdim=3
           )
