@@ -459,29 +459,25 @@ def read_t_T (csv_name):
 
 #####################################################################################################################  14
 
-def find_3_coord(filename):
+def find_3_coord(filename, mesh_type):
     import numpy as np
-    
+
+    if mesh_type == "tetrahedron":
     ## below labels should always add if new mesh has result
-    coord_lib = {'m-1-15.msh': [2201, 1590, 260 ],
-                 'm-3-10.msh': [3157, 7018, 2141],
-                 'm-3-15.msh': [2201, 1590, 260],
-                 'm-3-7.msh':  [12266, 11501, 617],
-                 'm-3-5.msh':  [19098, 34079, 7351],
-                 'm-3-3.msh':  [94411, 114209, 8995],
-                 
+       coord_lib1 = {'m-1-15.msh': [2201, 1590, 260 ],
+                   'm-3-10.msh': [3157, 7018, 2141],
+                   'm-3-15.msh': [2201, 1590, 260],
+                   'm-3-7.msh':  [12266, 11501, 617],
+                   'm-3-5.msh':  [19098, 34079, 7351],
+                   'm-3-3.msh':  [94411, 114209, 8995],   
                                 
                 }
-    
-    if filename in coord_lib:
-        print('Lables already exists, for mesh',filename, "is ", coord_lib[filename])
-        return coord_lib[filename]
-    
-    else:
-        nodes = []
-        nodes_c = []
-        closest_coordinate = []
-        node_tag = []
+       if filename in coord_lib1:
+          print('Lables already exists, for mesh',filename, "is ", coord_lib[filename])
+          return coord_lib[filename]
+           
+       else:
+        nodes, nodes_c, closest_coordinate, node_tag  = []
         reading_nodes = False
         with open(filename, 'r') as f:
                 for line in f:
@@ -520,8 +516,59 @@ def find_3_coord(filename):
              "\n", tuple(round(coord, 2) for coord in closest_coordinate[2]),
              "\nPlease open the xdmf file in paraview, and find the labels for above three nodes and input as",
              "\nT_3_labels = [label1, label2, label3]. \nPlease also add in labels dictionary, functions in brake_disc_functions.py ")
+        
+    elif mesh_type == "hexahedral":
+         coord_lib2 = {        }
 
+         if filename in coord_lib2:
+            print('Lables already exists, for mesh',filename, "is ", coord_lib[filename])
+            return coord_lib[filename]
+         else:
+          nodes = []
+          nodes_c= []
+          closest_coordinate= []
+          node_tag  = []
+        
+          reading_nodes = False
+          with open(filename, 'r') as f:
+                for line in f:
+                    if line.startswith('$Nodes'):
+                        reading_nodes = True             
+                        continue
+                    elif line.startswith('$EndNodes'):
+                        reading_nodes = False             
+                        break
+                    elif reading_nodes:
+                        parts = line.split()         
+                        if len(parts) == 1:  # This line contains only node tag
+                            node_tag.append ( int(parts[0]) )
+                        elif len(parts) == 3:  # This line contains node coordinates
+                            x = float(parts[0])
+                            y = float(parts[1])
+                            z = float(parts[2])
+                            nodes_c.append((x, y, z))
+          for i in range(len(node_tag)):
+                nodes.append( (node_tag[i], nodes_c[i])  )
 
+          A1_fin, A2_fin, A3_fin = got_T_check_location([247.5, 0])
+          Three_points = [A1_fin, A2_fin, A3_fin]
+          for target in  Three_points:
+            A_point = target
+            coordinates = nodes_c
+            distances = [np.sqrt((x - A_point[0])**2 + (y - A_point[1])**2 
+                         + (z - A_point[2])**2) for x, y, z in coordinates]
+            closest_index = np.argmin(distances)
+            closest_coordinate.append(  coordinates[closest_index] )
+
+        # Print the closest coordinate
+          print("Closest coordinate is \n",
+              tuple(round(coord, 2) for coord in closest_coordinate[0]),
+             "\n", tuple(round(coord, 2) for coord in closest_coordinate[1]),
+             "\n", tuple(round(coord, 2) for coord in closest_coordinate[2]),
+             "\nPlease open the xdmf file in paraview, and find the labels for above three nodes and input as",
+             "\nT_3_labels = [label1, label2, label3]. \nPlease also add in labels dictionary, functions in brake_disc_functions.py ") 
+    
+    
 ######################################  15
 def collect_csv_files(directory):
     import os
