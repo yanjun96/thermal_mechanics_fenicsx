@@ -188,7 +188,7 @@ def find_common_e(bcs, bcs_lists):
     return common_e_list
 
 #########################################################################################################################   5
-def mesh_brake_disc(min_mesh, max_mesh, filename):   
+def mesh_brake_disc(min_mesh, max_mesh, filename, mesh_type):   
     import gmsh
     import sys
     import math
@@ -258,6 +258,9 @@ def mesh_brake_disc(min_mesh, max_mesh, filename):
     rublist = list(range(32,50))
     for rub in rublist:
         gmsh.model.addPhysicalGroup(2, (2, rub), rub-31)
+
+    if mesh_type == 'hexa':
+       gmsh.option.setNumber("Mesh.SubdivisionAlgorithm", 2)
     
     # for the rubbing elements, P13 of UIC 541-3
     # Sinter material, 200 cm2, 18 rubbing elemets, r = 1.88 cm
@@ -466,9 +469,8 @@ def find_3_coord(filename):
                  'm-3-5.msh':  [19098, 34079, 7351],
                  'm-3-3.msh':  [94411, 114209, 8995],
                  'm-1-2.msh':  [333431, 308947, 18936],
-                                  
+                 'm-3-20.msh': [1713, 1587, 708] }
                                 
-                }
     
     if filename in coord_lib:
         print('Lables already exists, for mesh',filename, "is ", coord_lib[filename])

@@ -29,13 +29,8 @@ def main_thermal(pa, type, angular1, mesh_max1, c_contact1):
       # Author: yanjun zhang
       # ## Concise
       # ## 1: Start
-      # 
       # Source from book "Abali - 2017 - Computational Reality" P119
-      # 
-      # import dolfinx
-      # print(f"DOLFINx version: {dolfinx.__version__}   \
-      # based on GIT commit:  \
-      # {dolfinx.git_commit_hash} of https://github.com/FEniCS/dolfinx/")
+
       
       # In[1]:     
       
@@ -93,8 +88,7 @@ def main_thermal(pa, type, angular1, mesh_max1, c_contact1):
       mesh_brake_disc,read_msh_nodes,got_T_check_location,
       filter_nodes_by_z,save_t_T,save_t_T,find_3_coord,
       collect_csv_files,collect_csv_files,extract_file_labels,
-      target_facets
-      
+      target_facets      
       )
       
       # calculate how long time the simulation it is
@@ -208,9 +202,10 @@ def main_thermal(pa, type, angular1, mesh_max1, c_contact1):
       
       common_indices3, facet_markers3, sorted_indices3 = target_facets(
           domain, x_co, y_co, S_rub_circle )
-      
+      tag_value1 = np.array(common_indices3[sorted_indices3], dtype = np.int32)
+      tag_value2 = np.array(facet_markers3[sorted_indices3],  dtype = np.int32) 
       facet_tag = meshtags(
-          domain, fdim, common_indices3[sorted_indices3], facet_markers3[sorted_indices3] )
+          domain, fdim, tag_value1, tag_value2 )
        
       ds = Measure("ds", domain=domain, subdomain_data=facet_tag)
       
@@ -327,8 +322,11 @@ def main_thermal(pa, type, angular1, mesh_max1, c_contact1):
           common_indices3, facet_markers3, sorted_indices3 = target_facets(
               domain, x_co, y_co, S_rub_circle )
           
-          facet_tag = meshtags(
-              domain, fdim, common_indices3[sorted_indices3], facet_markers3[sorted_indices3]  )
+          tag_value1 = np.array(common_indices3[sorted_indices3], dtype = np.int32)
+          tag_value2 = np.array(facet_markers3[sorted_indices3],  dtype = np.int32) 
+          facet_tag = meshtags( domain, fdim, tag_value1, tag_value2 )
+          #facet_tag = meshtags(
+              #domain, fdim, common_indices3[sorted_indices3], facet_markers3[sorted_indices3]  )
           
           ds = Measure("ds", domain=domain, subdomain_data=facet_tag)
       
