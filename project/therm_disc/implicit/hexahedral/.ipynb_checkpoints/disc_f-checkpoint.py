@@ -50,7 +50,7 @@ def vehicle_initial(angular_r, v_vehicle, c_contact, c_acc):
         P = []
         for i in range(num_steps):
             if i <= n_lag:
-                P.append( P_initial/ n_lag * i )
+                P.append( P_initial/ n_lag * (i**(1/3)) )
             else:
                 P.append( P_initial) 
                 

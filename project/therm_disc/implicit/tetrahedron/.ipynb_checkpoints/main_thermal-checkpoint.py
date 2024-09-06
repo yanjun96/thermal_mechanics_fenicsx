@@ -143,7 +143,7 @@ def main_thermal(pa, type, angular1, mesh_max1, c_contact1):
       else:
           # Run this command if the file does not exist
           print(f"The file '{mesh_filename1}' does not exist, start building:")
-          mesh_brake_disc(mesh_min, mesh_max, mesh_filename2)
+          mesh_brake_disc(mesh_min, mesh_max, mesh_filename2, 'tetra')
           domain, cell_markers, facet_markers = gmshio.read_from_msh(
               mesh_filename1, MPI.COMM_WORLD, 0, gdim=3
           )
