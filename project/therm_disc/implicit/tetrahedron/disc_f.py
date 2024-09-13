@@ -469,6 +469,7 @@ def find_3_coord(filename):
                  'm-3-5.msh':  [19098, 34079, 7351],
                  'm-3-3.msh':  [94411, 114209, 8995],
                  'm-1-2.msh':  [333431, 308947, 18936],
+                 'm-3-2.msh':  [333431, 308947, 18936],
                  'm-3-20.msh': [1713, 1587, 708] }
                                 
     
@@ -520,7 +521,25 @@ def find_3_coord(filename):
              "\nPlease open the xdmf file in paraview, and find the labels for above three nodes and input as",
              "\nT_3_labels = [label1, label2, label3]. \nPlease also add in labels dictionary, functions in disc_f.py ")
 
-
+#######################################
+def find_3_coord_hexa(filename):
+    import numpy as np
+    
+    ## below labels should always add if new mesh has result
+    ## ONLY for hexahedral
+    #coord_lib = {'m-3-5.msh':  [19098, 34079, 7351],
+               #  'm-3-10.msh': [3157, 7018, 2141],
+               #  'm-3-15.msh': [2201, 1590, 260], 
+               #  'm-3-20.msh': [1713, 1587, 708] }
+    
+    coord_lib = {'m-3-10.msh': [53970, 122401, 36114],
+                 'm-3-20.msh': [17818, 1136, 15718] }    
+                                
+    
+    if filename in coord_lib:
+        print('Lables already exists, for mesh',filename, "is ", coord_lib[filename])
+        return coord_lib[filename]
+    
 ######################################  15
 def collect_csv_files(directory):
     import os
