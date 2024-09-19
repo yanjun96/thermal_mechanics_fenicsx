@@ -1,7 +1,12 @@
-Author: yanjun zhang, PhD student in mechanical engineering
-Date: 2024-09-19
+Author: Yanjun Zhang, PhD Student in Mechanical Engineering
+Date: September 19, 2024
 Location: KTH Royal Institute of Technology, Stockholm, Sweden
 
-The aim of this reoisitory is to calculate the temperature of railway brake discs. The model is based on finite element method, which solve heat and elastic equations to get temperature and deformation.
+Overview
+This repository is designed to model and calculate the temperature of railway brake discs using the Finite Element Method (FEM). The model incorporates heat transfer and elasticity equations to predict both temperature distribution and deformation in the brake disc during operation.
 
-Thanks to the FEniCSx developers for providing this power tool.
+Methodology
+The solution is based on the FEniCSx framework, which enables the efficient computation of coupled thermal and mechanical problems using FEM. This tool provides a powerful platform for solving complex partial differential equations, making it ideal for simulating the thermal and structural response of railway brake discs under operational loads.
+
+Acknowledgements
+Special thanks to the developers of FEniCSx for creating this invaluable tool that enables cutting-edge research in computational mechanics.
