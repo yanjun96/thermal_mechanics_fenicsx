@@ -921,13 +921,6 @@
           <DataItem Dimensions="225961 1" Format="HDF">T-s-305-d-448-m-3-3-c-1-e-1184080.h5:/Function/f/11_864926115560928</DataItem>
         </Attribute>
       </Grid>
-      <Grid Name="f" GridType="Uniform">
-        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
-        <Time Value="11.971710443590201" />
-        <Attribute Name="f" AttributeType="Scalar" Center="Node">
-          <DataItem Dimensions="225961 1" Format="HDF">T-s-305-d-448-m-3-3-c-1-e-1184080.h5:/Function/f/11_971710443590201</DataItem>
-        </Attribute>
-      </Grid>
     </Grid>
   </Domain>
 </Xdmf>
