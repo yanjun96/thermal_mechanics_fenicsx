@@ -6,7 +6,63 @@
 # Institute:   KTH Royal Institute of TEchnology
 # Github:      https://github.com/Yanjun96/FEniCSx.git
 
+import dolfinx
+print(f"DOLFINx version: {dolfinx.__version__}")
 
+# import basic
+import pyvista
+import ufl
+import dolfinx
+import time
+import sys
+import os
+import shutil
+import numpy as np
+import matplotlib.pyplot as plt
+
+# import speciail library
+from dolfinx.fem.petsc import (
+    LinearProblem,
+    assemble_vector,
+    assemble_matrix,
+    create_vector,
+    apply_lifting,
+    set_bc,
+)
+from dolfinx import fem, mesh, io, plot, default_scalar_type, nls, log
+from dolfinx.fem import (
+    Constant,
+    dirichletbc,
+    Function,
+    FunctionSpace,
+    form,
+    locate_dofs_topological,
+)
+from dolfinx.io import XDMFFile, gmshio
+from dolfinx.mesh import locate_entities, locate_entities_boundary, meshtags
+from ufl import (
+    SpatialCoordinate,
+    TestFunction,
+    TrialFunction,
+    dx,
+    grad,
+    inner,
+    Measure,
+    dot,
+    FacetNormal,
+)
+from dolfinx.fem.petsc import NonlinearProblem
+from dolfinx.nls.petsc import NewtonSolver
+from petsc4py import PETSc
+from mpi4py import MPI
+
+from disc_f import *
+
+print("Simulation environment setup complete.")
+
+# Call this function when needed
+
+######################################################################################
 def vehicle_initial(angular_r, v_vehicle, c_contact, c_acc):
     import numpy as np
     v_ini = v_vehicle/3.6   /   (920/2/1000) 
@@ -697,3 +753,118 @@ def get_time_step_from_angular(angular2,mesh_max2,c_contact2):
       print("1: Total tims is ", round(sum(dt), 2), "s")
       print("2: Total numb steps is ", num_steps)
       return (num_steps)
+
+###################################################
+def mesh_brake_all(mesh_min, mesh_max):
+  import os
+  from dolfinx.io import XDMFFile, gmshio
+  from mpi4py import MPI  
+  mesh_name = f"{mesh_min}-{mesh_max}"
+  mesh_filename1 = "m-{}.msh".format(mesh_name)
+  mesh_filename2 = "m-{}".format(mesh_name)
+
+  if os.path.exists(mesh_filename1):
+    # Run this command if the file exists
+    print(f"The file '{mesh_filename1}' exists, start creat now:")
+    domain, cell_markers, facet_markers = gmshio.read_from_msh(
+        mesh_filename1, MPI.COMM_WORLD, 0, gdim=3 )
+  else:
+    # Run this command if the file does not exist
+    print(f"The file '{mesh_filename1}' does not exist, start building:")
+    mesh_brake_disc(mesh_min, mesh_max, mesh_filename2, 'tetra')
+    domain, cell_markers, facet_markers = gmshio.read_from_msh(
+        mesh_filename1, MPI.COMM_WORLD, 0, gdim=3 )
+
+  return domain, cell_markers, facet_markers, mesh_name, mesh_filename1, mesh_filename2
+
+###################################################
+def mesh_brake_pad1(mesh_min, mesh_max ):  #pad1 is next step for mesh_pad
+   import os
+   from dolfinx.io import XDMFFile, gmshio
+   from mpi4py import MPI  
+   mesh_name = f"{mesh_min}-{mesh_max}-2"
+   mesh_filename1 = "m-{}.msh".format(mesh_name)
+   mesh_filename2 = "m-{}".format(mesh_name)
+
+   if os.path.exists(mesh_filename1): # Run this command if the file exists   
+      print(f"The file '{mesh_filename1}' exists, start creat now:")
+      domain, cell_markers, facet_markers = gmshio.read_from_msh( mesh_filename1, MPI.COMM_WORLD, 0, gdim=3 )
+      
+   else:  # Run this command if the file does not exist  
+      print(f"The file '{mesh_filename1}' does not exist, start building:")
+      mesh_brake_pad(mesh_min, mesh_max, mesh_filename2, 'tetra')          
+      domain, cell_markers, facet_markers = gmshio.read_from_msh( mesh_filename1, MPI.COMM_WORLD, 0, gdim=3 )
+
+   return domain, cell_markers, facet_markers, mesh_name, mesh_filename1, mesh_filename2
+
+###################################################
+def project(function, space):
+    from ufl import TestFunction, TrialFunction, dx, inner
+    from dolfinx.fem.petsc import  LinearProblem
+    
+    u = TrialFunction(space)
+    v = TestFunction(space)
+    a = inner(u, v) * dx
+    L = inner(function, v) * dx
+    problem = LinearProblem(a, L, bcs=[])
+    return problem.solve()
+
+###################################################
+def solver_setup_solve(problem,u):
+  from mpi4py import MPI
+  from dolfinx.fem.petsc import NonlinearProblem
+  from dolfinx.nls.petsc import NewtonSolver
+  from petsc4py import PETSc
+  from dolfinx import log
+    
+  ## 7: Using petsc4py to create a linear solver
+  solver = NewtonSolver(MPI.COMM_WORLD, problem)
+  solver.convergence_criterion = "incremental"
+  solver.rtol = 1e-6
+  solver.report = True  # this make solver report show in a small window
+
+  ksp = solver.krylov_solver
+  opts = PETSc.Options()
+  option_prefix = ksp.getOptionsPrefix()
+  opts[f"{option_prefix}ksp_type"] = "cg"
+  opts[f"{option_prefix}pc_type"] = "gamg"
+  opts[f"{option_prefix}pc_factor_mat_solver_type"] = "mumps"
+  ksp.setFromOptions()
+
+  log.set_log_level(log.LogLevel.INFO)
+  
+  return solver.solve(u)
+
+#######################################################
+def plot_gif(V,u,gif_name):
+   import matplotlib as mpl
+   import pyvista
+   from dolfinx import plot
+    
+   pyvista.start_xvfb()
+   grid = pyvista.UnstructuredGrid(*plot.vtk_mesh(V))
+   plotter = pyvista.Plotter()
+   plotter.open_gif(gif_name, fps=30)
+   grid.point_data["Temperature"] = u.x.array
+   warped = grid.warp_by_scalar("Temperature", factor=0)
+   viridis = mpl.colormaps.get_cmap("viridis").resampled(25)
+   sargs = dict(
+    title_font_size=25,
+    label_font_size=20,
+    color="black",
+    position_x=0.1,
+    position_y=0.8,
+    width=0.8,
+    height=0.1,
+   )
+   renderer = plotter.add_mesh( warped,
+    show_edges=True,
+    lighting=False,
+    cmap=viridis,
+    scalar_bar_args=sargs,
+    # clim=[0, max(uh.x.array)])
+    clim=[0, 200], )
+   return(plotter, sargs, renderer, warped, viridis, grid )
+
+#######################################################
+
