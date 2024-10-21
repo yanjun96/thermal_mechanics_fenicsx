@@ -19,6 +19,7 @@ import os
 import shutil
 import numpy as np
 import matplotlib.pyplot as plt
+import meshio
 
 # import speciail library
 from dolfinx.fem.petsc import (
@@ -58,9 +59,13 @@ from mpi4py import MPI
 
 from disc_f import *
 
-print("Simulation environment setup complete.")
+start_time = time.time()
+t = 0 #xdmf.write_function(uh, t)
+from dolfinx import log
 
-# Call this function when needed
+log.set_log_level(log.LogLevel.ERROR)  # Disable INFO and lower logs
+
+print("Simulation environment setup complete.")
 
 ######################################################################################
 def vehicle_initial(angular_r, v_vehicle, c_contact, c_acc):
@@ -225,11 +230,9 @@ def get_rub_coordinate():
 #####################################################################################################################  4
 def find_common_e(bcs, bcs_lists):
     # Create set for bcs
-    
     set_bcs = set(tuple(bcs))
         # Initialize the union set with the set of bcs
     union = set()
-    
     # Iterate through the list of lists
     for bc in bcs_lists:
         # Convert current list to set
@@ -245,7 +248,7 @@ def find_common_e(bcs, bcs_lists):
     return common_e_list
 
 #########################################################################################################################   5
-def mesh_brake_disc(min_mesh, max_mesh, filename, mesh_type):   
+def mesh_brake_disc(min_mesh, max_mesh, filename, mesh_type,pad_v_tag):   
     import gmsh
     import sys
     import math
@@ -303,16 +306,18 @@ def mesh_brake_disc(min_mesh, max_mesh, filename, mesh_type):
     # https://gitlab.onelab.info/gmsh/gmsh/blob/master/tutorials/python/t1.py#L115
     
     # Volumes: 31,32 brake disc and pad.
+    disc_v_tag = 31  #volume tag
+    #pad_v_tag  = 32  #volume tag
     volumes = gmsh.model.occ.getEntities(dim = 3)
-    gmsh.model.addPhysicalGroup(3, volumes[0],  31)
-    gmsh.model.addPhysicalGroup(3, volumes[1],  32)
+    gmsh.model.addPhysicalGroup(3, volumes[0],  disc_v_tag)
+    gmsh.model.addPhysicalGroup(3, volumes[1],  pad_v_tag)
     
     # Surfaces: brake disc, 21 = friction surface
     surfaces = gmsh.model.occ.getEntities(dim = 2)
     gmsh.model.addPhysicalGroup(2, (2,6), 21)
     
     # Rubbing elements, from 1 to 19, here 32 is the origin name tag of rub surface(32-49)
-    rublist = list(range(32,50))
+    rublist = list(range(pad_v_tag,pad_v_tag+18))
     for rub in rublist:
         gmsh.model.addPhysicalGroup(2, (2, rub), rub-31)
 
@@ -446,7 +451,8 @@ def target_facets(domain,x_co,y_co,S_rub_circle):
     facet_markers1 = np.concatenate(D)
 
     ####################################   7
-    boundary20 = (200, lambda x:  x[2] == 20)
+    b_con = 200
+    boundary20 = (b_con, lambda x:  x[2] == 20)
     facet_indices2, facet_markers2 = [], [] 
     fdim = 2  
     for (marker, locator) in [boundary20]:
@@ -755,47 +761,47 @@ def get_time_step_from_angular(angular2,mesh_max2,c_contact2):
       return (num_steps)
 
 ###################################################
-def mesh_brake_all(mesh_min, mesh_max):
+def mesh_brake_all(mesh_min, mesh_max,pad_v_tag):
   import os
   from dolfinx.io import XDMFFile, gmshio
   from mpi4py import MPI  
   mesh_name = f"{mesh_min}-{mesh_max}"
-  mesh_filename1 = "m-{}.msh".format(mesh_name)
-  mesh_filename2 = "m-{}".format(mesh_name)
+  mesh_name1 = "m-{}.msh".format(mesh_name)
+  mesh_name2 = "m-{}".format(mesh_name)
 
-  if os.path.exists(mesh_filename1):
+  if os.path.exists(mesh_name1):
     # Run this command if the file exists
-    print(f"The file '{mesh_filename1}' exists, start creat now:")
+    print(f"The file '{mesh_name1}' exists, start creat now:")
     domain, cell_markers, facet_markers = gmshio.read_from_msh(
-        mesh_filename1, MPI.COMM_WORLD, 0, gdim=3 )
+        mesh_name1, MPI.COMM_WORLD, 0, gdim=3 )
   else:
     # Run this command if the file does not exist
-    print(f"The file '{mesh_filename1}' does not exist, start building:")
-    mesh_brake_disc(mesh_min, mesh_max, mesh_filename2, 'tetra')
+    print(f"The file '{mesh_name1}' does not exist, start building:")
+    mesh_brake_disc(mesh_min, mesh_max, mesh_name2, 'tetra',pad_v_tag)
     domain, cell_markers, facet_markers = gmshio.read_from_msh(
-        mesh_filename1, MPI.COMM_WORLD, 0, gdim=3 )
+        mesh_name1, MPI.COMM_WORLD, 0, gdim=3 )
 
-  return domain, cell_markers, facet_markers, mesh_name, mesh_filename1, mesh_filename2
+  return domain, cell_markers, facet_markers, mesh_name, mesh_name1, mesh_name2
 
 ###################################################
-def mesh_brake_pad1(mesh_min, mesh_max ):  #pad1 is next step for mesh_pad
+def mesh_brake_pad1(mesh_min, mesh_max):  #pad1 is next step for mesh_pad
    import os
    from dolfinx.io import XDMFFile, gmshio
    from mpi4py import MPI  
    mesh_name = f"{mesh_min}-{mesh_max}-2"
-   mesh_filename1 = "m-{}.msh".format(mesh_name)
-   mesh_filename2 = "m-{}".format(mesh_name)
+   mesh_name1 = "m-{}.msh".format(mesh_name)
+   mesh_name2 = "m-{}".format(mesh_name)
 
-   if os.path.exists(mesh_filename1): # Run this command if the file exists   
-      print(f"The file '{mesh_filename1}' exists, start creat now:")
-      domain, cell_markers, facet_markers = gmshio.read_from_msh( mesh_filename1, MPI.COMM_WORLD, 0, gdim=3 )
+   if os.path.exists(mesh_name1): # Run this command if the file exists   
+      print(f"The file '{mesh_name1}' exists, start creat now:")
+      domain, cell_markers, facet_markers = gmshio.read_from_msh( mesh_name1, MPI.COMM_WORLD, 0, gdim=3 )
       
    else:  # Run this command if the file does not exist  
-      print(f"The file '{mesh_filename1}' does not exist, start building:")
-      mesh_brake_pad(mesh_min, mesh_max, mesh_filename2, 'tetra')          
-      domain, cell_markers, facet_markers = gmshio.read_from_msh( mesh_filename1, MPI.COMM_WORLD, 0, gdim=3 )
+      print(f"The file '{mesh_name1}' does not exist, start building:")
+      mesh_brake_pad(mesh_min, mesh_max, mesh_name2, 'tetra')          
+      domain, cell_markers, facet_markers = gmshio.read_from_msh( mesh_name1, MPI.COMM_WORLD, 0, gdim=3 )
 
-   return domain, cell_markers, facet_markers, mesh_name, mesh_filename1, mesh_filename2
+   return domain, cell_markers, facet_markers, mesh_name, mesh_name1, mesh_name2
 
 ###################################################
 def project(function, space):
@@ -867,4 +873,234 @@ def plot_gif(V,u,gif_name):
    return(plotter, sargs, renderer, warped, viridis, grid )
 
 #######################################################
+def initial_u_n(domain,Ti):
+   from dolfinx import fem, default_scalar_type
+   from dolfinx.fem import Function
+   from disc_f import project
+   import numpy as np
+    # give the initial Temperature value to u_n
+   V = fem.functionspace(domain, ("CG", 1)) # Define variational problem, CG is Lagrabge
+   Q = fem.functionspace(domain, ("DG", 0)) # projected form Q onto V, DG is discontinuous        Lagrange. 
+   T_init = Function(Q)  # T_init is a function, or a class
+   T_init.x.array[:] = np.full_like(1, Ti, dtype=default_scalar_type)
+   u_n = project(T_init, V)  # u_n is for initial condition and uh is the solver result.
+   u_n.name = "u_n"
 
+   return (V, T_init, u_n)
+
+#######################################################
+def mesh_setup(domain, V,mesh_name1,num_steps, angular_r, mesh_name2, c_contact,z_all, Tm, S_rub_circle):
+    
+    fdim = domain.topology.dim - 1
+    ## bc_disc is zero, no any dirichlete boundary condition, z = 100, not exist
+    bc_disc = mesh.locate_entities_boundary(domain, fdim, lambda x: np.isclose(x[2], z_all*2)) 
+    bc = fem.dirichletbc( PETSc.ScalarType(Tm), \
+                         fem.locate_dofs_topological(V, fdim, bc_disc), V)
+
+    mesh_brake = meshio.read(mesh_name1)
+
+    all_e = sum(len(cells.data) for cells in mesh_brake.cells)  # all_e is the total elements
+    xdmf_name = "T-s-{}-d-{}-{}-c-{}-e-{}.xdmf".format( num_steps, angular_r, mesh_name2, c_contact, all_e)
+    h5_name   = "T-s-{}-d-{}-{}-c-{}-e-{}.h5".format  ( num_steps, angular_r, mesh_name2, c_contact, all_e )
+    xdmf = io.XDMFFile(domain.comm, xdmf_name, "w")
+    xdmf.write_mesh(domain)
+
+    x_co, y_co = get_rub_coordinate() # Create boundary condition
+    co_ind, fa_mark, so_ind = target_facets (domain, x_co, y_co, S_rub_circle )
+    facet_tag = meshtags (domain, fdim, co_ind[so_ind], fa_mark[so_ind] )
+    ds = Measure("ds", domain=domain, subdomain_data=facet_tag)
+    b_con = 200;
+
+    return(fdim, bc, mesh_brake, all_e, xdmf, x_co,y_co, ds, b_con)
+    
+#######################################################
+
+def variation_initial(V, T_init,domain, rho, c, b_con, radiation, h, k, xdmf,dt,ds,u_n, Tm,g,bc):
+  
+    uh = fem.Function(V)
+    uh.name = "uh"
+    uh = project(T_init, V)  ##give temperature to all elements
+    xdmf.write_function(uh, t)
+
+    # u = trial function, solution what we want to know
+    u = fem.Function(V)
+    v = ufl.TestFunction(V)
+    f = fem.Constant(domain, PETSc.ScalarType(0))  ## heat source is 0
+    n_vector = FacetNormal(domain)
+
+    F = ( (rho * c) / dt[0] * inner(u, v) * dx
+        + k * inner(grad(u), grad(v)) * dx
+        + h * inner(u, v) * ds(b_con)  #b_con is name of contact surfaace, 
+        + radiation * inner(u**4, v) * ds(b_con)
+        - ( inner(f, v) * dx
+           + (rho * c) / dt[0] * inner(u_n, v) * dx
+           + h * Tm * v * ds(b_con)
+           + radiation * (Tm**4) * v * ds(b_con) ) )
+
+    for i in list(range(1, 19)):  # before 2024/5/16
+        F += (+ inner(g[0], v) * ds(10 * i) 
+              - h * inner( u, v) * ds(10 * i)  
+              - radiation * inner( (u**4 - Tm**4), v) * ds(10 * i) )
+
+    problem = NonlinearProblem(F, u, bcs=[bc])
+    return (problem, u,v,f,n_vector)
+     
+#######################################################
+def solve_heat(Ti, u, num_steps, dt, x_co, y_co, angular_r, \
+               t_brake, domain,S_rub_circle,fdim,\
+               rho, c, v, radiation, k, h, f,Tm,u_n,g,\
+               ds, xdmf, b_con,bc,plotter,warped ):
+    
+    T_array = [(0, [Ti for _ in range(len(u.x.array))])]
+    total_degree = 0
+    t = 0
+    for i in range(num_steps):
+        t += dt[i]
+
+        x_co, y_co = rub_rotation(x_co, y_co, angular_r)  # update the location
+        total_degree += angular_r  # Incrementing degree by 10 in each step
+
+        sys.stdout.write("\r1: Rotation has applied for {} degree. ".format(total_degree))
+        sys.stdout.write("2: Current time is " + str(round(t, 1)) + " s. ")
+        sys.stdout.write("3: Completion is " + str(round(100 * (t / t_brake), 1)) + " %. ")
+        sys.stdout.flush()
+
+        co_ind, fa_mar, so_ind = target_facets(domain, x_co, y_co, S_rub_circle )
+        facet_tag = meshtags( domain, fdim, co_ind[so_ind], fa_mar[so_ind] )
+        ds = Measure("ds", domain=domain, subdomain_data=facet_tag)
+
+        F = ((rho * c) / dt[i] * inner(u, v) * dx
+            + k * inner(grad(u), grad(v)) * dx
+            + h * inner(u, v) * ds(b_con)
+            + radiation * inner(u**4, v) * ds(b_con)
+            - ( inner(f, v) * dx
+                + (rho * c) / dt[i] * inner(u_n, v) * dx
+                + h * Tm * v * ds(b_con)
+                + radiation * (Tm**4) * v * ds(b_con)) )
+
+        for j in list(range(1, 19)):
+            #F += -k * dot(grad(u) * v, n_vector) * ds(10 * j) - inner(g[i], v) * ds(10 * j)
+            F += ( - inner(g[i], v) * ds(10 * j) 
+                   - h * inner( u, v) * ds(10 * j)  
+                   - radiation * inner( (u**4 - Tm**4), v) * ds(10 * j) )    
+
+        problem = NonlinearProblem(F, u, bcs=[bc])
+
+        ## 7: Using petsc4py to create a linear solver
+        solver_setup_solve(problem,u)
+        u.x.scatter_forward()
+
+        sys.stdout.write("1: Completion is " + str(round(100 * (t / t_brake), 1)) + " %. ")
+        sys.stdout.flush()     
+
+        # Update solution at previous time step (u_n)
+        u_n.x.array[:] = u.x.array
+        T_array.append((t, u.x.array.copy()))
+        # Write solution to file
+        xdmf.write_function(u, t)
+        # Update plot
+        #warped = grid.warp_by_scalar("uh", factor=0)
+        plotter.update_coordinates(warped.points.copy(), render=False)
+        plotter.update_scalars(u.x.array, render=False)
+        plotter.write_frame()
+
+    plotter.close()
+    xdmf.close()
+    print()
+    return(T_array)
+
+#######################################################
+def find_pad_cell_index(mesh_filename):
+    import meshio
+    mesh = meshio.read(mesh_filename)  #read mesh
+    min_nodes = float('inf')           # large len of initial nodes
+    min_index = 0                      # initial index
+    for i,cell_block in enumerate(mesh.cells):  # mesh.cells is a list
+        if cell_block.type == "tetra":      #.type can show type
+            num_cells = len(cell_block.data)
+            if num_cells < min_nodes:
+                min_nodes = num_cells
+                min_index = i
+    return min_index
+
+#######################################################
+
+def T_pad_transfer(mesh_name1,u_n,mesh_min,mesh_max,mesh_brake,pad_v_tag):
+    # compare the length of mesh and T
+    mesh_points= meshio.read(mesh_name1).points 
+    function_values = u_n.x.array  
+    print('Length of mesh points is ', len(mesh_points))
+    print("Length of result T is ",    len(function_values))
+
+    # want to get the brake pad T
+    pad_index = find_pad_cell_index(mesh_name1)
+    physical_tags = mesh_brake.cell_data["gmsh:physical"][pad_index]  #cell_data is a dic
+    pad_cell_mask = (physical_tags == pad_v_tag)
+    pad_cells = mesh_brake.cells[pad_index].data[pad_cell_mask]
+    # Get the unique node indices corresponding to the brake pad
+    pad_node_indices = np.unique(pad_cells.flatten())
+    pad_node_coordinates = mesh_brake.points[pad_node_indices]
+    print('Brake pad nodes number is ',len(pad_node_coordinates))
+
+    ##########################################################
+    domain_pad, cell_mark_pad, facet_mark_pad,mesh_name_pad,\
+    mesh_name1_pad, mesh_name2_pad = mesh_brake_pad1 (mesh_min,mesh_max)
+    #########################################################
+    from scipy.spatial import cKDTree
+    # Step 1: Read the mesh using meshio
+    mesh_brake_pad = meshio.read(mesh_name1_pad)
+    mesh_points_pad = mesh_brake_pad.points  # This is a NumPy array of shape (n_points, dim)
+
+    tree = cKDTree(pad_node_coordinates) #node_coordinates are from calculation
+    distances, indices = tree.query(mesh_points_pad)
+    T_new_p = np.zeros(len(mesh_points_pad))  # Array to hold temperatures for mesh_points_pad
+    for i, index in enumerate(indices):
+        T_new_p[i] = u_n.x.array[index]  # Assign temperature from u_n based on nearest index
+
+    print('length from new mesh is:\n',len(mesh_points_pad))
+    print('length from calculation is:\n',len(pad_node_coordinates))
+    #print("Temperatures assigned to mesh_points_pad:\n", T_new_p)
+    print("Temperatures assigned to new mesh length is:\n",len(T_new_p))
+
+    return(T_new_p,domain_pad)
+ 
+#######################################################
+def plot_T_pad(domain_pad, T_new_p):
+    gdim,fdim = 3,2
+    pyvista.start_xvfb()
+    topology, cell_types, geometry = plot.vtk_mesh(domain_pad, gdim)
+    grid = pyvista.UnstructuredGrid(topology, cell_types, geometry)
+    grid.point_data["Temperature/ °C"] = T_new_p
+    grid.set_active_scalars("Temperature/ °C")
+    plotter = pyvista.Plotter()
+
+    sargs = dict(title_font_size=25, label_font_size=20,  color="black",
+             position_x=0.1, position_y=0.85, width=0.8, height=0.1)
+    plotter.add_mesh(grid, show_edges=True,scalar_bar_args=sargs,clim=[50, max(T_new_p)])
+
+    plotter.camera.azimuth = -5
+    plotter.camera.elevation = 180  
+    plotter.window_size = (800, 400)
+    plotter.zoom_camera(1.5)
+    return plotter
+
+#######################################################
+def plot_S_pad(Vu,u_d ):
+    u_topology, u_cell_types, u_geometry = plot.vtk_mesh(Vu)        # get mesh data
+    u_grid = pyvista.UnstructuredGrid(u_topology, u_cell_types, u_geometry) # plot grid
+    u_3D = np.zeros((u_geometry.shape[0], 3))
+    u_3D[:, :3] = u_d.x.array.reshape(-1, 3)
+    u_grid.point_data["Displacement/ mm"] = u_3D
+
+    u_grid.set_active_vectors("Displacement/ mm")
+    warped = u_grid.warp_by_vector("Displacement/ mm", factor=1)
+    plotter = pyvista.Plotter()
+    plotter.window_size = (800, 400)
+    sargs = dict(title_font_size=25, label_font_size=20,  color="black",
+             position_x=0.1, position_y=0.85, width=0.8, height=0.1)
+
+    plotter.add_mesh(warped, scalar_bar_args=sargs)
+    plotter.camera.azimuth = -5
+    plotter.camera.elevation = 180  
+    plotter.zoom_camera(1.5) 
+    return plotter
