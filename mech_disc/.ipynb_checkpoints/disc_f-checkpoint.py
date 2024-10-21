@@ -307,7 +307,7 @@ def mesh_brake_disc(min_mesh, max_mesh, filename, mesh_type,pad_v_tag):
     
     # Volumes: 31,32 brake disc and pad.
     disc_v_tag = 31  #volume tag
-    #pad_v_tag  = 32  #volume tag
+    pad_v_tag  = 32  #volume tag
     volumes = gmsh.model.occ.getEntities(dim = 3)
     gmsh.model.addPhysicalGroup(3, volumes[0],  disc_v_tag)
     gmsh.model.addPhysicalGroup(3, volumes[1],  pad_v_tag)
