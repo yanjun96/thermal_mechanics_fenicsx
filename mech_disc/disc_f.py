@@ -785,10 +785,10 @@ def mesh_brake_all(mesh_min, mesh_max,pad_v_tag):
 
 ###################################################
 def mesh_brake_pad1(mesh_min, mesh_max):  #pad1 is next step for mesh_pad
-   import os
-   from dolfinx.io import XDMFFile, gmshio
-   from mpi4py import MPI  
-   mesh_name = f"{mesh_min}-{mesh_max}-2"
+   #import os
+   #from dolfinx.io import XDMFFile, gmshio
+   #from mpi4py import MPI  
+   mesh_name = f"{mesh_min}-{mesh_max}_pad"
    mesh_name1 = "m-{}.msh".format(mesh_name)
    mesh_name2 = "m-{}".format(mesh_name)
 
@@ -837,7 +837,7 @@ def solver_setup_solve(problem,u):
   opts[f"{option_prefix}pc_factor_mat_solver_type"] = "mumps"
   ksp.setFromOptions()
 
-  log.set_log_level(log.LogLevel.INFO)
+  log.set_log_level(log.LogLevel.ERROR)
   
   return solver.solve(u)
 
@@ -854,6 +854,7 @@ def plot_gif(V,u,gif_name):
    grid.point_data["Temperature"] = u.x.array
    warped = grid.warp_by_scalar("Temperature", factor=0)
    viridis = mpl.colormaps.get_cmap("viridis").resampled(25)
+    
    sargs = dict(
     title_font_size=25,
     label_font_size=20,
@@ -861,8 +862,8 @@ def plot_gif(V,u,gif_name):
     position_x=0.1,
     position_y=0.8,
     width=0.8,
-    height=0.1,
-   )
+    height=0.1, )
+    
    renderer = plotter.add_mesh( warped,
     show_edges=True,
     lighting=False,
@@ -959,10 +960,21 @@ def solve_heat(Ti, u, num_steps, dt, x_co, y_co, angular_r, \
 
         x_co, y_co = rub_rotation(x_co, y_co, angular_r)  # update the location
         total_degree += angular_r  # Incrementing degree by 10 in each step
+        # Construct the message
+        
 
-        sys.stdout.write("\r1: Rotation has applied for {} degree. ".format(total_degree))
-        sys.stdout.write("2: Current time is " + str(round(t, 1)) + " s. ")
-        sys.stdout.write("3: Completion is " + str(round(100 * (t / t_brake), 1)) + " %. ")
+        end_time = time.time()
+        elapsed_time = end_time - start_time
+        elapsed_time1 = round(elapsed_time, 0)
+        formatted_start_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(start_time))
+        if elapsed_time1 >= 60:
+           min = elapsed_time1 / 60
+           hours = min / 60
+           progress_message = f"1: Progress: {round(100 * (t / t_brake), 1)}%. Use time: {round(hours)} hours {round(min)} min. Start: {formatted_start_time }."
+        else:
+           progress_message = f"1: Progress: {round(100 * (t / t_brake), 1)}%. Use time: {round(elapsed_time1)} s. Start: {formatted_start_time }."
+    
+        sys.stdout.write(f"\r{progress_message.ljust(80)}")  # 80 spaces to ensure full clearing
         sys.stdout.flush()
 
         co_ind, fa_mar, so_ind = target_facets(domain, x_co, y_co, S_rub_circle )
@@ -989,9 +1001,7 @@ def solve_heat(Ti, u, num_steps, dt, x_co, y_co, angular_r, \
         ## 7: Using petsc4py to create a linear solver
         solver_setup_solve(problem,u)
         u.x.scatter_forward()
-
-        sys.stdout.write("1: Completion is " + str(round(100 * (t / t_brake), 1)) + " %. ")
-        sys.stdout.flush()     
+  
 
         # Update solution at previous time step (u_n)
         u_n.x.array[:] = u.x.array
@@ -1025,7 +1035,7 @@ def find_pad_cell_index(mesh_filename):
 
 #######################################################
 
-def T_pad_transfer(mesh_name1,u_n,mesh_min,mesh_max,mesh_brake,pad_v_tag):
+def T_pad_transfer(mesh_name1, u_n, mesh_min, mesh_max, mesh_brake, pad_v_tag):
     # compare the length of mesh and T
     mesh_points= meshio.read(mesh_name1).points 
     function_values = u_n.x.array  
