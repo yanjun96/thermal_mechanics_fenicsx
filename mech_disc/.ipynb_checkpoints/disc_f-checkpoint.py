@@ -255,7 +255,10 @@ def mesh_brake_disc(min_mesh, max_mesh, filename, mesh_type,pad_v_tag):
     import os
     import numpy as np
     
+    
     gmsh.initialize()
+    
+
     
     # all the unit is mm
     # z1, z2, z3 is the height of brake disc, rubbing elemetn, pad lining in Z direction
@@ -349,6 +352,7 @@ def mesh_brake_pad(min_mesh, max_mesh, filename, mesh_type):
     import numpy as np
     
     gmsh.initialize()
+    
     
     # all the unit is mm
     # z1, z2, z3 is the height of brake disc, rubbing elemetn, pad lining in Z direction
@@ -762,26 +766,26 @@ def get_time_step_from_angular(angular2,mesh_max2,c_contact2):
 
 ###################################################
 def mesh_brake_all(mesh_min, mesh_max,pad_v_tag):
-  import os
-  from dolfinx.io import XDMFFile, gmshio
-  from mpi4py import MPI  
-  mesh_name = f"{mesh_min}-{mesh_max}"
-  mesh_name1 = "m-{}.msh".format(mesh_name)
-  mesh_name2 = "m-{}".format(mesh_name)
+   import os
+   from dolfinx.io import XDMFFile, gmshio
+   from mpi4py import MPI  
+   mesh_name = f"{mesh_min}-{mesh_max}"
+   mesh_name1 = "m-{}.msh".format(mesh_name)
+   mesh_name2 = "m-{}".format(mesh_name)
 
-  if os.path.exists(mesh_name1):
-    # Run this command if the file exists
-    print(f"The file '{mesh_name1}' exists, start creat now:")
-    domain, cell_markers, facet_markers = gmshio.read_from_msh(
-        mesh_name1, MPI.COMM_WORLD, 0, gdim=3 )
-  else:
+   if os.path.exists(mesh_name1):
+     # Run this command if the file exists
+     print(f"The file '{mesh_name1}' exists, start creat now:")
+     domain, cell_markers, facet_markers = gmshio.read_from_msh(
+         mesh_name1, MPI.COMM_WORLD, 0, gdim=3 )
+   else:
     # Run this command if the file does not exist
-    print(f"The file '{mesh_name1}' does not exist, start building:")
-    mesh_brake_disc(mesh_min, mesh_max, mesh_name2, 'tetra',pad_v_tag)
-    domain, cell_markers, facet_markers = gmshio.read_from_msh(
-        mesh_name1, MPI.COMM_WORLD, 0, gdim=3 )
+     print(f"The file '{mesh_name1}' does not exist, start building:")
+     mesh_brake_disc(mesh_min, mesh_max, mesh_name2, 'tetra',pad_v_tag)
+     domain, cell_markers, facet_markers = gmshio.read_from_msh(
+         mesh_name1, MPI.COMM_WORLD, 0, gdim=3 )
 
-  return domain, cell_markers, facet_markers, mesh_name, mesh_name1, mesh_name2
+   return domain, cell_markers, facet_markers, mesh_name, mesh_name1, mesh_name2
 
 ###################################################
 def mesh_brake_pad1(mesh_min, mesh_max):  #pad1 is next step for mesh_pad
@@ -1032,62 +1036,41 @@ def find_pad_cell_index(mesh_filename):
                 min_nodes = num_cells
                 min_index = i
     return min_index
+    
+def find_pad_cell_index(mesh_filename):
+    from mpi4py import MPI
+    import gmshio
 
-#######################################################
+    # Read the mesh using gmshio
+    domain, cell_mark, facet_mark = gmshio.read_from_msh(mesh_filename, MPI.COMM_WORLD, 0, gdim=3)
 
-def T_pad_transfer(mesh_name1, u_n, mesh_min, mesh_max, mesh_brake, pad_v_tag):
-    # compare the length of mesh and T
-    mesh_points= meshio.read(mesh_name1).points 
-    function_values = u_n.x.array  
-    print('Length of mesh points is ', len(mesh_points))
-    print("Length of result T is ",    len(function_values))
+    min_cells = float('inf')  # Initialize with a large value
+    min_index = 0             # Initialize index
+    
+    # Loop over the different cell types in the domain
+    for i, cells in enumerate(domain.topology):
+        # Check for tetrahedral cells (cell dimension 3)
+        if domain.ufl_cell().topological_dimension() == 3:
+            num_cells = len(cells)
+            if num_cells < min_cells:
+                min_cells = num_cells
+                min_index = i
 
-    # want to get the brake pad T
-    pad_index = find_pad_cell_index(mesh_name1)
-    physical_tags = mesh_brake.cell_data["gmsh:physical"][pad_index]  #cell_data is a dic
-    pad_cell_mask = (physical_tags == pad_v_tag)
-    pad_cells = mesh_brake.cells[pad_index].data[pad_cell_mask]
-    # Get the unique node indices corresponding to the brake pad
-    pad_node_indices = np.unique(pad_cells.flatten())
-    pad_node_coordinates = mesh_brake.points[pad_node_indices]
-    print('Brake pad nodes number is ',len(pad_node_coordinates))
-
-    ##########################################################
-    domain_pad, cell_mark_pad, facet_mark_pad,mesh_name_pad,\
-    mesh_name1_pad, mesh_name2_pad = mesh_brake_pad1 (mesh_min,mesh_max)
-    #########################################################
-    from scipy.spatial import cKDTree
-    # Step 1: Read the mesh using meshio
-    mesh_brake_pad = meshio.read(mesh_name1_pad)
-    mesh_points_pad = mesh_brake_pad.points  # This is a NumPy array of shape (n_points, dim)
-
-    tree = cKDTree(pad_node_coordinates) #node_coordinates are from calculation
-    distances, indices = tree.query(mesh_points_pad)
-    T_new_p = np.zeros(len(mesh_points_pad))  # Array to hold temperatures for mesh_points_pad
-    for i, index in enumerate(indices):
-        T_new_p[i] = u_n.x.array[index]  # Assign temperature from u_n based on nearest index
-
-    print('length from new mesh is:\n',len(mesh_points_pad))
-    print('length from calculation is:\n',len(pad_node_coordinates))
-    #print("Temperatures assigned to mesh_points_pad:\n", T_new_p)
-    print("Temperatures assigned to new mesh length is:\n",len(T_new_p))
-
-    return(T_new_p,domain_pad)
+    return min_index
  
 #######################################################
-def plot_T_pad(domain_pad, T_new_p):
+def plot_T_pad(domain_pad, T_pad):
     gdim,fdim = 3,2
     pyvista.start_xvfb()
     topology, cell_types, geometry = plot.vtk_mesh(domain_pad, gdim)
     grid = pyvista.UnstructuredGrid(topology, cell_types, geometry)
-    grid.point_data["Temperature/ °C"] = T_new_p
+    grid.point_data["Temperature/ °C"] = T_pad
     grid.set_active_scalars("Temperature/ °C")
     plotter = pyvista.Plotter()
 
     sargs = dict(title_font_size=25, label_font_size=20,  color="black",
              position_x=0.1, position_y=0.85, width=0.8, height=0.1)
-    plotter.add_mesh(grid, show_edges=True,scalar_bar_args=sargs,clim=[50, max(T_new_p)])
-
+    plotter.add_mesh(grid, show_edges=True,scalar_bar_args=sargs,clim=[0, 200])
     plotter.camera.azimuth = -5
     plotter.camera.elevation = 180  
     plotter.window_size = (800, 400)
@@ -1114,3 +1097,104 @@ def plot_S_pad(Vu,u_d ):
     plotter.camera.elevation = 180  
     plotter.zoom_camera(1.5) 
     return plotter
+
+###########################################################
+def compare_two_arrays (array1, array2):
+    ## this function is used to compare two different length arrays and find the different items.
+    import numpy as np
+
+    array1 = np.round(array1,2)
+    array2 = np.round(array2,2)
+    len1 = len(array1)
+    len2 = len(array2)
+    min_len = min(len1, len2)
+    differences = []
+    for i, item1 in enumerate(array1):
+        found = False
+        for j, item2 in enumerate(array2):
+           if np.array_equal(item1, item2):
+                found = True
+                break
+        if not found:
+            differences.append((f"Array1 index {i}", item1, None))  # Not found in array2
+    # Output the differences
+    for desc, val1,val2 in differences:
+        print(f"{desc}:")
+        print(f"  Array 1: {val1}")
+    if  len(differences) == 0:
+        print("Old and new pad nodes does not have differences")
+
+    return print()
+
+
+###########################################################
+def extract_u_n(mesh_name1, u_n, physical_group_tag):
+    from mpi4py import MPI
+    import numpy as np
+    from dolfinx.io import gmshio
+    import gmsh
+    
+    domain, cell_mark, facet_mark = gmshio.read_from_msh(mesh_name1, MPI.COMM_WORLD, 0, gdim=3)
+    # cell_mark dim is 3, contains 31 and 32, physical name of brake disc and pad
+    # facet_mark dim is 2,
+    # domain is nodes, is less than cells, nearly n nodes = 3n cells.
+    physical_cells = np.where(cell_mark.values == physical_group_tag)[0]
+    cell_to_vertex = domain.topology.connectivity(domain.topology.dim, 0)
+    physical_nodes = set() 
+    # Loop through the physical cells and get the associated vertex (node) indices
+    for cell in physical_cells:                 # cells in volume 32
+         vertices = cell_to_vertex.links(cell)  # vertices in volume 32
+         physical_nodes.update(vertices)        # added to physical_nodes
+    # Convert the set of unique nodes to a sorted list
+    physical_nodes = np.array(sorted(physical_nodes))  ## only part of the whole nodes
+    # Extract the temperature values (u_n) corresponding to these nodes
+    u_n_pad = u_n.x.array[physical_nodes]
+    co_pad = domain.geometry.x[physical_nodes]
+    return u_n_pad, physical_nodes, co_pad
+
+###########################################################
+
+def T_pad_transfer1(mesh_name1, mesh_n_pad, u_n, mesh_brake, pad_v_tag):
+  
+    
+    # get pad coordinates from the whole brake mesh.
+    T_old_pad , pad_nodes, co_pad = extract_u_n(mesh_name1, u_n, pad_v_tag)    
+    from scipy.spatial import cKDTree
+    domain_pad, cell_mark_pad, facet_mark_pad = gmshio.read_from_msh( mesh_n_pad , MPI.COMM_WORLD, 0, gdim=3 )
+    
+    #####  here is a function about map data according to coordinate, it seems do not need for now.2024-10-22.
+    #tree = cKDTree(co_pad) # node_coordinates are from calculation
+    #distances, indices = tree.query( domain_pad.geometry.x )
+    #T_new_pad = np.zeros( len( T_old_pad))
+    #for i, index in enumerate(indices):
+    #    T_new_pad[i] = T_old_pad[index]  
+    return T_old_pad, co_pad 
+
+###########################################################
+
+def mesh_del_disc(mesh_name1, mesh_n_pad):
+    import gmsh    
+    volume_to_delete = 31
+    surface_to_delete = 21
+    mesh_n_pad = "new_pad.msh"
+    gmsh.initialize()
+    gmsh.open(mesh_name1)
+    physcical_groups = gmsh.model.get_physical_groups()
+    for dim, tag in physcical_groups:
+        if dim == 3:
+            name = gmsh.model.getPhysicalName(dim,tag)
+            print(f"Volume:{name}, Tag:{tag}")
+            if tag == volume_to_delete:
+                gmsh.model.removePhysicalGroups([(dim, tag)])
+                #print(f"deleted wolume with tag {volume_to_delete}")
+    for dim, tag in physcical_groups:
+        if dim == 2:
+            name = gmsh.model.getPhysicalName(dim,tag)
+            if tag == surface_to_delete:
+                gmsh.model.removePhysicalGroups([(dim, tag)])
+                #print(f"deleted surface with tag {surface_to_delete}")
+    gmsh.model.mesh.generate(3)
+    gmsh.write(mesh_n_pad )
+    gmsh.finalize()
+    return mesh_n_pad
+###########################################################
