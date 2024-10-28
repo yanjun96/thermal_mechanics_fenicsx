@@ -20,6 +20,7 @@ import shutil
 import numpy as np
 import matplotlib.pyplot as plt
 import meshio
+import logging
 
 # import speciail library
 from dolfinx.fem.petsc import (
@@ -689,6 +690,7 @@ def mesh_brake_all(mesh_min, mesh_max,pad_v_tag):
    mesh_name = f"{mesh_min}-{mesh_max}"
    mesh_name1 = "m-{}.msh".format(mesh_name)
    mesh_name2 = "m-{}".format(mesh_name)
+   logging.getLogger("gmshio").setLevel(logging.ERROR)
 
    if os.path.exists(mesh_name1):
      # Run this command if the file exists
@@ -701,26 +703,6 @@ def mesh_brake_all(mesh_min, mesh_max,pad_v_tag):
      mesh_brake_disc(mesh_min, mesh_max, mesh_name2, 'tetra',pad_v_tag)
      domain, cell_markers, facet_markers = gmshio.read_from_msh(
          mesh_name1, MPI.COMM_WORLD, 0, gdim=3 )
-
-   return domain, cell_markers, facet_markers, mesh_name, mesh_name1, mesh_name2
-
-###################################################
-def mesh_brake_pad1(mesh_min, mesh_max):  #pad1 is next step for mesh_pad
-   #import os
-   #from dolfinx.io import XDMFFile, gmshio
-   #from mpi4py import MPI  
-   mesh_name = f"{mesh_min}-{mesh_max}_pad"
-   mesh_name1 = "m-{}.msh".format(mesh_name)
-   mesh_name2 = "m-{}".format(mesh_name)
-
-   if os.path.exists(mesh_name1): # Run this command if the file exists   
-      print(f"The file '{mesh_name1}' exists, start creat now:")
-      domain, cell_markers, facet_markers = gmshio.read_from_msh( mesh_name1, MPI.COMM_WORLD, 0, gdim=3 )
-      
-   else:  # Run this command if the file does not exist  
-      print(f"The file '{mesh_name1}' does not exist, start building:")
-      mesh_brake_pad(mesh_min, mesh_max, mesh_name2, 'tetra')          
-      domain, cell_markers, facet_markers = gmshio.read_from_msh( mesh_name1, MPI.COMM_WORLD, 0, gdim=3 )
 
    return domain, cell_markers, facet_markers, mesh_name, mesh_name1, mesh_name2
 
@@ -818,7 +800,7 @@ def mesh_setup(domain, V,mesh_name1,num_steps, angular_r, mesh_name2, c_contact,
     bc_disc = mesh.locate_entities_boundary(domain, fdim, lambda x: np.isclose(x[2], z_all*2)) 
     bc = fem.dirichletbc( PETSc.ScalarType(Tm), \
                          fem.locate_dofs_topological(V, fdim, bc_disc), V)
-
+    logging.getLogger("meshio").setLevel(logging.ERROR)
     mesh_brake = meshio.read(mesh_name1)
 
     all_e = sum(len(cells.data) for cells in mesh_brake.cells)  # all_e is the total elements
@@ -943,6 +925,7 @@ def solve_heat(Ti, u, num_steps, dt, x_co, y_co, angular_r, \
 #######################################################
 def find_pad_cell_index(mesh_filename):
     import meshio
+    logging.getLogger("meshio").setLevel(logging.ERROR)
     mesh = meshio.read(mesh_filename)  #read mesh
     min_nodes = float('inf')           # large len of initial nodes
     min_index = 0                      # initial index
@@ -957,6 +940,7 @@ def find_pad_cell_index(mesh_filename):
 def find_pad_cell_index(mesh_filename):
     from mpi4py import MPI
     import gmshio
+    logging.getLogger("gmshio").setLevel(logging.ERROR)
 
     # Read the mesh using gmshio
     domain, cell_mark, facet_mark = gmshio.read_from_msh(mesh_filename, MPI.COMM_WORLD, 0, gdim=3)
@@ -1050,7 +1034,7 @@ def extract_u_n(mesh_name1, u_n, physical_group_tag):
     import numpy as np
     from dolfinx.io import gmshio
     import gmsh
-    
+    logging.getLogger("gmshio").setLevel(logging.ERROR)
     domain, cell_mark, facet_mark = gmshio.read_from_msh(mesh_name1, MPI.COMM_WORLD, 0, gdim=3)
     # cell_mark dim is 3, contains 31 and 32, physical name of brake disc and pad
     # facet_mark dim is 2,
@@ -1077,6 +1061,7 @@ def T_pad_transfer1(mesh_name1, mesh_n_pad, u_n, mesh_brake, pad_v_tag):
     # get pad coordinates from the whole brake mesh.
     T_old_pad , pad_nodes, co_pad = extract_u_n(mesh_name1, u_n, pad_v_tag)    
     from scipy.spatial import cKDTree
+    logging.getLogger("gmshio").setLevel(logging.ERROR)
     domain_pad, cell_mark_pad, facet_mark_pad = gmshio.read_from_msh( mesh_n_pad , MPI.COMM_WORLD, 0, gdim=3 )
     
     #####  here is a function about map data according to coordinate, it seems do not need for now.2024-10-22.
@@ -1114,4 +1099,20 @@ def mesh_del_disc(mesh_name1, mesh_n_pad):
     gmsh.write(mesh_n_pad )
     gmsh.finalize()
     return mesh_n_pad
+###########################################################
+def contact_surface(domain_pad, facet_mark_pad):
+    s_total = 0
+    s_contact = []
+    for i in range(1,19):
+       contact_surface_marker_value = i  # Set this to the actual marker value for the contact surface
+       # Ensure contact_measure is associated with the correct domain and facet marker
+       contact_measure = ufl.ds(domain=domain_pad, subdomain_data=facet_mark_pad, subdomain_id=contact_surface_marker_value)
+       # Define the integrand as a constant value `1.0` over the contact surface to represent area
+       contact_area_form = 1.0 * contact_measure
+       # Assemble the contact area by integrating over the contact surface
+       contact_area = fem.assemble_scalar(fem.form(contact_area_form))
+    s_contact.append(contact_area)
+    s_total = s_total + contact_area
+    print("Estimated Contact Area is:", round(sum(s_contact)/100*18, 2),"cm*2")
+    return(s_total, s_contact)
 ###########################################################
