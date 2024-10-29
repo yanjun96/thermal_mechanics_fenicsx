@@ -1100,7 +1100,7 @@ def mesh_del_disc(mesh_name1, mesh_n_pad):
     gmsh.finalize()
     return mesh_n_pad
 ###########################################################
-def contact_surface(domain_pad, facet_mark_pad):
+def contact_surface(domain_pad, facet_mark_pad): ## this contact area is only from mesh, not change with temperature.
     s_total = 0
     s_contact = []
     for i in range(1,19):
