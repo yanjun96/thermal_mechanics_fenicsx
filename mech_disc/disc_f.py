@@ -469,8 +469,8 @@ def got_T_check_location(A1):
          #"\nA3 location is ",A3_fin)
 
     return A1_fin, A2_fin, A3_fin
+    
 ##################################################################################################################  12
-
 def save_t_T (csv_name, T_array):
     import csv
     t = []
@@ -522,7 +522,6 @@ def read_t_T (csv_name):
     return (t1,T1)
 
 #####################################################################################################################  14
-
 def find_3_coord(filename):
     import numpy as np
     
@@ -537,7 +536,6 @@ def find_3_coord(filename):
                  'm-3-2.msh':  [333431, 308947, 18936],
                  'm-3-20.msh': [1713, 1587, 708] }
                                 
-    
     if filename in coord_lib:
         print('Lables already exists, for mesh',filename, "is ", coord_lib[filename])
         return coord_lib[filename]
@@ -600,7 +598,6 @@ def find_3_coord_hexa(filename):
     coord_lib = {'m-3-10.msh': [53970, 122401, 36114],
                  'm-3-20.msh': [17818, 1136, 15718] }    
                                 
-    
     if filename in coord_lib:
         print('Lables already exists, for mesh',filename, "is ", coord_lib[filename])
         return coord_lib[filename]
@@ -625,7 +622,6 @@ def extract_mesh_labels(file_name):
         return f'm-{mesh_labels}.msh'
     else:
         return None
-
 ##########################################  17
 
 def extract_file_labels(file_name, type_is):
