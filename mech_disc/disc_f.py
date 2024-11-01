@@ -256,9 +256,7 @@ def mesh_brake_disc(min_mesh, max_mesh, filename, mesh_type,pad_v_tag):
     import os
     import numpy as np
     
-    
     gmsh.initialize()
-        
     # all the unit is mm
     # z1, z2, z3 is the height of brake disc, rubbing elemetn, pad lining in Z direction
     # rd_outer, rd_inner is for brake disc, rp_outer, rp_inner is for brake pad radiu. r_rub is for rubbing elements
@@ -429,10 +427,6 @@ def read_msh_nodes(filename):
         nodes.append( (node_tag[i], nodes_c[i])  )
     
     return nodes,node_tag
-###############################################################################################################  10
-def filter_nodes_by_z(nodes, z_value):
-    filtered_nodes = [node for node in nodes if node[1][2] == z_value]
-    return filtered_nodes
 
 ##############################################################################################################  11
 def got_T_check_location(A1):
@@ -593,8 +587,7 @@ def find_3_coord_hexa(filename):
     #coord_lib = {'m-3-5.msh':  [19098, 34079, 7351],
                #  'm-3-10.msh': [3157, 7018, 2141],
                #  'm-3-15.msh': [2201, 1590, 260], 
-               #  'm-3-20.msh': [1713, 1587, 708] }
-    
+               #  'm-3-20.msh': [1713, 1587, 708] }   
     coord_lib = {'m-3-10.msh': [53970, 122401, 36114],
                  'm-3-20.msh': [17818, 1136, 15718] }    
                                 
@@ -650,7 +643,6 @@ def add_indentation(old_notebook, new_notebook):
     indented_lines = ['      ' + line for line in lines]
     with open(new_notebook, 'w') as f:
         f.writelines(indented_lines)
-
 
 ##############################################
 def get_time_step_from_angular(angular2,mesh_max2,c_contact2):
@@ -846,10 +838,11 @@ def variation_initial(V, T_init,domain, rho, c, b_con, radiation, h, k, xdmf,dt,
     return (problem, u,v,f,n_vector)
      
 #######################################################
+
 def solve_heat(Ti, u, num_steps, dt, x_co, y_co, angular_r, \
-               t_brake, domain,S_rub_circle,fdim,\
-               rho, c, v, radiation, k, h, f,Tm,u_n,g,\
-               ds, xdmf, b_con,bc,plotter,warped ):
+               t_brake, domain, S_rub_circle, fdim,\
+               rho, c, v, radiation, k, h, f, Tm, u_n, g,\
+               ds, xdmf, b_con, bc, plotter, warped ):
     
     T_array = [(0, [Ti for _ in range(len(u.x.array))])]
     total_degree = 0
@@ -1074,4 +1067,103 @@ def contact_surface(domain_pad, facet_mark_pad): ## this contact area is only fr
     s_total = s_total + contact_area
     print("Estimated Contact Area is:", round(sum(s_contact)/100*18, 2),"cm*2")
     return(s_total, s_contact)
+###########################################################
+def get_new_contact_nodes(x_co_zone, domain_pad, u_d, Vu, z1, x_co, y_co):
+    # x_co_zone is the tolerance for contact range in z direction, z+ or z- x_contact_zone is range of contact condition
+    gdim,fdim = 3,2
+    original_co = domain_pad.geometry.x         # Initial coordinates of nodes (N x 3 array)
+    u_d_vals    = u_d.x.array.reshape(-1, gdim) # Displacements (N x 3 array)
+    deformed_co = original_co + u_d_vals        # Coordinates of deformed mesh
+
+    low_contact_bool  =  (deformed_co[:, fdim] < (z1+x_co_zone)) 
+    high_contact_bool =  (deformed_co[:, fdim] > (z1-x_co_zone)) 
+    contact_boolean   =  low_contact_bool  &  high_contact_bool 
+    contact_indices   =  np.where(contact_boolean)[0]  #contact indicies, from all nodes
+    contact_co        =  original_co [ contact_indices ]
+    #print('1: Minimum penalty deformation is ', min(u_d_vals[:,2]))
+    #print('2: Length of contact indices is '  , len(contact_indices))
+    #print('3: Length of u_d:  '               , len(deformed_co) )
+    #print('4: Length of domain_pad: '         , len( original_co ) )
+    #print('5: Length of contact_co: '         , len( contact_co  ) )
+    
+    #S_rub_circle = r_rub**2 * c_contact
+    S_rub_circle = 1110.364507
+    S_rub_circle1=[S_rub_circle for _ in range(18) ] 
+    boundaries = []
+    n_surface = len(S_rub_circle1)
+    ## S_rub_circles1 should not change, it means the contact areas of rubbing elements, used to locate the boundaries.
+    for j in range( n_surface): # boundaries include (marker, locator) 
+            boundaries.append  ( lambda x,j=j: (x[0]-x_co[j])**2 +(x[1]-y_co[j])**2 <= S_rub_circle1[j])  
+    contact_dofs = []  
+    for j in range( n_surface):
+            contact_dofs.append( fem.locate_dofs_geometrical(Vu, boundaries[j])  )
+    ############################
+    
+    new_c_nodes = []
+    for i in range( 18):
+        contact_nodes_colum = deformed_co [contact_dofs [i]]  # cplumn nodes, not only in surface
+        tem_indi            = []
+        new_contact         = []
+        for j in range( len( contact_nodes_colum)):
+            if ( contact_nodes_colum[j][2] <= (z1+x_co_zone) ) and ( contact_nodes_colum[j][2] >= (z1-x_co_zone) ):
+                tem_indi = tem_indi + [j]   ## indices for contact_dofs, a column, only get surface index
+            else:
+                tem_indi = tem_indi 
+          
+        c1 = contact_dofs[i][tem_indi] # get index for contact surface
+        new_c_nodes = new_c_nodes + [c1]
+    return deformed_co, new_c_nodes
+###########################################################
+def fit_circle(points):
+    # points is an array, like 
+    #[ [x1,y1]
+    #  [x2,y2]
+    #  [x3,y3] ]
+    # Set up the matrix A and vector Z
+    if len(points) == 0:
+       h,k,r = 0,0,0
+    else:
+      A = np.column_stack((points[:, 0], points[:, 1], np.ones(points.shape[0])))
+      Z = points[:, 0]**2 + points[:, 1]**2
+    # Solve for [2h, 2k, C] using least-squares
+      b, _, _, _ = np.linalg.lstsq(A, Z, rcond=None)
+      h = b[0] / 2
+      k = b[1] / 2
+      C = b[2]
+      # Calculate the radius
+      r = np.sqrt(h**2 + k**2 + C)   
+    return h, k, r
+###########################################################
+def get_r_xco_yco(deformed_co, new_c_nodes ):    
+    x_co_new,y_co_new,r_rub_new1,r_rub_new = [],[],[],[]
+    for i in range(18):
+        z_nodes = []
+        for j in range( len( deformed_co[ new_c_nodes[i]])):
+            x = deformed_co[ new_c_nodes[ i]] [j] [0]
+            y = deformed_co[ new_c_nodes[ i]] [j] [1]
+            z_nodes[j:] =  [ [x,y] ]
+        z_nodes    = np.array(z_nodes) 
+        h1, k1, r1 = fit_circle(z_nodes)
+        x_co_new   = x_co_new   + [h1]
+        y_co_new   = y_co_new   + [k1]
+        r_rub_new1 = r_rub_new1 + [r1] 
+
+    no_0_r_rub = list(filter(lambda x: x!=0, r_rub_new1))  ## if contact points are 0, we do not add contact radius
+    
+    for i in range(18):
+        if r_rub_new1[i] > 0: 
+           r_rub_new.append( r_rub_new1[i]  + (18.8 - np.average(no_0_r_rub) ) )
+        else:
+           r_rub_new.append(0)
+            
+    for i in range(18):
+        if r_rub_new[i] >= 19.5:
+           r_rub_new[i] = 19.5
+        else:
+           r_rub_new[i] = r_rub_new[i]      
+    
+    r_rub_new = np.array(r_rub_new)
+    S_rub_circle_new = np.pi * r_rub_new**2      #specific contact surfaces
+    S_total_new = np.sum(S_rub_circle_new) /100  #overall all contact surfaces
+    return(x_co_new, y_co_new,r_rub_new, S_total_new, S_rub_circle_new)
 ###########################################################
