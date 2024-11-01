@@ -347,23 +347,24 @@ def target_facets(domain,x_co,y_co,S_rub_circle):
     import numpy as np
     
     boundaries = []
+    # boundaries is a list, each term style is (marker, lambdax)
     for j in range(18):
         boundaries.append  (  ( (j+1)*10, lambda x,j=j: (x[0]-x_co[j])**2 +(x[1]-y_co[j])**2 <= S_rub_circle[j])  )
  
     facet_indices1, facet_markers1 = [], [] 
     fdim = 2 
     for (marker, locator) in boundaries:
-        facets = locate_entities(domain, fdim, locator)   
-        facet_indices1.append(facets)
+        facets = locate_entities(domain, fdim, locator) # array with column indices  
+        facet_indices1.append(facets) # array with 18 locator for column
         facet_markers1.append(np.full_like(facets, marker))
     facet_indices1 = np.hstack(facet_indices1).astype(np.int32)
     facet_markers1 = np.hstack(facet_markers1).astype(np.int32)
             
-    A1 = facet_indices1
-    B  = facet_markers1 
-    C  = mesh.locate_entities_boundary(domain, fdim, lambda x: np.isclose(x[2], 20) )
+    A1 = facet_indices1 # array, with 18 column indices
+    B  = facet_markers1 # array, with markers, like 10, 20
+    C  = mesh.locate_entities_boundary(domain, fdim, lambda x: np.isclose(x[2], 20) )  # array, with contact surface
 
-    common_indices1 = np.intersect1d(A1,C)
+    common_indices1 = np.intersect1d(A1,C)  # find common contact surfaces
     D = []
     for index in common_indices1:
         rows_A1 = np.where(A1 == index)
@@ -371,7 +372,7 @@ def target_facets(domain,x_co,y_co,S_rub_circle):
     if len(D) == 0:
        facet_markers1 = []
     else:
-        facet_markers1 = np.concatenate(D)
+       facet_markers1 = np.concatenate(D) #concatenate used to join two arrays.
 
     ####################################   7
     b_con = 200
@@ -393,14 +394,18 @@ def target_facets(domain,x_co,y_co,S_rub_circle):
     for index in common_indices2:
         rows_A1 = np.where(A1 == index)
         D.append( B[rows_A1] )
-    facet_markers2 = np.concatenate(D) 
+    if len(D) == 0:
+       facet_markers2 = []
+    else:
+       facet_markers2 = np.concatenate(D) 
+   
     
     ####################################   8
     common_indices3 = [common_indices1,common_indices2]
     facet_markers3  = [facet_markers1,facet_markers2]
-    common_indices3 = np.concatenate(common_indices3)
-    facet_markers3  = np.concatenate(facet_markers3)
-    sorted_indices3 = np.argsort(common_indices3)
+    common_indices3 = np.concatenate(common_indices3).astype(np.int32)
+    facet_markers3  = np.concatenate(facet_markers3).astype(np.int32)
+    sorted_indices3 = np.argsort(common_indices3).astype(np.int32)
 
     return common_indices3, facet_markers3, sorted_indices3
     
@@ -459,9 +464,9 @@ def target_facets_ini(domain,x_co,y_co,S_rub_circle_ini):
     ####################################   8
     common_indices3 = [common_indices1,common_indices2]
     facet_markers3  = [facet_markers1,facet_markers2]
-    common_indices3 = np.concatenate(common_indices3)
-    facet_markers3  = np.concatenate(facet_markers3)
-    sorted_indices3 = np.argsort(common_indices3)
+    common_indices3 = np.concatenate(common_indices3).astype(np.int32)
+    facet_markers3  = np.concatenate(facet_markers3).astype(np.int32)
+    sorted_indices3 = np.argsort(common_indices3).astype(np.int32)
 
     return common_indices3, facet_markers3, sorted_indices3
 #######################################################################################################################   9
