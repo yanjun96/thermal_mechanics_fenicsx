@@ -58,7 +58,9 @@ from dolfinx.nls.petsc import NewtonSolver
 from petsc4py import PETSc
 from mpi4py import MPI
 
-from disc_f import *
+from disc_f1 import *
+
+os.environ["GMSH_VERBOSITY"] = "0"
 
 start_time = time.time()
 t = 0 #xdmf.write_function(uh, t)
@@ -747,19 +749,22 @@ def mesh_brake_all(mesh_min, mesh_max,pad_v_tag):
    mesh_name = f"{mesh_min}-{mesh_max}"
    mesh_name1 = "m-{}.msh".format(mesh_name)
    mesh_name2 = "m-{}".format(mesh_name)
+    
    logging.getLogger("gmshio").setLevel(logging.ERROR)
 
    if os.path.exists(mesh_name1):
      # Run this command if the file exists
      print(f"The file '{mesh_name1}' exists, start creat now:")
-     domain, cell_markers, facet_markers = gmshio.read_from_msh(
-         mesh_name1, MPI.COMM_WORLD, 0, gdim=3 )
+     domain, cell_markers, facet_markers = silent_gmshio_read_mesh(mesh_name1)  
+     #domain, cell_markers, facet_markers = gmshio.read_from_msh(
+     #    mesh_name1, MPI.COMM_WORLD, 0, gdim=3 )
    else:
     # Run this command if the file does not exist
      print(f"The file '{mesh_name1}' does not exist, start building:")
      mesh_brake_disc(mesh_min, mesh_max, mesh_name2, 'tetra',pad_v_tag)
-     domain, cell_markers, facet_markers = gmshio.read_from_msh(
-         mesh_name1, MPI.COMM_WORLD, 0, gdim=3 )
+     domain, cell_markers, facet_markers = silent_gmshio_read_mesh(mesh_name1)  
+     #domain, cell_markers, facet_markers = gmshio.read_from_msh(
+     #    mesh_name1, MPI.COMM_WORLD, 0, gdim=3 )
 
    return domain, cell_markers, facet_markers, mesh_name, mesh_name1, mesh_name2
 
@@ -857,8 +862,8 @@ def mesh_setup(domain, V,mesh_name1,num_steps, angular_r, mesh_name2, c_contact,
     bc_disc = mesh.locate_entities_boundary(domain, fdim, lambda x: np.isclose(x[2], z_all*2)) 
     bc = fem.dirichletbc( PETSc.ScalarType(Tm), \
                          fem.locate_dofs_topological(V, fdim, bc_disc), V)
-    logging.getLogger("meshio").setLevel(logging.ERROR)
-    mesh_brake = meshio.read(mesh_name1)
+    mesh_brake = silent_meshio_read_mesh(mesh_name1)
+    #mesh_brake = meshio.read(mesh_name1)  # not silent model, has terminted.
 
     all_e = sum(len(cells.data) for cells in mesh_brake.cells)  # all_e is the total elements
     xdmf_name = "T-s-{}-d-{}-{}-c-{}-e-{}.xdmf".format( num_steps, angular_r, mesh_name2, c_contact, all_e)
@@ -912,18 +917,30 @@ def variation_initial(V, T_init,domain, rho, c, b_con, radiation, h, k, xdmf,dt,
 def solve_heat(Ti, u, num_steps, dt, x_co, y_co, angular_r, \
                t_brake, domain, S_rub_circle, fdim,\
                rho, c, v, radiation, k, h, f, Tm, u_n, g,\
-               ds, xdmf, b_con, bc, plotter, warped ):
+               ds, xdmf, b_con, bc, plotter, warped,\
+               mesh_name1, mesh_brake, pad_v_tag, z4,\
+               z1, x_co_zone,  ):
     
     T_array = [(0, [Ti for _ in range(len(u.x.array))])]
     total_degree = 0
     t = 0
+    fraction_c = []
     for i in range(num_steps):
         t += dt[i]
 
-        x_co, y_co = rub_rotation(x_co, y_co, angular_r)  # update the location
-        total_degree += angular_r  # Incrementing degree by 10 in each step
-        # Construct the message
+        ##################################3
+        u_d0, Vu, aM, LM, bcu, u_, domain_pad   = T_S_deformation_solve (mesh_name1, u_n, mesh_brake, pad_v_tag, z4, )
+        u_d1 = penalty_method_contact(z1, Vu, u_d0, aM, LM, u_, bcu  )
         
+        deformed_co, new_c   = get_new_contact_nodes(x_co_zone, domain_pad, u_d1, Vu, z1, x_co, y_co )
+        x_co_new, y_co_new, r_rub_new, S_total_new,S_rub_circle_new = get_r_xco_yco (deformed_co, new_c )
+        S_rub_circle = S_rub_circle_new
+        fraction_c.append(  S_total_new/ 200 )
+        #####################################
+
+        x_co, y_co = rub_rotation(x_co_new, y_co_new, angular_r)  # update the location
+        total_degree += angular_r  # Incrementing degree by 10 in each step
+        # Construct the message     
 
         end_time = time.time()
         elapsed_time = end_time - start_time
@@ -938,10 +955,13 @@ def solve_heat(Ti, u, num_steps, dt, x_co, y_co, angular_r, \
     
         sys.stdout.write(f"\r{progress_message.ljust(80)}")  # 80 spaces to ensure full clearing
         sys.stdout.flush()
+        
 
-        co_ind, fa_mar, so_ind = target_facets(domain, x_co, y_co, S_rub_circle )
-        facet_tag = meshtags( domain, fdim, co_ind[so_ind], fa_mar[so_ind] )
-        ds = Measure("ds", domain=domain, subdomain_data=facet_tag)
+        #####################################
+        #co_ind, fa_mar, so_ind = target_facets(domain, x_co, y_co, S_rub_circle )
+        co_ind, fa_mar, so_ind   = target_facets(domain, x_co, y_co, S_rub_circle )
+        facet_tag                = meshtags( domain, fdim, co_ind[so_ind], fa_mar[so_ind] )
+        ds                       = Measure("ds", domain=domain, subdomain_data=facet_tag)
 
         F = ((rho * c) / dt[i] * inner(u, v) * dx
             + k * inner(grad(u), grad(v)) * dx
@@ -964,7 +984,6 @@ def solve_heat(Ti, u, num_steps, dt, x_co, y_co, angular_r, \
         solver_setup_solve(problem,u)
         u.x.scatter_forward()
   
-
         # Update solution at previous time step (u_n)
         u_n.x.array[:] = u.x.array
         T_array.append((t, u.x.array.copy()))
@@ -979,7 +998,7 @@ def solve_heat(Ti, u, num_steps, dt, x_co, y_co, angular_r, \
     plotter.close()
     xdmf.close()
     print()
-    return(T_array)
+    return(T_array, fraction_c)
  
 #######################################################
 def plot_T_pad(domain_pad, T_pad):
@@ -1056,8 +1075,9 @@ def extract_u_n(mesh_name1, u_n, physical_group_tag):
     import numpy as np
     from dolfinx.io import gmshio
     import gmsh
-    logging.getLogger("gmshio").setLevel(logging.ERROR)
-    domain, cell_mark, facet_mark = gmshio.read_from_msh(mesh_name1, MPI.COMM_WORLD, 0, gdim=3)
+    
+    domain, cell_mark, facet_mark = silent_gmshio_read_mesh(mesh_name1)
+    #domain, cell_mark, facet_mark = gmshio.read_from_msh(mesh_name1, MPI.COMM_WORLD, 0, gdim=3)
     # cell_mark dim is 3, contains 31 and 32, physical name of brake disc and pad
     # facet_mark dim is 2,
     # domain is nodes, is less than cells, nearly n nodes = 3n cells.
@@ -1077,37 +1097,19 @@ def extract_u_n(mesh_name1, u_n, physical_group_tag):
 
 ###########################################################
 
-def T_pad_transfer1(mesh_name1, mesh_n_pad, u_n, mesh_brake, pad_v_tag):
-  
-    
-    # get pad coordinates from the whole brake mesh.
-    T_old_pad , pad_nodes, co_pad = extract_u_n(mesh_name1, u_n, pad_v_tag)    
-    from scipy.spatial import cKDTree
-    logging.getLogger("gmshio").setLevel(logging.ERROR)
-    domain_pad, cell_mark_pad, facet_mark_pad = gmshio.read_from_msh( mesh_n_pad , MPI.COMM_WORLD, 0, gdim=3 )
-    
-    #####  here is a function about map data according to coordinate, it seems do not need for now.2024-10-22.
-    #tree = cKDTree(co_pad) # node_coordinates are from calculation
-    #distances, indices = tree.query( domain_pad.geometry.x )
-    #T_new_pad = np.zeros( len( T_old_pad))
-    #for i, index in enumerate(indices):
-    #    T_new_pad[i] = T_old_pad[index]  
-    return T_old_pad, co_pad 
-
-###########################################################
-
 def mesh_del_disc(mesh_name1, mesh_n_pad):
     import gmsh    
     volume_to_delete = 31
     surface_to_delete = 21
     mesh_n_pad = "new_pad.msh"
     gmsh.initialize()
+    gmsh.option.setNumber("General.Verbosity", 1) 
     gmsh.open(mesh_name1)
     physcical_groups = gmsh.model.get_physical_groups()
     for dim, tag in physcical_groups:
         if dim == 3:
             name = gmsh.model.getPhysicalName(dim,tag)
-            print(f"Volume:{name}, Tag:{tag}")
+            #print(f"Volume:{name}, Tag:{tag}")
             if tag == volume_to_delete:
                 gmsh.model.removePhysicalGroups([(dim, tag)])
                 #print(f"deleted wolume with tag {volume_to_delete}")
@@ -1270,8 +1272,10 @@ def T_S_deformation_solve (mesh_name1, u_n, mesh_brake, pad_v_tag, z4, ):
 
     gdim=3
     mesh_n_pad = mesh_del_disc(mesh_name1, "new_pad.msh")
-    T_new_p, pad_node_coordinates  = T_pad_transfer1( mesh_name1, mesh_n_pad, u_n, mesh_brake, pad_v_tag )
-    domain_pad, cell_mark_pad, facet_mark_pad = gmshio.read_from_msh( mesh_n_pad , MPI.COMM_WORLD, 0, gdim=3 )
+    T_new_p, non, pad_node_coordinates = extract_u_n(mesh_name1, u_n, pad_v_tag) 
+    #T_new_p, pad_node_coordinates  = T_pad_transfer1( mesh_name1, mesh_n_pad, u_n, mesh_brake, pad_v_tag )
+    domain_pad, cell_mark_pad, facet_mark_pad = silent_gmshio_read_mesh( mesh_n_pad)
+    #domain_pad, cell_mark_pad, facet_mark_pad = gmshio.read_from_msh( mesh_n_pad , MPI.COMM_WORLD, 0, gdim=3 )
 
     # defin the pad domain
     VT      = fem.functionspace(domain_pad, ("CG", 1))         #define the finite element function space
@@ -1314,3 +1318,58 @@ def T_S_deformation_solve (mesh_name1, u_n, mesh_brake, pad_v_tag, z4, ):
     problem.solve()
     return u_d, Vu, aM, LM, bcu, u_, domain_pad 
 ###########################################################
+def silent_gmshio_read_mesh(mesh_name1):
+    import os
+    from dolfinx.io import gmshio
+    from mpi4py import MPI
+
+    # Open /dev/null to discard any output
+    devnull = os.open(os.devnull, os.O_WRONLY)
+    # Save original stdout and stderr file descriptors
+    old_stdout = os.dup(1)
+    old_stderr = os.dup(2)
+    
+    try:
+    # Redirect stdout and stderr to /dev/null
+        os.dup2(devnull, 1)
+        os.dup2(devnull, 2)
+
+    # Now call gmshio.read_from_msh while output is suppressed
+        domain, cell_markers, facet_markers = gmshio.read_from_msh(
+        mesh_name1, MPI.COMM_WORLD, 0, gdim=3  )
+    finally:
+        # Restore original stdout and stderr
+        os.dup2(old_stdout, 1)
+        os.dup2(old_stderr, 2)
+        # Close file descriptors
+        os.close(devnull)
+        os.close(old_stdout)
+        os.close(old_stderr)
+    return domain, cell_markers, facet_markers
+###########################################################
+def silent_meshio_read_mesh(mesh_name1):
+    import os
+    import meshio
+   
+    # Open /dev/null to discard any output
+    devnull = os.open(os.devnull, os.O_WRONLY)
+    # Save original stdout and stderr file descriptors
+    old_stdout = os.dup(1)
+    old_stderr = os.dup(2)
+    
+    try:
+    # Redirect stdout and stderr to /dev/null
+        os.dup2(devnull, 1)
+        os.dup2(devnull, 2)
+    # Now call meshio while output is suppressed
+        mesh_brake = meshio.read(mesh_name1)
+        
+    finally:
+        # Restore original stdout and stderr
+        os.dup2(old_stdout, 1)
+        os.dup2(old_stderr, 2)
+        # Close file descriptors
+        os.close(devnull)
+        os.close(old_stdout)
+        os.close(old_stderr)
+    return mesh_brake
