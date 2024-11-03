@@ -343,7 +343,7 @@ def mesh_brake_disc(min_mesh, max_mesh, filename, mesh_type,pad_v_tag):
     return notice
 
 #########################33333333333333333#####################################################
-def target_facets(domain,x_co,y_co,S_rub_circle):
+def target_facets(domain, x_co, y_co, S_rub_circle):
     from dolfinx.mesh import locate_entities
     from dolfinx import mesh
     import numpy as np
@@ -377,7 +377,7 @@ def target_facets(domain,x_co,y_co,S_rub_circle):
        facet_markers1 = np.concatenate(D) #concatenate used to join two arrays.
 
     ####################################   7
-    b_con = 200
+    b_con = 200 #200 is the contact surface tag
     boundary20 = (b_con, lambda x:  x[2] == 20)
     facet_indices2, facet_markers2 = [], [] 
     fdim = 2  
