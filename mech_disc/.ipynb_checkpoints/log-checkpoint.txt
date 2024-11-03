@@ -1,0 +1,4 @@
+1: 2024.11.3  contact is 0% in step2
+maybe because of deformation has problem, check again
+
+1: maybe thermal deformation is incorrect, without variation_initial, check deformation of brake_pad_1
