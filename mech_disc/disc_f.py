@@ -820,8 +820,8 @@ def variation_initial(V, T_init,domain, rho, c, b_con, radiation, h, k, xdmf,dt,
     f = fem.Constant(domain, PETSc.ScalarType(0))  ## heat source is 0
     n_vector = FacetNormal(domain)
 
-    F = ( (rho * c) / dt[0] * inner(u, v) * dx
-        + k * inner(grad(u), grad(v)) * dx
+    F = ( (rho * c) / dt[0] * inner(u, v) * dx 
+        + k * inner(grad(u), grad(v)) * dx  
         + h * inner(u, v) * ds(b_con)  #b_con is name of contact surfaace, 
         + radiation * inner(u**4, v) * ds(b_con)
         - ( inner(f, v) * dx
