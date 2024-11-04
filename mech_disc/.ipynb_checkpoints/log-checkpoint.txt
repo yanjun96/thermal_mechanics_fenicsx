@@ -9,4 +9,4 @@ maybe because of deformation has problem, check again
 2" 2024.11.4
 Temperature difference is incorrect. Need to conact tutorial author.
 
-need implemented to brake_2.
+has been implemented to brake 2, but still not working, need to print some details one by one.
