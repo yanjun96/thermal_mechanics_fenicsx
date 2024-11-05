@@ -58,8 +58,6 @@ from dolfinx.nls.petsc import NewtonSolver
 from petsc4py import PETSc
 from mpi4py import MPI
 
-from disc_f1 import *
-
 os.environ["GMSH_VERBOSITY"] = "0"
 
 start_time = time.time()
@@ -913,92 +911,123 @@ def variation_initial(V, T_init,domain, rho, c, b_con, radiation, h, k, xdmf,dt,
     return (problem, u,v,f,n_vector)
      
 #######################################################
-
-def solve_heat(Ti, u, num_steps, dt, x_co, y_co, angular_r, \
+def solve_heat(Ti, u_initial, num_steps, dt, x_co, y_co, angular_r, \
                t_brake, domain, S_rub_circle, fdim,\
-               rho, c, v, radiation, k, h, f, Tm, u_n, g,\
+               rho, c, v, radiation, k, h, f, Tm, g,\
                ds, xdmf, b_con, bc, plotter, warped,\
                mesh_name1, mesh_brake, pad_v_tag, z4,\
                z1, x_co_zone,  ):
-    
-    T_array = [(0, [Ti for _ in range(len(u.x.array))])]
+  
+    T_array = [(0, [Ti for _ in range(len(u_initial.x.array))])]
     total_degree = 0
     t = 0
     fraction_c = []
     for i in range(num_steps):
-        t += dt[i]
-
-        ##################################3
-        u_d0, Vu, aM, LM, bcu, u_, domain_pad   = T_S_deformation_solve (mesh_name1, u_n, mesh_brake, pad_v_tag, z4, )
-        u_d1 = penalty_method_contact(z1, Vu, u_d0, aM, LM, u_, bcu  )
         
-        deformed_co, new_c   = get_new_contact_nodes(x_co_zone, domain_pad, u_d1, Vu, z1, x_co, y_co )
-        x_co_new, y_co_new, r_rub_new, S_total_new,S_rub_circle_new = get_r_xco_yco (deformed_co, new_c )
-        S_rub_circle = S_rub_circle_new
-        fraction_c.append(  S_total_new/ 200 )
-        #####################################
+         t += dt[i]
 
-        x_co, y_co = rub_rotation(x_co_new, y_co_new, angular_r)  # update the location
-        total_degree += angular_r  # Incrementing degree by 10 in each step
-        # Construct the message     
+         ##################################3
+         # u_do is the deformation without any contact constrain, no plenaly force, mm.
+         if i == 0: 
+            u = u_initial 
+            u.x.array[:] = np.full(len(u_initial.x.array), 60)       
+             
+         if i ==0:
+            x_co_new = x_co
+            y_co_new = y_co
+         else:
+            pass
 
-        end_time = time.time()
-        elapsed_time = end_time - start_time
-        elapsed_time1 = round(elapsed_time, 0)
-        formatted_start_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(start_time))
-        if elapsed_time1 >= 60:
-           min = elapsed_time1 / 60
-           hours = min / 60
-           progress_message = f"1: Progress: {round(100 * (t / t_brake), 1)}%. Use time: {round(hours)} hours {round(min)} min. Start: {formatted_start_time }."
-        else:
-           progress_message = f"1: Progress: {round(100 * (t / t_brake), 1)}%. Use time: {round(elapsed_time1)} s. Start: {formatted_start_time }."
-    
-        sys.stdout.write(f"\r{progress_message.ljust(80)}")  # 80 spaces to ensure full clearing
-        sys.stdout.flush()
+         #print(f"{i :},before rotation, x_co is {x_co_new[0]}")
+         x_co_new, y_co_new = rub_rotation(x_co_new, y_co_new, angular_r)  # update the location
+         #print(f"{i :},after rotation, before transformation, x_co is {x_co_new[0]}")
+         total_degree += angular_r  # Incrementing degree in each step  
+
+         
+         #if i != 0:
+         #   print(i, ': Old one is ', u_pre_solve.x.array)
+         #   print(i, ': New one is ',u.x.array)
+
+         if i == 0:
+             u_d0, Vu, aM, LM, bcu, u_, domain_pad = T_S_deformation_solve (mesh_name1, u_initial, \
+                                                                            mesh_brake, pad_v_tag, z4, u)
+         else:
+             u_d0, Vu, aM, LM, bcu, u_, domain_pad = T_S_deformation_solve (mesh_name1, u,\
+                                                                            mesh_brake, pad_v_tag, z4, u_pre_solve)
+         # u_d1 is the new deformation with contact force, mm.
+         u_d1 = penalty_method_contact(z1, Vu, u_d0, aM, LM, u_, bcu )
+             
+         # calculate new contact coordinates and contact incicies of u_d, deformation.
+         deformed_co, new_c   = get_new_contact_nodes(x_co_zone, domain_pad, u_d1, Vu, z1, x_co, y_co )
+         # find new contact coordinates and rub radius.
+         x_co_new1, y_co_new1, r_rub_new, S_total_new, S_rub_circle_new = get_r_xco_yco (deformed_co, new_c )
+         x_co_new, y_co_new = rub_rotation(x_co_new1, y_co_new1, angular_r*(i+1))
+             
+         S_rub_circle = S_rub_circle_new
+         fraction_c.append(  S_total_new/ 200 )
+         #####################################
         
+         # Construct the message     
+         end_time = time.time()
+         elapsed_time = end_time - start_time
+         elapsed_time1 = round(elapsed_time, 0)
+         formatted_start_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(start_time))
+         if elapsed_time1 >= 60:
+            min = elapsed_time1 / 60
+            hours = min / 60
+            progress_message = f"1: Progress: {round(100 * (t / t_brake), 1)}%. Use time: \
+            {round(hours)} hours {round(min)} min. Start: {formatted_start_time }."
+         else:
+            progress_message = f"1: Progress: {round(100 * (t / t_brake), 1)}%. Use time: \
+            {round(elapsed_time1)} s. Start: {formatted_start_time }."
+         sys.stdout.write(f"\r{progress_message.ljust(80)}")  # 80 spaces to ensure full clearing
+         sys.stdout.flush()
+        
+         #####################################
+         co_ind, fa_mar, so_ind   = target_facets(domain, x_co_new, y_co_new, S_rub_circle )
+         facet_tag                = meshtags( domain, fdim, co_ind[ so_ind], fa_mar[ so_ind] )
+         ds                       = Measure("ds", domain=domain, subdomain_data=facet_tag)
+         #print(co_ind)     
 
-        #####################################
-        #co_ind, fa_mar, so_ind = target_facets(domain, x_co, y_co, S_rub_circle )
-        co_ind, fa_mar, so_ind   = target_facets(domain, x_co, y_co, S_rub_circle )
-        facet_tag                = meshtags( domain, fdim, co_ind[so_ind], fa_mar[so_ind] )
-        ds                       = Measure("ds", domain=domain, subdomain_data=facet_tag)
+         F = ((rho * c) / dt[i] * inner(u, v) * dx
+             + k * inner(grad(u), grad(v)) * dx
+             + h * inner(u, v) * ds(b_con)
+             + radiation * inner(u**4, v) * ds(b_con)
+             - ( inner(f, v) * dx
+                 + (rho * c) / dt[i] * inner(u_n, v) * dx
+                 + h * Tm * v * ds(b_con)
+                 + radiation * (Tm**4) * v * ds(b_con)) )
 
-        F = ((rho * c) / dt[i] * inner(u, v) * dx
-            + k * inner(grad(u), grad(v)) * dx
-            + h * inner(u, v) * ds(b_con)
-            + radiation * inner(u**4, v) * ds(b_con)
-            - ( inner(f, v) * dx
-                + (rho * c) / dt[i] * inner(u_n, v) * dx
-                + h * Tm * v * ds(b_con)
-                + radiation * (Tm**4) * v * ds(b_con)) )
+         for j in list(range(1, 19)):
+             #F += -k * dot(grad(u) * v, n_vector) * ds(10 * j) - inner(g[i], v) * ds(10 * j)
+             F += ( - inner(g[i], v) * ds(10 * j) 
+                    - h * inner( u, v) * ds(10 * j)  
+                    - radiation * inner( (u**4 - Tm**4), v) * ds(10 * j) )    
 
-        for j in list(range(1, 19)):
-            #F += -k * dot(grad(u) * v, n_vector) * ds(10 * j) - inner(g[i], v) * ds(10 * j)
-            F += ( - inner(g[i], v) * ds(10 * j) 
-                   - h * inner( u, v) * ds(10 * j)  
-                   - radiation * inner( (u**4 - Tm**4), v) * ds(10 * j) )    
+         u_pre_solve = u.copy()         
 
-        problem = NonlinearProblem(F, u, bcs=[bc])
-
-        ## 7: Using petsc4py to create a linear solver
-        solver_setup_solve(problem,u)
-        u.x.scatter_forward()
-  
-        # Update solution at previous time step (u_n)
-        u_n.x.array[:] = u.x.array
-        T_array.append((t, u.x.array.copy()))
-        # Write solution to file
-        xdmf.write_function(u, t)
-        # Update plot
-        #warped = grid.warp_by_scalar("uh", factor=0)
-        plotter.update_coordinates(warped.points.copy(), render=False)
-        plotter.update_scalars(u.x.array, render=False)
-        plotter.write_frame()
+         problem = NonlinearProblem(F, u, bcs=[bc])
+         ## 7: Using petsc4py to create a linear solver
+         solver_setup_solve(problem, u)
+        
+         u.x.scatter_forward()            
+       
+         # Update solution at previous time step (u_n)
+         u_n.x.array[:] = u.x.array
+         T_array.append((t, u.x.array.copy()))
+         # Write solution to file
+         xdmf.write_function(u, t)
+         # Update plot
+         #warped = grid.warp_by_scalar("uh", factor=0)
+         plotter.update_coordinates(warped.points.copy(), render=False)
+         plotter.update_scalars(u.x.array, render=False)
+         plotter.write_frame()      
 
     plotter.close()
     xdmf.close()
     print()
-    return(T_array, fraction_c)
+    return(T_array, fraction_c, Vu)
+
  
 #######################################################
 def plot_T_pad(domain_pad, T_pad):
