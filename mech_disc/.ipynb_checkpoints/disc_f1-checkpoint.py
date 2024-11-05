@@ -343,7 +343,7 @@ def mesh_brake_disc(min_mesh, max_mesh, filename, mesh_type,pad_v_tag):
     return notice
 
 #########################33333333333333333#####################################################
-def target_facets(domain,x_co,y_co,S_rub_circle):
+def target_facets(domain, x_co, y_co, S_rub_circle):
     from dolfinx.mesh import locate_entities
     from dolfinx import mesh
     import numpy as np
@@ -377,7 +377,7 @@ def target_facets(domain,x_co,y_co,S_rub_circle):
        facet_markers1 = np.concatenate(D) #concatenate used to join two arrays.
 
     ####################################   7
-    b_con = 200
+    b_con = 200 #200 is the contact surface tag
     boundary20 = (b_con, lambda x:  x[2] == 20)
     facet_indices2, facet_markers2 = [], [] 
     fdim = 2  
@@ -1185,6 +1185,7 @@ def get_new_contact_nodes(x_co_zone, domain_pad, u_d, Vu, z1, x_co, y_co):
         c1 = contact_dofs[i][tem_indi] # get index for contact surface
         new_c_nodes = new_c_nodes + [c1]
     return deformed_co, new_c_nodes
+    
 ###########################################################
 def fit_circle(points):
     # points is an array, like 
@@ -1268,20 +1269,24 @@ def penalty_method_contact(z1, Vu, u_d, aM, LM, u_, bcu ):
     problem.solve()  
     return u_d
 ###########################################################
-def T_S_deformation_solve (mesh_name1, u_n, mesh_brake, pad_v_tag, z4, ):
+def T_S_deformation_solve (mesh_name1, u_n, mesh_brake, pad_v_tag, z4, u_old):
 
     gdim=3
     mesh_n_pad = mesh_del_disc(mesh_name1, "new_pad.msh")
-    T_new_p, non, pad_node_coordinates = extract_u_n(mesh_name1, u_n, pad_v_tag) 
-    #T_new_p, pad_node_coordinates  = T_pad_transfer1( mesh_name1, mesh_n_pad, u_n, mesh_brake, pad_v_tag )
+    
+    T_new_pad, non, pad_node_coordinates   = extract_u_n(mesh_name1, u_n, pad_v_tag) 
+    
+    T_old_pad, non1, pad_node_coordinates1 = extract_u_n(mesh_name1, u_old, pad_v_tag)
+    
     domain_pad, cell_mark_pad, facet_mark_pad = silent_gmshio_read_mesh( mesh_n_pad)
-    #domain_pad, cell_mark_pad, facet_mark_pad = gmshio.read_from_msh( mesh_n_pad , MPI.COMM_WORLD, 0, gdim=3 )
-
     # defin the pad domain
     VT      = fem.functionspace(domain_pad, ("CG", 1))         #define the finite element function space
     Delta_T = fem.Function(VT, name ="Temperature_variation")  # T_ is the test function, like v
-    for i in range(len(T_new_p)):
-        Delta_T.vector.array[i] = T_new_p[i]
+
+    T_new_pad_d = T_new_pad - T_old_pad
+    
+    for i in range(len(T_new_pad_d)):
+        Delta_T.x.array[i] = T_new_pad_d[i]
 
     #######try to make domain only for brake pad.
     E    = fem.Constant(domain_pad, 50e3)             # Elastic module
@@ -1317,6 +1322,7 @@ def T_S_deformation_solve (mesh_name1, u_n, mesh_brake, pad_v_tag, z4, ):
     problem = fem.petsc.LinearProblem(aM, LM, u=u_d, bcs=bcu)
     problem.solve()
     return u_d, Vu, aM, LM, bcu, u_, domain_pad 
+
 ###########################################################
 def silent_gmshio_read_mesh(mesh_name1):
     import os
