@@ -832,8 +832,8 @@ def plot_gif(V,u,gif_name):
     lighting=False,
     cmap=viridis,
     scalar_bar_args=sargs,
-    # clim=[0, max(uh.x.array)])
-    clim=[0, 200], )
+    clim=[0, 800])
+    
    return(plotter, sargs, renderer, warped, viridis, grid )
 
 #######################################################
@@ -880,7 +880,7 @@ def mesh_setup(domain, V,mesh_name1,num_steps, angular_r, mesh_name2, c_contact,
     
 #######################################################
 
-def variation_initial(V, T_init,domain, rho, c, b_con, radiation, h, k, xdmf,dt,ds,u_n, Tm,g,bc):
+def variation_initial(V, T_init,domain, rho, c, b_con, radiation, h, k, xdmf, dt, ds, u_n, Tm, g, bc):
   
     uh = fem.Function(V)
     uh.name = "uh"
@@ -939,7 +939,7 @@ def solve_heat(Ti, u_initial, num_steps, dt, x_co, y_co, angular_r, \
             pass
 
          #print(f"{i :},before rotation, x_co is {x_co_new[0]}")
-         x_co_new, y_co_new = rub_rotation(x_co_new, y_co_new, angular_r)  # update the location
+         #x_co_new, y_co_new = rub_rotation(x_co_new, y_co_new, angular_r)  # update the location
          #print(f"{i :},after rotation, before transformation, x_co is {x_co_new[0]}")
          total_degree += angular_r  # Incrementing degree in each step  
 
@@ -961,7 +961,7 @@ def solve_heat(Ti, u_initial, num_steps, dt, x_co, y_co, angular_r, \
          deformed_co, new_c   = get_new_contact_nodes(x_co_zone, domain_pad, u_d1, Vu, z1, x_co, y_co )
          # find new contact coordinates and rub radius.
          x_co_new1, y_co_new1, r_rub_new, S_total_new, S_rub_circle_new = get_r_xco_yco (deformed_co, new_c )
-         x_co_new, y_co_new = rub_rotation(x_co_new1, y_co_new1, angular_r*(i+1))
+         x_co_new, y_co_new = rub_rotation( x_co_new1, y_co_new1, total_degree)
              
          S_rub_circle = S_rub_circle_new
          fraction_c.append(  S_total_new/ 200 )
@@ -1021,8 +1021,9 @@ def solve_heat(Ti, u_initial, num_steps, dt, x_co, y_co, angular_r, \
          #warped = grid.warp_by_scalar("uh", factor=0)
          plotter.update_coordinates(warped.points.copy(), render=False)
          plotter.update_scalars(u.x.array, render=False)
-         plotter.write_frame()      
-
+         plotter.write_frame()   
+        
+   
     plotter.close()
     xdmf.close()
     print()
