@@ -832,7 +832,7 @@ def plot_gif(V,u,gif_name):
     lighting=False,
     cmap=viridis,
     scalar_bar_args=sargs,
-    clim=[0, 800])
+    clim=[0, 200])
     
    return(plotter, sargs, renderer, warped, viridis, grid )
 
@@ -1190,7 +1190,8 @@ def get_new_contact_nodes(x_co_zone, domain_pad, u_d, Vu, z1, x_co, y_co):
     
     #S_rub_circle = r_rub**2 * c_contact
     S_rub_circle = 1110.364507
-    S_rub_circle1=[S_rub_circle for _ in range(18) ] 
+
+    S_rub_circle1= [S_rub_circle for _ in range(18) ] 
     boundaries = []
     n_surface = len(S_rub_circle1)
     ## S_rub_circles1 should not change, it means the contact areas of rubbing elements, used to locate the boundaries.
@@ -1260,8 +1261,8 @@ def get_r_xco_yco(deformed_co, new_c_nodes ):
            r_rub_new.append(0)
             
     for i in range(18):
-        if r_rub_new[i] >= 19.5:
-           r_rub_new[i] = 19.5
+        if r_rub_new[i] >= 16:
+           r_rub_new[i] = 16
         else:
            r_rub_new[i] = r_rub_new[i]      
     
@@ -1345,7 +1346,7 @@ def T_S_deformation_solve (mesh_name1, u_n, mesh_brake, pad_v_tag, z4, u_old):
     def up_side(x):
         return np.isclose(x[2], z4)
 
-    up_dofs_u = fem.locate_dofs_geometrical(Vu, up_side)   # lateral sides of domain
+    up_dofs_u = fem.locate_dofs_geometrical(Vu, up_side)    # lateral sides of domain
     bcu       = [fem.dirichletbc(np.zeros((gdim,)), up_dofs_u, Vu)]  # displacement Vu is fixed in lateral sides
 
     u_d     = fem.Function(Vu, name="Displacement")
