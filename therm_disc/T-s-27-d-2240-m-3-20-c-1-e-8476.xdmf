@@ -1,0 +1,128 @@
+<?xml version="1.0"?>
+<!DOCTYPE Xdmf SYSTEM "Xdmf.dtd" []>
+<Xdmf Version="3.0" xmlns:xi="https://www.w3.org/2001/XInclude">
+  <Domain>
+    <Grid Name="mesh" GridType="Uniform">
+      <Topology TopologyType="Tetrahedron" NumberOfElements="6990" NodesPerElement="4">
+        <DataItem Dimensions="6990 4" NumberType="Int" Format="HDF">T-s-27-d-2240-m-3-20-c-1-e-8476.h5:/Mesh/mesh/topology</DataItem>
+      </Topology>
+      <Geometry GeometryType="XYZ">
+        <DataItem Dimensions="2532 3" Format="HDF">T-s-27-d-2240-m-3-20-c-1-e-8476.h5:/Mesh/mesh/geometry</DataItem>
+      </Geometry>
+    </Grid>
+    <Grid Name="f" GridType="Collection" CollectionType="Temporal">
+      <Grid Name="f" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="0" />
+        <Attribute Name="f" AttributeType="Scalar" Center="Node">
+          <DataItem Dimensions="2532 1" Format="HDF">T-s-27-d-2240-m-3-20-c-1-e-8476.h5:/Function/f/0</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="f" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="0.40463713378236538" />
+        <Attribute Name="f" AttributeType="Scalar" Center="Node">
+          <DataItem Dimensions="2532 1" Format="HDF">T-s-27-d-2240-m-3-20-c-1-e-8476.h5:/Function/f/0_40463713378236538</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="f" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="0.81762987757070216" />
+        <Attribute Name="f" AttributeType="Scalar" Center="Node">
+          <DataItem Dimensions="2532 1" Format="HDF">T-s-27-d-2240-m-3-20-c-1-e-8476.h5:/Function/f/0_81762987757070216</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="f" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="1.2395142757965887" />
+        <Attribute Name="f" AttributeType="Scalar" Center="Node">
+          <DataItem Dimensions="2532 1" Format="HDF">T-s-27-d-2240-m-3-20-c-1-e-8476.h5:/Function/f/1_2395142757965887</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="f" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="1.6708859787800909" />
+        <Attribute Name="f" AttributeType="Scalar" Center="Node">
+          <DataItem Dimensions="2532 1" Format="HDF">T-s-27-d-2240-m-3-20-c-1-e-8476.h5:/Function/f/1_6708859787800909</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="f" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="2.1124099207599492" />
+        <Attribute Name="f" AttributeType="Scalar" Center="Node">
+          <DataItem Dimensions="2532 1" Format="HDF">T-s-27-d-2240-m-3-20-c-1-e-8476.h5:/Function/f/2_1124099207599492</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="f" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="2.564832110657937" />
+        <Attribute Name="f" AttributeType="Scalar" Center="Node">
+          <DataItem Dimensions="2532 1" Format="HDF">T-s-27-d-2240-m-3-20-c-1-e-8476.h5:/Function/f/2_564832110657937</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="f" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="3.0289941265909364" />
+        <Attribute Name="f" AttributeType="Scalar" Center="Node">
+          <DataItem Dimensions="2532 1" Format="HDF">T-s-27-d-2240-m-3-20-c-1-e-8476.h5:/Function/f/3_0289941265909364</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="f" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="3.5058511105560046" />
+        <Attribute Name="f" AttributeType="Scalar" Center="Node">
+          <DataItem Dimensions="2532 1" Format="HDF">T-s-27-d-2240-m-3-20-c-1-e-8476.h5:/Function/f/3_5058511105560046</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="f" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="3.9964943519800311" />
+        <Attribute Name="f" AttributeType="Scalar" Center="Node">
+          <DataItem Dimensions="2532 1" Format="HDF">T-s-27-d-2240-m-3-20-c-1-e-8476.h5:/Function/f/3_9964943519800311</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="f" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="4.5021799719709596" />
+        <Attribute Name="f" AttributeType="Scalar" Center="Node">
+          <DataItem Dimensions="2532 1" Format="HDF">T-s-27-d-2240-m-3-20-c-1-e-8476.h5:/Function/f/4_5021799719709596</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="f" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="5.0243658446298847" />
+        <Attribute Name="f" AttributeType="Scalar" Center="Node">
+          <DataItem Dimensions="2532 1" Format="HDF">T-s-27-d-2240-m-3-20-c-1-e-8476.h5:/Function/f/5_0243658446298847</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="f" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="5.5647598334043318" />
+        <Attribute Name="f" AttributeType="Scalar" Center="Node">
+          <DataItem Dimensions="2532 1" Format="HDF">T-s-27-d-2240-m-3-20-c-1-e-8476.h5:/Function/f/5_5647598334043318</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="f" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="6.1253838744490094" />
+        <Attribute Name="f" AttributeType="Scalar" Center="Node">
+          <DataItem Dimensions="2532 1" Format="HDF">T-s-27-d-2240-m-3-20-c-1-e-8476.h5:/Function/f/6_1253838744490094</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="f" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="6.7086607451325886" />
+        <Attribute Name="f" AttributeType="Scalar" Center="Node">
+          <DataItem Dimensions="2532 1" Format="HDF">T-s-27-d-2240-m-3-20-c-1-e-8476.h5:/Function/f/6_7086607451325886</DataItem>
+        </Attribute>
+      </Grid>
+      <Grid Name="f" GridType="Uniform">
+        <xi:include xpointer="xpointer(/Xdmf/Domain/Grid[@GridType='Uniform'][1]/*[self::Topology or self::Geometry])" />
+        <Time Value="7.3175341265477591" />
+        <Attribute Name="f" AttributeType="Scalar" Center="Node">
+          <DataItem Dimensions="2532 1" Format="HDF">T-s-27-d-2240-m-3-20-c-1-e-8476.h5:/Function/f/7_3175341265477591</DataItem>
+        </Attribute>
+      </Grid>
+    </Grid>
+  </Domain>
+</Xdmf>

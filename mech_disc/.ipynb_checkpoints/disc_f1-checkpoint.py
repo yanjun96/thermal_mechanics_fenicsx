@@ -341,7 +341,8 @@ def mesh_brake_disc(min_mesh, max_mesh, filename, mesh_type,pad_v_tag):
     return notice
 
 #########################33333333333333333#####################################################
-def target_facets(domain, x_co, y_co, S_rub_circle):
+def target_facets(domain, x_co, y_co, S_rub_circle):  #difference with below targer_facets_inial is 
+    # S_rub_circle is a list in this function.
     from dolfinx.mesh import locate_entities
     from dolfinx import mesh
     import numpy as np
@@ -397,7 +398,7 @@ def target_facets(domain, x_co, y_co, S_rub_circle):
     if len(D) == 0:
        facet_markers2 = []
     else:
-       facet_markers2 = np.concatenate(D) 
+        facet_markers2 = np.concatenate(D) 
    
     
     ####################################   8
@@ -410,7 +411,7 @@ def target_facets(domain, x_co, y_co, S_rub_circle):
     return common_indices3, facet_markers3, sorted_indices3
     
 #########################33333333333333333#####################################################
-def target_facets_ini(domain,x_co,y_co,S_rub_circle_ini):
+def target_facets_ini(domain, x_co, y_co, S_rub_circle_ini):
     from dolfinx.mesh import locate_entities
     from dolfinx import mesh
     import numpy as np
@@ -740,7 +741,7 @@ def get_time_step_from_angular(angular2,mesh_max2,c_contact2):
       return (num_steps)
 
 ###################################################
-def mesh_brake_all(mesh_min, mesh_max,pad_v_tag):
+def mesh_brake_all(mesh_min, mesh_max, pad_v_tag):
    import os
    from dolfinx.io import XDMFFile, gmshio
    from mpi4py import MPI  
@@ -748,7 +749,7 @@ def mesh_brake_all(mesh_min, mesh_max,pad_v_tag):
    mesh_name1 = "m-{}.msh".format(mesh_name)
    mesh_name2 = "m-{}".format(mesh_name)
     
-   logging.getLogger("gmshio").setLevel(logging.ERROR)
+   #logging.getLogger("gmshio").setLevel(logging.ERROR)
 
    if os.path.exists(mesh_name1):
      # Run this command if the file exists
@@ -844,8 +845,9 @@ def initial_u_n(domain,Ti):
    import numpy as np
     # give the initial Temperature value to u_n
    V = fem.functionspace(domain, ("CG", 1)) # Define variational problem, CG is Lagrabge
-   Q = fem.functionspace(domain, ("DG", 0)) # projected form Q onto V, DG is discontinuous        Lagrange. 
+   Q = fem.functionspace(domain, ("DG", 0)) # projected form Q onto V, DG is discontinuous Lagrange. 
    T_init = Function(Q)  # T_init is a function, or a class
+   T_init.name = "u_n"
    T_init.x.array[:] = np.full_like(1, Ti, dtype=default_scalar_type)
    u_n = project(T_init, V)  # u_n is for initial condition and uh is the solver result.
    u_n.name = "u_n"
@@ -853,11 +855,11 @@ def initial_u_n(domain,Ti):
    return (V, T_init, u_n)
 
 #######################################################
-def mesh_setup(domain, V,mesh_name1,num_steps, angular_r, mesh_name2, c_contact,z_all, Tm, S_rub_circle_ini):
+def mesh_setup(domain, V, mesh_name1, num_steps, angular_r, mesh_name2, c_contact, z_all, Tm, S_rub_circle_ini):
     
     fdim = domain.topology.dim - 1
     ## bc_disc is zero, no any dirichlete boundary condition, z = 100, not exist
-    bc_disc = mesh.locate_entities_boundary(domain, fdim, lambda x: np.isclose(x[2], z_all*2)) 
+    bc_disc = mesh.locate_entities_boundary(domain, fdim, lambda x: np.isclose(x[2], 100)) 
     bc = fem.dirichletbc( PETSc.ScalarType(Tm), \
                          fem.locate_dofs_topological(V, fdim, bc_disc), V)
     mesh_brake = silent_meshio_read_mesh(mesh_name1)
@@ -873,10 +875,11 @@ def mesh_setup(domain, V,mesh_name1,num_steps, angular_r, mesh_name2, c_contact,
     co_ind, fa_mark, so_ind = target_facets_ini (domain, x_co, y_co, S_rub_circle_ini )
     
     facet_tag = meshtags (domain, fdim, co_ind[so_ind], fa_mark[so_ind] )
-    ds = Measure("ds", domain=domain, subdomain_data=facet_tag)
-    b_con = 200;
+    ds = Measure("ds", domain = domain, subdomain_data=facet_tag)
 
-    return(fdim, bc, mesh_brake, all_e, xdmf, x_co,y_co, ds, b_con)
+    b_con = 200
+
+    return(fdim, bc, mesh_brake, all_e, xdmf, x_co, y_co, ds, b_con)
     
 #######################################################
 
@@ -885,6 +888,7 @@ def variation_initial(V, T_init,domain, rho, c, b_con, radiation, h, k, xdmf, dt
     uh = fem.Function(V)
     uh.name = "uh"
     uh = project(T_init, V)  ##give temperature to all elements
+    t = 0
     xdmf.write_function(uh, t)
 
     # u = trial function, solution what we want to know
@@ -895,12 +899,12 @@ def variation_initial(V, T_init,domain, rho, c, b_con, radiation, h, k, xdmf, dt
 
     F = ( (rho * c) / dt[0] * inner(u, v) * dx
         + k * inner(grad(u), grad(v)) * dx
-        + h * inner(u, v) * ds(b_con)  #b_con is name of contact surfaace, 
-        + radiation * inner(u**4, v) * ds(b_con)
+        + h * inner(u, v) * ds(200)  #b_con is name of contact surfaace, 
+        + radiation * inner(u**4, v) * ds(200)
         - ( inner(f, v) * dx
            + (rho * c) / dt[0] * inner(u_n, v) * dx
-           + h * Tm * v * ds(b_con)
-           + radiation * (Tm**4) * v * ds(b_con) ) )
+           + h * Tm * v * ds(200)
+           + radiation * (Tm**4) * v * ds(200) ) )
 
     for i in list(range(1, 19)):  # before 2024/5/16
         F += (+ inner(g[0], v) * ds(10 * i) 
@@ -908,10 +912,10 @@ def variation_initial(V, T_init,domain, rho, c, b_con, radiation, h, k, xdmf, dt
               - radiation * inner( (u**4 - Tm**4), v) * ds(10 * i) )
 
     problem = NonlinearProblem(F, u, bcs=[bc])
-    return (problem, u,v,f,n_vector)
+    return (problem, u, v, f, n_vector)
      
 #######################################################
-def solve_heat(Ti, u_initial, num_steps, dt, x_co, y_co, angular_r, \
+def solve_heat1(Ti, u_initial, num_steps, dt, x_co, y_co, angular_r, \
                t_brake, domain, S_rub_circle, fdim,\
                rho, c, v, radiation, k, h, f, Tm, g,\
                ds, xdmf, b_con, bc, plotter, warped,\
@@ -991,12 +995,12 @@ def solve_heat(Ti, u_initial, num_steps, dt, x_co, y_co, angular_r, \
 
          F = ((rho * c) / dt[i] * inner(u, v) * dx
              + k * inner(grad(u), grad(v)) * dx
-             + h * inner(u, v) * ds(b_con)
-             + radiation * inner(u**4, v) * ds(b_con)
+             + h * inner(u, v) * ds(200)
+             + radiation * inner(u**4, v) * ds(200)
              - ( inner(f, v) * dx
                  + (rho * c) / dt[i] * inner(u_n, v) * dx
-                 + h * Tm * v * ds(b_con)
-                 + radiation * (Tm**4) * v * ds(b_con)) )
+                 + h * Tm * v * ds(200)
+                 + radiation * (Tm**4) * v * ds(200)) )
 
          for j in list(range(1, 19)):
              #F += -k * dot(grad(u) * v, n_vector) * ds(10 * j) - inner(g[i], v) * ds(10 * j)
@@ -1186,25 +1190,22 @@ def get_new_contact_nodes(x_co_zone, domain_pad, u_d, Vu, z1, x_co, y_co):
     #print('2: Length of contact indices is '  , len(contact_indices))
     #print('3: Length of u_d:  '               , len(deformed_co) )
     #print('4: Length of domain_pad: '         , len( original_co ) )
-    #print('5: Length of contact_co: '         , len( contact_co  ) )
+    #print('5: Length of contact_co: '         , len( contact_co  ) )    
     
-    #S_rub_circle = r_rub**2 * c_contact
-    S_rub_circle = 1110.364507
-
-    S_rub_circle1= [S_rub_circle for _ in range(18) ] 
+    S_rub_circle1 = 353.44   #S_rub_circle = r_rub**2 * c_contact
     boundaries = []
-    n_surface = len(S_rub_circle1)
+
     ## S_rub_circles1 should not change, it means the contact areas of rubbing elements, used to locate the boundaries.
-    for j in range( n_surface): # boundaries include (marker, locator) 
-            boundaries.append  ( lambda x,j=j: (x[0]-x_co[j])**2 +(x[1]-y_co[j])**2 <= S_rub_circle1[j])  
+    for j in range( 18): # boundaries include (marker, locator) 
+            boundaries.append  ( lambda x,j=j: (x[0]-x_co[j])**2 +(x[1]-y_co[j])**2 <= S_rub_circle1)  
     contact_dofs = []  
-    for j in range( n_surface):
+    for j in range( 18):
             contact_dofs.append( fem.locate_dofs_geometrical(Vu, boundaries[j])  )
     ############################
     
     new_c_nodes = []
     for i in range( 18):
-        contact_nodes_colum = deformed_co [contact_dofs [i]]  # cplumn nodes, not only in surface
+        contact_nodes_colum = deformed_co [contact_dofs [i]]  # column nodes, not only in surface
         tem_indi            = []
         new_contact         = []
         for j in range( len( contact_nodes_colum)):
