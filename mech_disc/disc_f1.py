@@ -1304,6 +1304,7 @@ def penalty_method_contact(z1, Vu, u_d, aM, LM, u_, bcu ):
 def T_S_deformation_solve (mesh_name1, u_n, mesh_brake, pad_v_tag, z4, u_old):
 
     gdim=3
+    
     mesh_n_pad = mesh_del_disc(mesh_name1, "new_pad.msh")
     
     T_new_pad, non, pad_node_coordinates   = extract_u_n(mesh_name1, u_n, pad_v_tag) 
