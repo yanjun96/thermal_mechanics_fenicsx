@@ -992,6 +992,8 @@ def solve_heat(Ti, u, num_steps, dt, x_co, y_co, angular_r, \
                  + (rho * c) / dt[i] * inner(u_n, v) * dx  #!!!!!!!!!!!!   u_n need to double check
                  + h * Tm * v * ds(b_con)
                  + radiation * (Tm**4) * v * ds(b_con)) )
+        
+         g[i] = g[i]/ fraction_c1
 
          for j in list(range(1, 19)):
              #F += -k * dot(grad(u) * v, n_vector) * ds(10 * j) - inner(g[i], v) * ds(10 * j)
@@ -1249,7 +1251,7 @@ def get_r_xco_yco(deformed_co, new_c_nodes ):
     no_0_r_rub = list(filter(lambda x: x!=0, r_rub_new1))  ## if contact points are 0, we do not add contact radius
     
     for i in range(18):
-        if (r_rub_new1[i] > 0) and (r_rub_new1[i] <19.5 ): 
+        if (r_rub_new1[i] > 0) and (r_rub_new1[i] <22 ): 
             r_rub_new.append( r_rub_new1[i] + 5.247795572777777 ) 
             # have to add a number, which is equal to mesh_max. this number \
             # can get through num_steps = 1, and see what is the r_rub_new

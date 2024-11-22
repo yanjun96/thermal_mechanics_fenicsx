@@ -992,6 +992,8 @@ def solve_heat(Ti, u, num_steps, dt, x_co, y_co, angular_r, \
                  + (rho * c) / dt[i] * inner(u_n, v) * dx  #!!!!!!!!!!!!   u_n need to double check
                  + h * Tm * v * ds(b_con)
                  + radiation * (Tm**4) * v * ds(b_con)) )
+        
+         g[i] = g[i]/ fraction_c1
 
          for j in list(range(1, 19)):
              #F += -k * dot(grad(u) * v, n_vector) * ds(10 * j) - inner(g[i], v) * ds(10 * j)
