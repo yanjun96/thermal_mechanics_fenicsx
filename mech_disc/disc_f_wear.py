@@ -7,7 +7,7 @@ def solve_heat(Ti, u, num_steps, dt, x_co, y_co, angular_r, \
                rho, c, v, radiation, k, h, f, Tm, g,\
                ds, xdmf, b_con, bc, plotter, warped,\
                mesh_name1, mesh_brake, pad_v_tag, z4,\
-               z1, x_co_zone, u_n, alpha_thermal, penalty_param, P ):
+               z1, x_co_zone, u_n, alpha_thermal, penalty_param, P, k_wear ):
     import numpy as np
   
     T_array = [(0, [Ti for _ in range(len(u.x.array))])]
@@ -32,7 +32,7 @@ def solve_heat(Ti, u, num_steps, dt, x_co, y_co, angular_r, \
             d_wear = []
              
 
-         K = 6.7e-6                    # no dimension
+         K = k_wear                    # no dimension
          W = P[i] * 200/10000          # 2.74 mpa/ 200 cm2  
          d1 = angular_r * 251.5/ 1000  # m
          H = (2.8e8) / 3               # N/m2, yield strength / 3
@@ -54,7 +54,8 @@ def solve_heat(Ti, u, num_steps, dt, x_co, y_co, angular_r, \
          u_d1 = penalty_method_contact(z1, Vu, u_d0, aM, LM, u_, bcu, penalty_param )
              
          # calculate new contact coordinates and contact incicies of u_d, deformation.
-         deformed_co, new_c   = get_new_contact_nodes(x_co_zone, domain_pad, u_d1, Vu, z1, \
+         new_contact_zone = x_co_zone + d_wear0
+         deformed_co, new_c   = get_new_contact_nodes( new_contact_zone, domain_pad, u_d1, Vu, z1, \
                                                       x_co, y_co, S_rub_circle, i  )
          # find new contact coordinates and rub radius.
          x_co_new1, y_co_new1, r_rub_new, S_total_new, S_rub_circle_new = get_r_xco_yco (deformed_co, new_c )
@@ -75,8 +76,8 @@ def solve_heat(Ti, u, num_steps, dt, x_co, y_co, angular_r, \
             {round(hours)} hours {round(min)} min. Start: {formatted_start_time }."
          else:
             progress_message = f"1: Progress: {round(100 * (t / t_brake), 1)}%. Use time: \
-            {round(elapsed_time1)} s. Start: {formatted_start_time }."
-         sys.stdout.write(f"\r{progress_message.ljust(80)}")  # 80 spaces to ensure full clearing
+            {round(elapsed_time1)} s. Start: {formatted_start_time }\n."
+         sys.stdout.write(f"\r{progress_message.ljust(80)},\n")  # 80 spaces to ensure full clearing
          sys.stdout.flush()
 
            
