@@ -91,8 +91,8 @@ def vehicle_initial(angular_r, v_vehicle, c_contact, c_acc):
     k = 48 / t_u
     # mu, P_brake,  r_disc , heat_distribution  
     mu = 0.376
-    P_initial = 274000
-    r_disc = 0.25
+    P_initial = 274000  # Pa
+    r_disc = 0.25       #average radius of disc (330+175)/2, unit is m
     heat_distribution = 0.88
     # calculate total num_steps
     if c_acc == 1:  # constant acc for the whole process
