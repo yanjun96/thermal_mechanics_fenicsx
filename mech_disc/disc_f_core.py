@@ -1,10 +1,14 @@
 ################################################################
+from disc_f import *
+
+
 def solve_heat(Ti, u, num_steps, dt, x_co, y_co, angular_r, \
                t_brake, domain, S_rub_circle, fdim,\
                rho, c, v, radiation, k, h, f, Tm, g,\
                ds, xdmf, b_con, bc, plotter, warped,\
                mesh_name1, mesh_brake, pad_v_tag, z4,\
                z1, x_co_zone, u_n, alpha_thermal, penalty_param ):
+    import numpy as np
   
     T_array = [(0, [Ti for _ in range(len(u.x.array))])]
     total_degree = 0
@@ -112,36 +116,9 @@ def solve_heat(Ti, u, num_steps, dt, x_co, y_co, angular_r, \
     return(T_array, fraction_c, deformed_co,u_d1  )
 
 ################################################################
+
 def get_new_contact_nodes(x_co_zone, domain_pad, u_d, Vu, z1, x_co, y_co, S_rub_circle, i):
-    # x_co_zone is the tolerance for contact range in z direction, z+ or z- x_contact_zone is range of contact condition
-    gdim,fdim = 3,2
-    original_co = domain_pad.geometry.x         # Initial coordinates of nodes (N x 3 array)
-    u_d_vals    = u_d.x.array.reshape(-1, gdim) # Displacements (N x 3 array)
-    deformed_co = original_co + u_d_vals        # Coordinates of deformed mesh
-
-    low_contact_bool  =  (deformed_co[:, 2] < (z1+x_co_zone)) 
-    high_contact_bool =  (deformed_co[:, 2] > (z1-x_co_zone)) 
-    contact_boolean   =  low_contact_bool  &  high_contact_bool 
-    contact_indices   =  np.where(contact_boolean)[0]  #contact indicies, from all nodes
-    contact_co        =  original_co [ contact_indices ]
-    
-    if i == 0:
-            S_rub_circle  = 353.44
-            S_rub_circle1 = [S_rub_circle for _ in range(18) ] 
-    else:
-            S_rub_circle1 =  S_rub_circle   #S_rub_circle = r_rub**2 * c_contact
-            #S_rub_circle1 = [353.44 for _ in range(18) ] 
-    
-
-    boundaries = []
-
-    for j in range( 18): # boundaries include (marker, locator) 
-            boundaries.append  ( lambda x,j=j: (x[0]-x_co[j])**2 +(x[1]-y_co[j])**2 <= S_rub_circle1[j])  
-    contact_dofs = []  
-    for j in range( 18):
-            contact_dofs.append( fem.locate_dofs_geometrical(Vu, boundaries[j])  )
-    ############################
-    def get_new_contact_nodes(x_co_zone, domain_pad, u_d, Vu, z1, x_co, y_co, S_rub_circle, i):
+    import numpy as np
     # x_co_zone is the tolerance for contact range in z direction, z+ or z- x_contact_zone is range of contact condition
     gdim,fdim = 3,2
     original_co = domain_pad.geometry.x         # Initial coordinates of nodes (N x 3 array)
