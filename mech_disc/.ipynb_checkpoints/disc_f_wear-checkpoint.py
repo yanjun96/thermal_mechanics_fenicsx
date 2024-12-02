@@ -7,7 +7,7 @@ def solve_heat(Ti, u, num_steps, dt, x_co, y_co, angular_r, \
                rho, c, v, radiation, k, h, f, Tm, g,\
                ds, xdmf, b_con, bc, plotter, warped,\
                mesh_name1, mesh_brake, pad_v_tag, z4,\
-               z1, x_co_zone, u_n, alpha_thermal, penalty_param, P, k_wear ):
+               z1, x_co_zone, u_n, alpha_thermal, penalty_param, P, k_wear, wear_f ):
     import numpy as np
   
     T_array = [(0, [Ti for _ in range(len(u.x.array))])]
@@ -54,7 +54,11 @@ def solve_heat(Ti, u, num_steps, dt, x_co, y_co, angular_r, \
          u_d1 = penalty_method_contact(z1, Vu, u_d0, aM, LM, u_, bcu, penalty_param )
              
          # calculate new contact coordinates and contact incicies of u_d, deformation.
-         new_contact_zone = x_co_zone + d_wear0
+         if wear_f == "on" :
+             new_contact_zone = x_co_zone + d_wear0
+         else:
+             new_contact_zone = x_co_zone
+        
          deformed_co, new_c   = get_new_contact_nodes( new_contact_zone, domain_pad, u_d1, Vu, z1, \
                                                       x_co, y_co, S_rub_circle, i  )
          # find new contact coordinates and rub radius.
@@ -62,8 +66,8 @@ def solve_heat(Ti, u, num_steps, dt, x_co, y_co, angular_r, \
          S_rub_circle = S_rub_circle_new
          x_co_new, y_co_new = rub_rotation(x_co_new1, y_co_new1, total_degree)
         
-         r_square = r_rub_new**2
-         fraction_c1 = S_total_new /200
+         r_square = r_rub_new ** 2
+         fraction_c1 = S_total_new / 200
          fraction_c.append(fraction_c1)
          # Construct the message     
          end_time = time.time()
