@@ -33,11 +33,11 @@ def solve_heat(Ti, u, num_steps, dt, x_co, y_co, angular_r, \
              
 
          K = k_wear                    # no dimension
-         W = P[i] * 200/10000          # 2.74 mpa/ 200 cm2  
-         d1 = angular_r * 251.5/ 1000  # m
-         H = (2.8e8) / 3               # N/m2, yield strength / 3
+         W = P[i] * 200/10000          # 0.274 mpa/ 200 cm2  
+         d1 = angular_r * 251.5        # mm
+         H = (2.8e8) / 3 /(1e6)        # N/mm2, yield strength / 3
          V_wear = K * W * d1 / H       # wear volume, m3
-         d_wear0 = V_wear*(1e9) / (200*100 /friction_c1) 
+         d_wear0 = V_wear/(200*100)
          d_wear.append(d_wear0)
    
          total_degree += angular_r  # Incrementing degree in each step  
