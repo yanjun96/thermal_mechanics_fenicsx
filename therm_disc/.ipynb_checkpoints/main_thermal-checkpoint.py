@@ -448,7 +448,7 @@ def main_thermal(pa, type, angular1, mesh_max1, c_contact1):
           destination_dir = "/home/yanjun/documents/sim_results/implicit_dx"
 
       if type == "contact_area" :
-          destination_dir = "/home/yanjun/documents/sim_results/implicit_dc"
+          destination_dir = "/home/yanjun/documents/sim_results/thermal_2024/dc_2025"
     
       
       # Create the new folder in the destination directory
