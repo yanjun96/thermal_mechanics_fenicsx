@@ -438,7 +438,7 @@ def main_thermal(pa, type, angular1, mesh_max1, c_contact1):
       
       #### move files
       # Define the source directory
-      source_dir = "/home/yanjun/documents/fenicsx/project/therm_disc"
+      source_dir = "/home/yanjun/documents/fenicsx/therm_disc/"
       
       # Define the destination directory
       if type == "time_step" :
