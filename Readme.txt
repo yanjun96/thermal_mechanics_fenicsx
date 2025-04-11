@@ -5,11 +5,6 @@ Location: KTH Royal Institute of Technology, Stockholm, Sweden
 Overview
 This repository is designed to model and calculate the temperature and deformation of thermo-mechanical coupled applications using FEM(finite element method). For now, the railway brake discs is the example because its strong thermo-mechanical effects. 
 
-
-Methodology
-The solution is based on the FEniCSx framework, which enables the efficient computation of coupled thermal and mechanical problems using FEM. This tool provides a powerful platform for solving complex partial differential equations, making it ideal for simulating the thermal and structural response of railway brake discs under operational loads.
-
-
 Acknowledgements
 Special thanks to the developers of FEniCSx for creating this invaluable tool that enables cutting-edge research in computational mechanics.
 
