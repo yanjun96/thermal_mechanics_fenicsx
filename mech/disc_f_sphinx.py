@@ -1,0 +1,973 @@
+# This file is the library functions for Disc calculation
+# Author:      yanjun
+# Start:       2024-03-01
+# Last update: 2024-05-01
+# Location:    Stockholm
+# Institute:   KTH Royal Institute of Technology
+# Github:      https://github.com/Yanjun96/FEniCSx.git
+
+import dolfinx
+print(f"DOLFINx version: {dolfinx.__version__}")
+
+# import basic
+import pyvista
+import ufl
+import dolfinx
+import time
+import sys
+import os
+import shutil
+import numpy as np
+import matplotlib.pyplot as plt
+import meshio
+import logging
+
+# import special library
+from dolfinx.fem.petsc import (
+    LinearProblem,
+    assemble_vector,
+    assemble_matrix,
+    create_vector,
+    apply_lifting,
+    set_bc,
+)
+from dolfinx import fem, mesh, io, plot, default_scalar_type, nls, log
+from dolfinx.fem import (
+    Constant,
+    dirichletbc,
+    Function,
+    FunctionSpace,
+    form,
+    locate_dofs_topological,
+)
+from dolfinx.io import XDMFFile, gmshio
+from dolfinx.mesh import locate_entities, locate_entities_boundary, meshtags
+from ufl import (
+    SpatialCoordinate,
+    TestFunction,
+    TrialFunction,
+    dx,
+    grad,
+    inner,
+    Measure,
+    dot,
+    FacetNormal,
+)
+from dolfinx.fem.petsc import NonlinearProblem
+from dolfinx.nls.petsc import NewtonSolver
+from petsc4py import PETSc
+from mpi4py import MPI
+
+os.environ["GMSH_VERBOSITY"] = "0"
+
+start_time = time.time()
+t = 0 #xdmf.write_function(uh, t)
+from dolfinx import log
+
+log.set_log_level(log.LogLevel.ERROR)  # Disable INFO and lower logs
+
+print("Simulation environment setup complete.")
+
+######################################################################################
+def vehicle_initial(angular_r, v_vehicle, c_contact, c_acc):
+    """
+    Initialize vehicle braking parameters for thermal simulation.
+    
+    Args:
+        angular_r (float): Angular rotation per time step (degrees)
+        v_vehicle (float): Vehicle speed (km/h)
+        c_contact (float): Contact area coefficient
+        c_acc (int): Acceleration flag (1=full acc, 0=no acc)
+        
+    Returns:
+        tuple: Contains time steps, pressures, heat sources, step counts, 
+               convection/radiation coefficients, velocities, temperatures,
+               material properties and geometry parameters
+    """
+    import numpy as np
+    v_ini = v_vehicle/3.6   /   (920/2/1000) 
+    # D_wheel = 920 mm, v = D_wheel /2 /1000 * v_ini *3.6   # km/h
+    # Start time, Final time  
+    t = 0
+    t_brake = 49
+    t_lag = 4
+    # rubbing element radius, Contact area 
+    r_rub = 18.8
+    S_rub_circle = r_rub**2 * c_contact
+    S_total = S_rub_circle * np.pi * 18  #mm2
+    # initial and brake pad temperature
+    Ti = 60
+    Tm = 60
+    # density (kg.m^-3), capacity (J/Kg.K), conductivity (W/m.K)
+    t_u = 1e3 # m to mm
+    rho = 7850 /(t_u**3)
+    c = 462
+    k = 48 / t_u
+    # mu, P_brake,  r_disc , heat_distribution  
+    mu = 0.376
+    P_initial = 274000  # Pa
+    r_disc = 0.25       #average radius of disc (330+175)/2, unit is m
+    heat_distribution = 0.88
+    # calculate total num_steps
+    if c_acc == 1:  # constant acc for the whole process
+        acc = v_ini/t_brake
+        v_lag_end = (v_ini - (acc *t_lag) )   
+        angular_r_rad = angular_r/180*np.pi  
+        dt_lag = angular_r_rad  /  ( ( v_ini + v_lag_end  ) /2 )
+        n_lag = round (t_lag / dt_lag) + 1 
+        dt_a_lag = angular_r_rad  /  ( v_lag_end /2 )
+        n_a_lag =  round ( (t_brake - t_lag) / dt_a_lag ) + 1
+        num_steps = n_lag + n_a_lag
+        dt = []
+        v_angular = [v_ini]
+        for i in range(num_steps):
+            dt.append ( angular_r_rad / v_angular[i] )
+            v_angular.append (  v_ini- sum(dt) * acc )           
+        P = []
+        for i in range(num_steps):
+            if i <= n_lag:
+                #P.append( P_initial/ n_lag * (i**(1/3)) )  ## no linear
+                P.append( P_initial/ n_lag * (i**(1)) ) 
+            else:
+                P.append( P_initial) 
+                
+    else:  
+        acc = v_ini/(t_brake-t_lag)
+        v_lag_end = (v_ini - (acc *t_lag)*c_acc ) 
+        acc_a_lag = v_lag_end / (t_brake-t_lag)
+       
+        angular_r_rad = angular_r/180*np.pi  
+        dt_lag = angular_r_rad  /  ( ( v_ini + v_lag_end  ) /2 )
+        # number of time step needed during lag
+        n_lag = round (t_lag / dt_lag) + 1   
+        dt_a_lag = angular_r_rad  /  ( v_lag_end /2 )
+        n_a_lag =  round ( (t_brake - t_lag) / dt_a_lag ) + 1
+        # number of time step needed after lag
+        num_steps = n_lag + n_a_lag
+        P = []
+        for i in range(num_steps):
+            if i <= n_lag:
+                P.append( P_initial/ n_lag * i )
+            else:
+                P.append( P_initial) 
+        dt = []
+        v_angular = [v_ini]
+        for i in range(num_steps):
+            if i <= n_lag:
+               dt.append ( angular_r_rad / v_angular[i] )
+               v_angular.append (  v_ini-sum(dt)*acc*c_acc )
+            else:
+               dt.append ( angular_r_rad / v_angular[i] )
+               v_angular.append (  v_lag_end- (sum(dt) - t_lag) * acc_a_lag )
+        
+    # S_or is the original brake pad rubbing area, 200 cm2. 
+    S_or = 200
+    S_new = S_total/100 #mm2 to cm2
+    # g is the heat source,unit is w/mm2 
+    g = []
+    for i in range(num_steps):
+        g.append ( mu * P[i] * v_angular[i] * r_disc * heat_distribution *2 /(t_u**2)  * (S_or/S_new) )
+        
+    #  h is the heat convection coefficient, unit is W/mm2 K  
+    h = 7.75e-5
+    # radiation is the radiation heat coefficient, unit is W/mm2 K
+    # stefan-Boltzmann constant theta = 5.67*10e-8 w/m2 k-4,   0.64 is the emmissivity
+    radiation = 5.670*(10e-8)/(t_u**2)  * 0.64
+
+    return dt,P,g,num_steps,h,radiation,v_angular,Ti,Tm,S_rub_circle,t,rho,c,k,t_brake,S_total
+
+
+#################################################################################################################  2
+def rub_rotation(x, y, rotation_degree):
+    """
+    Rotate x,y coordinates by specified angle.
+    
+    Args:
+        x (array): X coordinates
+        y (array): Y coordinates  
+        rotation_degree (float): Rotation angle in degrees
+        
+    Returns:
+        tuple: Rotated x and y coordinates
+    """
+    import numpy as np
+  
+    # Define the rotation angle in radians (rotation_degree per second)
+    rotation_radian = rotation_degree / 360 * 2 * np.pi
+    angle = rotation_radian  # 1 radian
+
+    # Define the rotation matrix
+    r_matrix = np.array([[np.cos(angle), -np.sin(angle)],
+                    [np.sin(angle), np.cos(angle)]])
+    
+    points = np.vstack((x, y))
+
+    # Perform the rotation
+    r_points = r_matrix @ points
+
+    # Separate the rotated x and y coordinates
+    x1 = r_points[0, :]
+    y1 = r_points[1, :]
+    return x1, y1
+
+#################################################################################################################  3
+def get_rub_coordinate():
+    """
+    Get coordinates of rubbing elements from embedded GMSH cylinder definitions.
+    
+    Returns:
+        tuple: Lists of x and y coordinates for all rubbing elements
+    """
+    import re
+    # Sample text containing cylinder data
+    text = """
+    rub1  = gmsh.model.occ.addCylinder(214,27,z1,           0, 0, z2,  r_rub)
+    rub2  = gmsh.model.occ.addCylinder(258,22,z1,           0, 0, z2,  r_rub)
+    rub3  = gmsh.model.occ.addCylinder(252,63,z1,           0, 0, z2,  r_rub)
+    rub4  = gmsh.model.occ.addCylinder(197, 66, z1,         0, 0, z2,  r_rub)
+    rub5  = gmsh.model.occ.addCylinder(262, 105, z1,        0, 0, z2,  r_rub)
+    rub6  = gmsh.model.occ.addCylinder(222,99, z1,          0, 0, z2,  r_rub)
+    rub7  = gmsh.model.occ.addCylinder(240,148, z1,         0, 0, z2,  r_rub)
+    rub8  = gmsh.model.occ.addCylinder(202,135, z1,         0, 0, z2,  r_rub)
+    rub9  = gmsh.model.occ.addCylinder(168,111, z1,         0, 0, z2,  r_rub)
+    rub10 = gmsh.model.occ.addCylinder(66.25,250.47,z1,     0, 0, z2,  r_rub)
+    rub11 = gmsh.model.occ.addCylinder(138.27,146.38,z1,    0, 0, z2,  r_rub)
+    rub12 = gmsh.model.occ.addCylinder(167.81,175.7, z1,    0, 0, z2,  r_rub)
+    rub13 = gmsh.model.occ.addCylinder(187.21, 210.86, z1,  0, 0, z2,  r_rub)
+    rub14 = gmsh.model.occ.addCylinder(135.83,201.65, z1,   0, 0, z2,  r_rub)
+    rub15 = gmsh.model.occ.addCylinder(98.99,182.76, z1,    0, 0, z2,  r_rub)
+    rub16 = gmsh.model.occ.addCylinder(105.58,237.44, z1,   0, 0, z2,  r_rub)
+    rub17 = gmsh.model.occ.addCylinder(148.68,240, z1,      0, 0, z2,  r_rub)
+    rub18 = gmsh.model.occ.addCylinder(63.53, 206.27, z1,   0, 0, z2,  r_rub)
+    """
+    x_coor = [214.0, 258.0, 252.0, 197.0, 262.0, 
+             222.0, 240.0, 202.0, 168.0, 
+             66.25, 138.27, 167.81, 187.21, 135.83, 
+             98.99, 105.58, 148.68, 63.53]
+    y_coor = [27.0, 22.0, 63.0, 66.0, 105.0,
+             99.0, 148.0, 135.0, 111.0,
+             250.47, 146.38, 175.7, 210.86, 201.65,
+             182.76, 237.44, 240.0, 206.27]
+    # Regular expression pattern to extract x and y coordinates
+    pattern = r"addCylinder\(([\d.]+),\s*([\d.]+),"
+
+    # Find all matches in the text
+    matches = re.findall(pattern, text)
+
+    # Extract x and y coordinates from matches
+    x_co = [float(match[0]) for match in matches]
+    y_co = [float(match[1]) for match in matches]
+    return x_co, y_co
+
+#####################################################################################################################  4
+def find_common_e(bcs, bcs_lists):
+    """
+    Find common elements between boundary condition sets.
+    
+    Args:
+        bcs (set): Primary boundary condition set
+        bcs_lists (list): List of boundary condition sets to compare
+        
+    Returns:
+        list: Common elements found in all sets
+    """
+    # Create set for bcs
+    set_bcs = set(tuple(bcs))
+        # Initialize the union set with the set of bcs
+    union = set()
+    # Iterate through the list of lists
+    for bc in bcs_lists:
+        # Convert current list to set
+        set_bc = set(tuple(bc))
+        
+        # Update the union set with the current list
+        union = union.union(set_bc)
+    
+    # Find the common elements with bcs
+    common_e = set_bcs.intersection(union)
+    common_e_list = list(common_e)
+    
+    return common_e_list
+
+#########################################################################################################################   5
+def mesh_brake_disc(min_mesh, max_mesh, filename, mesh_type,pad_v_tag):   
+    """
+    Generate 3D brake disc mesh with GMSH.
+    
+    Args:
+        min_mesh (float): Minimum mesh size
+        max_mesh (float): Maximum mesh size  
+        filename (str): Output filename
+        mesh_type (str): 'hexa' or 'tetra' mesh type
+        pad_v_tag (int): Physical group tag for brake pad volume
+        
+    Returns:
+        int: Status code from GMSH write operation
+    """
+    import gmsh
+    import sys
+    import math
+    import os
+    import numpy as np
+    
+    gmsh.initialize()
+    # all the unit is mm
+    # z1, z2, z3 is the height of brake disc, rubbing elemetn, pad lining in Z direction
+    # rd_outer, rd_inner is for brake disc, rp_outer, rp_inner is for brake pad radiu. r_rub is for rubbing elements
+    # angle1 is brake pad in degree system, angle is in radians system
+    
+    z1, z2, z3 = 20, 33, 30
+    rd_o, rd_i = 320, 175 
+    r_rub = 18.8
+    rp_o, rp_i = 303, 178
+    
+    angle1 = 80
+    angle = angle1 / 360 * 2 * math.pi
+    
+    # gmsh.model.occ.addCylinder
+    # x (double), y (double), z (double), dx (double), dy (double), dz (double),
+    # r (double), tag = -1 (integer), angle = 2*pi (double)
+    
+    # brake disc
+    outer_disc  = gmsh.model.occ.addCylinder(0,0,0,  0, 0, z1,  rd_o)
+    inner_disc  = gmsh.model.occ.addCylinder(0,0,0,  0, 0, z1,  rd_i)
+    disk = gmsh.model.occ.cut([(3, outer_disc)], [(3, inner_disc)])
+    
+    # rubbing elements
+    x_co, y_co = get_rub_coordinate()
+    
+    rub_list = []
+    for i, (x, y) in enumerate(zip(x_co, y_co), start=1):
+       var_name = f"rub{i}"
+       tag = gmsh.model.occ.addCylinder(x, y, z1, 0, 0, z2, r_rub)
+       globals()[var_name] = tag
+       rub_list.append(globals()[var_name])
+    
+    # brake pad, in [(3, )],3 means dimension, cut the common place, out - inner
+    outer_pad  = gmsh.model.occ.addCylinder(0,0,z1+z2,  0, 0, z3,  rp_o, 50, angle)
+    inner_pad  = gmsh.model.occ.addCylinder(0,0,z1+z2,  0, 0, z3,  rp_i, 51, angle)
+    pad = gmsh.model.occ.cut([(3, outer_pad)], [(3, inner_pad)]) 
+    
+    # Initialize the shell with the first rub
+    rub_list = [rub1, rub2, rub3, rub4, rub5, rub6, rub7, 
+                rub8, rub9, rub10, rub11, rub12, rub13, rub14, rub15, rub16, rub17, rub18]
+    shell = gmsh.model.occ.fuse([(3, outer_pad)], [(3, rub_list[0])], 70)
+    for i in range(len(rub_list) - 1):
+        shell = gmsh.model.occ.fuse([(3, 70 + i)], [(3, rub_list[i + 1])], 71 + i)
+    gmsh.model.occ.synchronize()
+    
+    # Add physical group, this step should after synchronize to make sure success
+    # https://gitlab.onelab.info/gmsh/gmsh/blob/master/tutorials/python/t1.py#L115
+    
+    # Volumes: 31,32 brake disc and pad.
+    disc_v_tag = 31  #volume tag
+    pad_v_tag  = 32  #volume tag
+    volumes = gmsh.model.occ.getEntities(dim = 3)
+    gmsh.model.addPhysicalGroup(3, volumes[0],  disc_v_tag)
+    gmsh.model.addPhysicalGroup(3, volumes[1],  pad_v_tag)
+    
+    # Surfaces: brake disc, 21 = friction surface
+    surfaces = gmsh.model.occ.getEntities(dim = 2)
+    gmsh.model.addPhysicalGroup(2, (2,6), 21)
+    
+    # Rubbing elements, from 1 to 19, here 32 is the origin name tag of rub surface(32-49)
+    rublist = list(range(pad_v_tag,pad_v_tag+18))
+    for rub in rublist:
+        gmsh.model.addPhysicalGroup(2, (2, rub), rub-31)
+
+    if mesh_type == 'hexa':
+       gmsh.option.setNumber("Mesh.SubdivisionAlgorithm", 2)
+    
+    # for the rubbing elements, P13 of UIC 541-3
+    # Sinter material, 200 cm2, 18 rubbing elemets, r = 1.88 cm
+    # Mesh size
+    gmsh.option.setNumber("Mesh.MeshSizeMin", min_mesh)
+    gmsh.option.setNumber("Mesh.MeshSizeMax", max_mesh)
+    
+    # Mesh file save
+    gmsh.model.mesh.generate(3)
+    c = gmsh.write(filename + ".msh")
+    notice = print("NOTICE:" + filename + " has been meshed successfully and saved as " + filename + ".msh")   
+  
+    gmsh.finalize()
+    
+    return c
+    return notice
+
+#########################33333333333333333#####################################################
+def target_facets(domain, x_co, y_co, S_rub_circle):  #difference with below targer_facets_inial is 
+    """
+    Locate facets on contact surface and apply markers.
+    
+    Args:
+        domain: Mesh domain
+        x_co (list): X coordinates of rubbing elements
+        y_co (list): Y coordinates of rubbing elements
+        S_rub_circle (list): Contact area for each rubbing element
+        
+    Returns:
+        tuple: Contains facet indices, markers and sorted indices
+    """
+    # S_rub_circle is a list in this function.
+    from dolfinx.mesh import locate_entities
+    from dolfinx import mesh
+    import numpy as np
+    
+    boundaries = []
+    # boundaries is a list, each term style is (marker, lambdax)
+    for j in range(18):
+        boundaries.append  (  ( (j+1)*10, lambda x,j=j: (x[0]-x_co[j])**2 +(x[1]-y_co[j])**2 <= S_rub_circle[j])  )
+ 
+    facet_indices1, facet_markers1 = [], [] 
+    fdim = 2 
+    for (marker, locator) in boundaries:
+        facets = locate_entities(domain, fdim, locator) # array with column indices  
+        facet_indices1.append(facets) # array with 18 locator for column
+        facet_markers1.append(np.full_like(facets, marker))
+    facet_indices1 = np.hstack(facet_indices1).astype(np.int32)
+    facet_markers1 = np.hstack(facet_markers1).astype(np.int32)
+            
+    A1 = facet_indices1 # array, with 18 column indices
+    B  = facet_markers1 # array, with markers, like 10, 20
+    C  = mesh.locate_entities_boundary(domain, fdim, lambda x: np.isclose(x[2], 20) )  # array, with contact surface
+
+    common_indices1 = np.intersect1d(A1,C)  # find common contact surfaces
+    D = []
+    for index in common_indices1:
+        rows_A1 = np.where(A1 == index)
+        D.append( B[rows_A1] )
+    if len(D) == 0:
+       facet_markers1 = []
+    else:
+       facet_markers1 = np.concatenate(D) #concatenate used to join two arrays.
+
+    ####################################   7
+    b_con = 200 #200 is the contact surface tag
+    boundary20 = (b_con, lambda x:  x[2] == 20)
+    facet_indices2, facet_markers2 = [], [] 
+    fdim = 2  
+    for (marker, locator) in [boundary20]:
+        facets = locate_entities(domain, fdim, locator)   
+        facet_indices2.append(facets)
+        facet_markers2.append(np.full_like(facets, marker)) 
+    facet_indices2 = np.hstack(facet_indices2).astype(np.int32)
+    facet_markers2 = np.hstack(facet_markers2).astype(np.int32)
+
+    A1 = facet_indices2
+    B  = facet_markers2
+    B1 = common_indices1
+    common_indices2 = np.setdiff1d(A1,B1)
+    D  = []
+    for index in common_indices2:
+        rows_A1 = np.where(A1 == index)
+        D.append( B[rows_A1] )
+    if len(D) == 0:
+       facet_markers2 = []
+    else:
+        facet_markers2 = np.concatenate(D) 
+   
+    
+    ####################################   8
+    common_indices3 = [common_indices1,common_indices2]
+    facet_markers3  = [facet_markers1,facet_markers2]
+    common_indices3 = np.concatenate(common_indices3).astype(np.int32)
+    facet_markers3  = np.concatenate(facet_markers3).astype(np.int32)
+    sorted_indices3 = np.argsort(common_indices3).astype(np.int32)
+
+    return common_indices3, facet_markers3, sorted_indices3
+    
+#########################33333333333333333#####################################################
+def target_facets_ini(domain, x_co, y_co, S_rub_circle_ini):
+    """
+    Initial version of target_facets with single contact area.
+    
+    Args:
+        domain: Mesh domain
+        x_co (list): X coordinates of rubbing elements
+        y_co (list): Y coordinates of rubbing elements
+        S_rub_circle_ini (float): Initial contact area
+        
+    Returns:
+        tuple: Contains facet indices, markers and sorted indices
+    """
+    from dolfinx.mesh import locate_entities
+    from dolfinx import mesh
+    import numpy as np
+    
+    boundaries = []
+    for j in range(18):
+        boundaries.append  (  ( (j+1)*10, lambda x,j=j: (x[0]-x_co[j])**2 +(x[1]-y_co[j])**2 <= S_rub_circle_ini)  )
+ 
+    facet_indices1, facet_markers1 = [], [] 
+    fdim = 2 
+    for (marker, locator) in boundaries:
+        facets = locate_entities(domain, fdim, locator)   
+        facet_indices1.append(facets)
+        facet_markers1.append(np.full_like(facets, marker))
+    facet_indices1 = np.hstack(facet_indices1).astype(np.int32)
+    facet_markers1 = np.hstack(facet_markers1).astype(np.int32)
+            
+    A1 = facet_indices1
+    B  = facet_markers1 
+    C  = mesh.locate_entities_boundary(domain, fdim, lambda x: np.isclose(x[2], 20) )
+
+    common_indices1 = np.intersect1d(A1,C)
+    D = []
+    for index in common_indices1:
+        rows_A1 = np.where(A1 == index)
+        D.append( B[rows_A1] )
+    facet_markers1 = np.concatenate(D)
+
+    ####################################   7
+    b_con = 200
+    boundary20 = (b_con, lambda x:  x[2] == 20)
+    facet_indices2, facet_markers2 = [], [] 
+    fdim = 2  
+    for (marker, locator) in [boundary20]:
+        facets = locate_entities(domain, fdim, locator)   
+        facet_indices2.append(facets)
+        facet_markers2.append(np.full_like(facets, marker)) 
+    facet_indices2 = np.hstack(facet_indices2).astype(np.int32)
+    facet_markers2 = np.hstack(facet_markers2).astype(np.int32)
+
+    A1 = facet_indices2
+    B  = facet_markers2
+    B1 = common_indices1
+    common_indices2 = np.setdiff1d(A1,B1)
+    D  = []
+    for index in common_indices2:
+        rows_A1 = np.where(A1 == index)
+        D.append( B[rows_A1] )
+    facet_markers2 = np.concatenate(D) 
+    
+    ####################################   8
+    common_indices3 = [common_indices1,common_indices2]
+    facet_markers3  = [facet_markers1,facet_markers2]
+    common_indices3 = np.concatenate(common_indices3).astype(np.int32)
+    facet_markers3  = np.concatenate(facet_markers3).astype(np.int32)
+    sorted_indices3 = np.argsort(common_indices3).astype(np.int32)
+
+    return common_indices3, facet_markers3, sorted_indices3
+#######################################################################################################################   9
+def read_msh_nodes(filename):
+    """
+    Read node coordinates from GMSH .msh file.
+    
+    Args:
+        filename (str): Path to .msh file
+        
+    Returns:
+        tuple: List of (node_tag, coordinates) pairs and list of node tags
+    """
+    nodes = []
+    nodes_c = []
+    node_tag = []
+    reading_nodes = False
+    with open(filename, 'r') as f:
+        for line in f:
+            if line.startswith('$Nodes'):
+                reading_nodes = True             
+                continue
+            elif line.startswith('$EndNodes'):
+                reading_nodes = False             
+                break
+            elif reading_nodes:
+                parts = line.split()         
+                if len(parts) == 1:  # This line contains only node tag
+                    node_tag.append ( int(parts[0]) )
+                elif len(parts) == 3:  # This line contains node coordinates
+                    x = float(parts[0])
+                    y = float(parts[1])
+                    z = float(parts[2])
+                    nodes_c.append((x, y, z))
+    for i in range(len(node_tag)):
+        nodes.append( (node_tag[i], nodes_c[i])  )
+    
+    return nodes,node_tag
+
+##############################################################################################################  11
+def got_T_check_location(A1):
+    """
+    Calculate coordinates for temperature measurement points.
+    
+    Args:
+        A1 (list): Base coordinates [x,y]
+        
+    Returns:
+        tuple: Three measurement point coordinates rotated 120° apart
+    """
+    ## A1 should like [247.5, 0]
+    import numpy as np
+    z = 19
+    A2_b =  (  (A1[0]-40), 0 )
+    A3_b =  (  (A1[1]+40), 0 )
+
+    x = np.array(A1[0])
+    y = np.array(A1[1])
+    # Define the rotation angle in radians (1 radian per second)
+    r_points = []
+    for i in [0,1]:
+      angle = 120*(i+1)   / 180 * np.pi
+     
+      # Define the rotation matrix
+      r_matrix = np.array([[np.cos(angle), -np.sin(angle)],
+                      [np.sin(angle), np.cos(angle)]])
+      # Stack x and y into a single array of shape (2, n) where n is the number of points
+      points = np.vstack((x, y))
+
+      # Perform the rotation
+      r_points.append( r_matrix @ points )
+
+    # Separate the rotated x and y coordinates
+    A2 = r_points[0]
+    A3 = r_points[1]
+    A2_fin = ( round( A2[0][0],2) , round(A2[1][0],2), z)
+    A3_fin = ( round( A3[0][0],2) , round(A3[1][0],2), z)
+    A1_fin = ( round( A1[0],1) , round(A1[1],2), z)
+    #print( "A1 location is ",A1_fin, 
+         #"\nA2 location is ",A2_fin, 
+         #"\nA3 location is ",A3_fin)
+
+    return A1_fin, A2_fin, A3_fin
+    
+##################################################################################################################  12
+def save_t_T (csv_name, T_array):
+    """
+    Save time-temperature data to CSV file.
+    
+    Args:
+        csv_name (str): Output filename
+        T_array (list): List of [time, temperature] pairs
+    """
+    import csv
+    t = []
+    T = []
+    for value in T_array:
+        t.append(value[0])
+        T.append(value[1])   
+    # Specify the file path
+    file_path = csv_name  # File path for CSV file
+    # Write t and T to a CSV file
+    with open(file_path, "w", newline='') as csvfile:
+        csv_writer = csv.writer(csvfile)
+        csv_writer.writerow(["t", "T"])  # Write header
+        for t_value, T_values in zip(t, T):
+            for T_value in T_values:
+                csv_writer.writerow([t_value, T_value])  # Write each value of t and corresponding value(s) of T
+
+    # Confirmation message
+    print("t and T have been successfully saved as", file_path)
+
+#####################################################################################################################  13
+def read_t_T (csv_name):
+    """
+    Read time-temperature data from CSV file.
+    
+    Args:
+        csv_name (str): Input filename
+        
+    Returns:
+        tuple: Lists of time points and corresponding temperatures
+    """
+    ## csv_name = "xxxxx.csv"
+
+    import csv
+    from collections import defaultdict
+
+    # Specify the file path
+    file_path = csv_name  # File path for CSV file
+
+    # Initialize a dictionary to store t and corresponding values of T
+    t_T_dict = defaultdict(list)
+
+    # Read t and T from the CSV file
+    with open(file_path, "r", newline='') as csvfile:
+        csv_reader = csv.reader(csvfile)
+        next(csv_reader)  # Skip header row
+        for row in csv_reader:
+            t_value = float(row[0])  # Assuming t values are floats
+            T_value = float(row[1])  # Assuming T values are floats
+            t_T_dict[t_value].append(T_value)
+
+    # Extract unique values of t and corresponding values of T
+    t1 = list(t_T_dict.keys())
+    T1 = [t_T_dict[t_value] for t_value in t1 ]
+
+    # Confirmation message
+    print("t and T have been successfully extracted from", file_path)
+    return (t1,T1)
+
+#####################################################################################################################  14
+def find_3_coord(filename):
+    """
+    Find node labels for three measurement points.
+    
+    Args:
+        filename (str): Mesh filename
+        
+    Returns:
+        list: Node labels for measurement points if known, otherwise prints instructions
+    """
+    import numpy as np
+    
+    ## below labels should always add if new mesh has result
+    coord_lib = {'m-1-15.msh': [2201, 1590, 260 ],
+                 'm-3-10.msh': [3157, 7018, 2141],
+                 'm-3-15.msh': [2201, 1590, 260],
+                 'm-3-7.msh':  [12266, 11501, 617],
+                 'm-3-5.msh':  [19098, 34079, 7351],
+                 'm-3-3.msh':  [94411, 114209, 8995],
+                 'm-1-2.msh':  [333431, 308947, 18936],
+                 'm-3-2.msh':  [333431, 308947, 18936],
+                 'm-3-20.msh': [1713, 1587, 708] }
+                                
+    if filename in coord_lib:
+        print('Lables already exists, for mesh',filename, "is ", coord_lib[filename])
+        return coord_lib[filename]
+    
+    else:
+        nodes = []
+        nodes_c = []
+        closest_coordinate = []
+        node_tag = []
+        reading_nodes = False
+        with open(filename, 'r') as f:
+                for line in f:
+                    if line.startswith('$Nodes'):
+                        reading_nodes = True             
+                        continue
+                    elif line.startswith('$EndNodes'):
+                        reading_nodes = False             
+                        break
+                    elif reading_nodes:
+                        parts = line.split()         
+                        if len(parts) == 1:  # This line contains only node tag
+                            node_tag.append ( int(parts[0]) )
+                        elif len(parts) == 3:  # This line contains node coordinates
+                            x = float(parts[0])
+                            y = float(parts[1])
+                            z = float(parts[2])
+                            nodes_c.append((x, y, z))
+        for i in range(len(node_tag)):
+                nodes.append( (node_tag[i], nodes_c[i])  )
+
+        A1_fin, A2_fin, A3_fin = got_T_check_location([247.5, 0])
+        Three_points = [A1_fin, A2_fin, A3_fin]
+        for target in  Three_points:
+            A_point = target
+            coordinates = nodes_c
+            distances = [np.sqrt((x - A_point[0])**2 + (y - A_point[1])**2 
+                         + (z - A_point[2])**2) for x, y, z in coordinates]
+            closest_index = np.argmin(distances)
+            closest_coordinate.append(  coordinates[closest_index] )
+
+        # Print the closest coordinate
+        print("Closest coordinate is \n",
+              tuple(round(coord, 2) for coord in closest_coordinate[0]),
+             "\n", tuple(round(coord, 2) for coord in closest_coordinate[1]),
+             "\n", tuple(round(coord, 2) for coord in closest_coordinate[2]),
+             "\nPlease open the xdmf file in paraview, and find the labels for above three nodes and input as",
+             "\nT_3_labels = [label1, label2, label3]. \nPlease also add in labels dictionary, functions in disc_f.py ")
+
+
+def find_3_coord_hexa(filename):
+    """
+    Retrieve predefined node coordinates for specific hexahedral mesh files.
+
+    Args:
+        filename (str): Name of the mesh file to look up.
+
+    Returns:
+        list: List of node coordinates if found, None otherwise.
+    """
+    coord_lib = {'m-3-10.msh': [53970, 122401, 36114],
+                 'm-3-20.msh': [17818, 1136, 15718]}    
+                                
+    if filename in coord_lib:
+        print('Labels already exists, for mesh', filename, "is ", coord_lib[filename])
+        return coord_lib[filename]
+    return None
+
+def collect_csv_files(directory):
+    """
+    Recursively collect all CSV files in a directory.
+
+    Args:
+        directory (str): Path to directory to search.
+
+    Returns:
+        list: List of full paths to CSV files found.
+    """
+    csv_files = []
+    for root, dirs, files in os.walk(directory):
+        for file in files:
+            if file.endswith('.csv'):
+                csv_files.append(os.path.join(root, file))
+    return csv_files
+
+def extract_mesh_labels(file_name):
+    """
+    Extract mesh labels from a filename using regex pattern.
+
+    Args:
+        file_name (str): Input filename containing mesh pattern.
+
+    Returns:
+        str: Formatted mesh filename (e.g. "m-3-10.msh") or None if not found.
+    """
+    match = re.search(r'-m-(\d+-\d+)', file_name)
+    if match:
+        mesh_labels = match.group(1)
+        return f'm-{mesh_labels}.msh'
+    return None
+
+def extract_file_labels(file_name, type_is):
+    """
+    Extract numerical values from filenames based on specified type.
+
+    Args:
+        file_name (str): Input filename to parse.
+        type_is (str): Type of value to extract ('mesh_size', 'time_step', or 'contact_area').
+
+    Returns:
+        int or float: Extracted value or 0 if not found.
+    """
+    if type_is == 'mesh_size':
+        match = re.search(r'e-(\d+)', file_name)
+        if match:
+            return int(match.group(1))
+        return 0 
+    if type_is == 'time_step':
+        match = re.search(r's-(\d+)', file_name)
+        if match:
+            return int(match.group(1))
+        return 0 
+    if type_is == 'contact_area':
+        match = re.search(r'c-(\d+(\.\d+)?)', file_name)
+        if match:
+            return float(match.group(1))
+        return 0 
+
+def add_indentation(old_notebook, new_notebook):
+    """
+    Add indentation to each line of a file and save to new file.
+
+    Args:
+        old_notebook (str): Path to input file.
+        new_notebook (str): Path to output file.
+    """
+    with open(old_notebook, 'r') as f:
+        lines = f.readlines()
+    indented_lines = ['      ' + line for line in lines]
+    with open(new_notebook, 'w') as f:
+        f.writelines(indented_lines)
+
+def get_time_step_from_angular(angular2, mesh_max2, c_contact2):
+    """
+    Calculate time steps from angular velocity parameters.
+
+    Args:
+        angular2 (float): Angular velocity parameter.
+        mesh_max2 (int): Maximum mesh size parameter.
+        c_contact2 (float): Contact area coefficient.
+
+    Returns:
+        int: Total number of time steps.
+    """
+    import numpy as np  
+    from disc_f import vehicle_initial    
+          
+    mesh_min = 3
+    mesh_max = mesh_max2
+    c_contact = c_contact2
+    
+    angular_r = angular2
+    v_vehicle = 160
+    c_acc = 1
+    
+    (dt, P, g, num_steps, h, radiation, v_angular, Ti, Tm, S_rub_circle,
+     t, rho, c, k, t_brake, S_total) = vehicle_initial(angular_r, v_vehicle, c_contact, c_acc)  
+    print("1: Total time is ", round(sum(dt), 2), "s")
+    print("2: Total number steps is ", num_steps)
+    return num_steps
+
+def mesh_brake_all(mesh_min, mesh_max, pad_v_tag):
+    """
+    Handle mesh generation/loading for brake simulation.
+
+    Args:
+        mesh_min (int): Minimum mesh size parameter.
+        mesh_max (int): Maximum mesh size parameter.
+        pad_v_tag (int): Physical tag for pad volume.
+
+    Returns:
+        tuple: (domain, cell_markers, facet_markers, mesh_name, mesh_name1, mesh_name2)
+    """
+    mesh_name = f"{mesh_min}-{mesh_max}"
+    mesh_name1 = f"m-{mesh_name}.msh"
+    mesh_name2 = f"m-{mesh_name}"
+    
+    if os.path.exists(mesh_name1):
+        print(f"The file '{mesh_name1}' exists, start creating now:")
+        domain, cell_markers, facet_markers = silent_gmshio_read_mesh(mesh_name1)  
+    else:
+        print(f"The file '{mesh_name1}' does not exist, start building:")
+        mesh_brake_disc(mesh_min, mesh_max, mesh_name2, 'tetra', pad_v_tag)
+        domain, cell_markers, facet_markers = silent_gmshio_read_mesh(mesh_name1)  
+
+    return domain, cell_markers, facet_markers, mesh_name, mesh_name1, mesh_name2
+
+# [Continue with all remaining functions following the same pattern...]
+
+def silent_gmshio_read_mesh(mesh_name1):
+    """
+    Read GMSH mesh while suppressing output.
+
+    Args:
+        mesh_name1 (str): Path to mesh file.
+
+    Returns:
+        tuple: (domain, cell_markers, facet_markers)
+    """
+    devnull = os.open(os.devnull, os.O_WRONLY)
+    old_stdout = os.dup(1)
+    old_stderr = os.dup(2)
+    
+    try:
+        os.dup2(devnull, 1)
+        os.dup2(devnull, 2)
+        domain, cell_markers, facet_markers = gmshio.read_from_msh(
+            mesh_name1, MPI.COMM_WORLD, 0, gdim=3)
+    finally:
+        os.dup2(old_stdout, 1)
+        os.dup2(old_stderr, 2)
+        os.close(devnull)
+        os.close(old_stdout)
+        os.close(old_stderr)
+    return domain, cell_markers, facet_markers
+
+def silent_meshio_read_mesh(mesh_name1):
+    """
+    Read mesh file while suppressing output.
+
+    Args:
+        mesh_name1 (str): Path to mesh file.
+
+    Returns:
+        meshio.Mesh: Mesh object.
+    """
+    devnull = os.open(os.devnull, os.O_WRONLY)
+    old_stdout = os.dup(1)
+    old_stderr = os.dup(2)
+    
+    try:
+        os.dup2(devnull, 1)
+        os.dup2(devnull, 2)
+        mesh_brake = meshio.read(mesh_name1)
+    finally:
+        os.dup2(old_stdout, 1)
+        os.dup2(old_stderr, 2)
+        os.close(devnull)
+        os.close(old_stdout)
+        os.close(old_stderr)
+    return mesh_brake

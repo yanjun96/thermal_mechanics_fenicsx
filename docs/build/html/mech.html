@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>mech package &#8212; thermomechanical analysis with friction contact and wear 1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <script src="_static/documentation_options.js?v=29a6c3e3"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="mech-package">
+<h1>mech package<a class="headerlink" href="#mech-package" title="Link to this heading">¶</a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">¶</a></h2>
+</section>
+<section id="module-mech.disc_f">
+<span id="mech-disc-f-module"></span><h2>mech.disc_f module<a class="headerlink" href="#module-mech.disc_f" title="Link to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="mech.disc_f.T_S_deformation_solve">
+<span class="sig-prename descclassname"><span class="pre">mech.disc_f.</span></span><span class="sig-name descname"><span class="pre">T_S_deformation_solve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mesh_name1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">u_n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mesh_brake</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pad_v_tag</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">u_old</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha_thermal</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mech.disc_f.T_S_deformation_solve" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mech.disc_f.add_indentation">
+<span class="sig-prename descclassname"><span class="pre">mech.disc_f.</span></span><span class="sig-name descname"><span class="pre">add_indentation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">old_notebook</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_notebook</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mech.disc_f.add_indentation" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mech.disc_f.collect_csv_files">
+<span class="sig-prename descclassname"><span class="pre">mech.disc_f.</span></span><span class="sig-name descname"><span class="pre">collect_csv_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">directory</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mech.disc_f.collect_csv_files" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mech.disc_f.compare_two_arrays">
+<span class="sig-prename descclassname"><span class="pre">mech.disc_f.</span></span><span class="sig-name descname"><span class="pre">compare_two_arrays</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">array1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">array2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mech.disc_f.compare_two_arrays" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mech.disc_f.contact_surface">
+<span class="sig-prename descclassname"><span class="pre">mech.disc_f.</span></span><span class="sig-name descname"><span class="pre">contact_surface</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">domain_pad</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">facet_mark_pad</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mech.disc_f.contact_surface" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mech.disc_f.extract_file_labels">
+<span class="sig-prename descclassname"><span class="pre">mech.disc_f.</span></span><span class="sig-name descname"><span class="pre">extract_file_labels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type_is</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mech.disc_f.extract_file_labels" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mech.disc_f.extract_mesh_labels">
+<span class="sig-prename descclassname"><span class="pre">mech.disc_f.</span></span><span class="sig-name descname"><span class="pre">extract_mesh_labels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mech.disc_f.extract_mesh_labels" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mech.disc_f.extract_u_n">
+<span class="sig-prename descclassname"><span class="pre">mech.disc_f.</span></span><span class="sig-name descname"><span class="pre">extract_u_n</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mesh_name1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">u_n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">physical_group_tag</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mech.disc_f.extract_u_n" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mech.disc_f.find_3_coord">
+<span class="sig-prename descclassname"><span class="pre">mech.disc_f.</span></span><span class="sig-name descname"><span class="pre">find_3_coord</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mech.disc_f.find_3_coord" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mech.disc_f.find_3_coord_hexa">
+<span class="sig-prename descclassname"><span class="pre">mech.disc_f.</span></span><span class="sig-name descname"><span class="pre">find_3_coord_hexa</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mech.disc_f.find_3_coord_hexa" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mech.disc_f.find_common_e">
+<span class="sig-prename descclassname"><span class="pre">mech.disc_f.</span></span><span class="sig-name descname"><span class="pre">find_common_e</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bcs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bcs_lists</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mech.disc_f.find_common_e" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mech.disc_f.fit_circle">
+<span class="sig-prename descclassname"><span class="pre">mech.disc_f.</span></span><span class="sig-name descname"><span class="pre">fit_circle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mech.disc_f.fit_circle" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mech.disc_f.get_r_xco_yco">
+<span class="sig-prename descclassname"><span class="pre">mech.disc_f.</span></span><span class="sig-name descname"><span class="pre">get_r_xco_yco</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">deformed_co</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_c_nodes</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mech.disc_f.get_r_xco_yco" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mech.disc_f.get_rub_coordinate">
+<span class="sig-prename descclassname"><span class="pre">mech.disc_f.</span></span><span class="sig-name descname"><span class="pre">get_rub_coordinate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mech.disc_f.get_rub_coordinate" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mech.disc_f.get_time_step_from_angular">
+<span class="sig-prename descclassname"><span class="pre">mech.disc_f.</span></span><span class="sig-name descname"><span class="pre">get_time_step_from_angular</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">angular2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mesh_max2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c_contact2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mech.disc_f.get_time_step_from_angular" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mech.disc_f.got_T_check_location">
+<span class="sig-prename descclassname"><span class="pre">mech.disc_f.</span></span><span class="sig-name descname"><span class="pre">got_T_check_location</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mech.disc_f.got_T_check_location" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mech.disc_f.initial_u_n">
+<span class="sig-prename descclassname"><span class="pre">mech.disc_f.</span></span><span class="sig-name descname"><span class="pre">initial_u_n</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ti</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mech.disc_f.initial_u_n" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mech.disc_f.mesh_brake_all">
+<span class="sig-prename descclassname"><span class="pre">mech.disc_f.</span></span><span class="sig-name descname"><span class="pre">mesh_brake_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mesh_min</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mesh_max</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pad_v_tag</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mech.disc_f.mesh_brake_all" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mech.disc_f.mesh_brake_disc">
+<span class="sig-prename descclassname"><span class="pre">mech.disc_f.</span></span><span class="sig-name descname"><span class="pre">mesh_brake_disc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">min_mesh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_mesh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mesh_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pad_v_tag</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mech.disc_f.mesh_brake_disc" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mech.disc_f.mesh_del_disc">
+<span class="sig-prename descclassname"><span class="pre">mech.disc_f.</span></span><span class="sig-name descname"><span class="pre">mesh_del_disc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mesh_name1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mesh_n_pad</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mech.disc_f.mesh_del_disc" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mech.disc_f.mesh_setup">
+<span class="sig-prename descclassname"><span class="pre">mech.disc_f.</span></span><span class="sig-name descname"><span class="pre">mesh_setup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">V</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mesh_name1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_steps</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angular_r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mesh_name2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c_contact</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_all</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Tm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">S_rub_circle_ini</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mech.disc_f.mesh_setup" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mech.disc_f.penalty_method_contact">
+<span class="sig-prename descclassname"><span class="pre">mech.disc_f.</span></span><span class="sig-name descname"><span class="pre">penalty_method_contact</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Vu</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">u_d</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aM</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">LM</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">u_</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bcu</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">penalty_param</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mech.disc_f.penalty_method_contact" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mech.disc_f.plot_S_pad">
+<span class="sig-prename descclassname"><span class="pre">mech.disc_f.</span></span><span class="sig-name descname"><span class="pre">plot_S_pad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Vu</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">u_d</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale_factor</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mech.disc_f.plot_S_pad" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mech.disc_f.plot_T_pad">
+<span class="sig-prename descclassname"><span class="pre">mech.disc_f.</span></span><span class="sig-name descname"><span class="pre">plot_T_pad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">domain_pad</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T_pad</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mech.disc_f.plot_T_pad" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mech.disc_f.plot_gif">
+<span class="sig-prename descclassname"><span class="pre">mech.disc_f.</span></span><span class="sig-name descname"><span class="pre">plot_gif</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">V</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">u</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gif_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mech.disc_f.plot_gif" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mech.disc_f.project">
+<span class="sig-prename descclassname"><span class="pre">mech.disc_f.</span></span><span class="sig-name descname"><span class="pre">project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">function</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">space</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mech.disc_f.project" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mech.disc_f.read_msh_nodes">
+<span class="sig-prename descclassname"><span class="pre">mech.disc_f.</span></span><span class="sig-name descname"><span class="pre">read_msh_nodes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mech.disc_f.read_msh_nodes" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mech.disc_f.read_t_T">
+<span class="sig-prename descclassname"><span class="pre">mech.disc_f.</span></span><span class="sig-name descname"><span class="pre">read_t_T</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">csv_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mech.disc_f.read_t_T" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mech.disc_f.rub_rotation">
+<span class="sig-prename descclassname"><span class="pre">mech.disc_f.</span></span><span class="sig-name descname"><span class="pre">rub_rotation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rotation_degree</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mech.disc_f.rub_rotation" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mech.disc_f.save_t_T">
+<span class="sig-prename descclassname"><span class="pre">mech.disc_f.</span></span><span class="sig-name descname"><span class="pre">save_t_T</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">csv_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T_array</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mech.disc_f.save_t_T" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mech.disc_f.silent_gmshio_read_mesh">
+<span class="sig-prename descclassname"><span class="pre">mech.disc_f.</span></span><span class="sig-name descname"><span class="pre">silent_gmshio_read_mesh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mesh_name1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mech.disc_f.silent_gmshio_read_mesh" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mech.disc_f.silent_meshio_read_mesh">
+<span class="sig-prename descclassname"><span class="pre">mech.disc_f.</span></span><span class="sig-name descname"><span class="pre">silent_meshio_read_mesh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mesh_name1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mech.disc_f.silent_meshio_read_mesh" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mech.disc_f.solver_setup_solve">
+<span class="sig-prename descclassname"><span class="pre">mech.disc_f.</span></span><span class="sig-name descname"><span class="pre">solver_setup_solve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">problem</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">u</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mech.disc_f.solver_setup_solve" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mech.disc_f.target_facets">
+<span class="sig-prename descclassname"><span class="pre">mech.disc_f.</span></span><span class="sig-name descname"><span class="pre">target_facets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_co</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_co</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">S_rub_circle</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mech.disc_f.target_facets" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mech.disc_f.target_facets_ini">
+<span class="sig-prename descclassname"><span class="pre">mech.disc_f.</span></span><span class="sig-name descname"><span class="pre">target_facets_ini</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_co</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_co</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">S_rub_circle_ini</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mech.disc_f.target_facets_ini" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mech.disc_f.variation_initial">
+<span class="sig-prename descclassname"><span class="pre">mech.disc_f.</span></span><span class="sig-name descname"><span class="pre">variation_initial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">V</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T_init</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rho</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b_con</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radiation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xdmf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">u_n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Tm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">g</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bc</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mech.disc_f.variation_initial" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mech.disc_f.vehicle_initial">
+<span class="sig-prename descclassname"><span class="pre">mech.disc_f.</span></span><span class="sig-name descname"><span class="pre">vehicle_initial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">angular_r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v_vehicle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c_contact</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c_acc</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mech.disc_f.vehicle_initial" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-mech.disc_f_sphinx">
+<span id="mech-disc-f-sphinx-module"></span><h2>mech.disc_f_sphinx module<a class="headerlink" href="#module-mech.disc_f_sphinx" title="Link to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="mech.disc_f_sphinx.add_indentation">
+<span class="sig-prename descclassname"><span class="pre">mech.disc_f_sphinx.</span></span><span class="sig-name descname"><span class="pre">add_indentation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">old_notebook</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_notebook</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mech.disc_f_sphinx.add_indentation" title="Link to this definition">¶</a></dt>
+<dd><p>Add indentation to each line of a file and save to new file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>old_notebook</strong> (<em>str</em>) – Path to input file.</p></li>
+<li><p><strong>new_notebook</strong> (<em>str</em>) – Path to output file.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mech.disc_f_sphinx.collect_csv_files">
+<span class="sig-prename descclassname"><span class="pre">mech.disc_f_sphinx.</span></span><span class="sig-name descname"><span class="pre">collect_csv_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">directory</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mech.disc_f_sphinx.collect_csv_files" title="Link to this definition">¶</a></dt>
+<dd><p>Recursively collect all CSV files in a directory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>directory</strong> (<em>str</em>) – Path to directory to search.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of full paths to CSV files found.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mech.disc_f_sphinx.extract_file_labels">
+<span class="sig-prename descclassname"><span class="pre">mech.disc_f_sphinx.</span></span><span class="sig-name descname"><span class="pre">extract_file_labels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type_is</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mech.disc_f_sphinx.extract_file_labels" title="Link to this definition">¶</a></dt>
+<dd><p>Extract numerical values from filenames based on specified type.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_name</strong> (<em>str</em>) – Input filename to parse.</p></li>
+<li><p><strong>type_is</strong> (<em>str</em>) – Type of value to extract (‘mesh_size’, ‘time_step’, or ‘contact_area’).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Extracted value or 0 if not found.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int or float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mech.disc_f_sphinx.extract_mesh_labels">
+<span class="sig-prename descclassname"><span class="pre">mech.disc_f_sphinx.</span></span><span class="sig-name descname"><span class="pre">extract_mesh_labels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mech.disc_f_sphinx.extract_mesh_labels" title="Link to this definition">¶</a></dt>
+<dd><p>Extract mesh labels from a filename using regex pattern.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file_name</strong> (<em>str</em>) – Input filename containing mesh pattern.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Formatted mesh filename (e.g. “m-3-10.msh”) or None if not found.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mech.disc_f_sphinx.find_3_coord">
+<span class="sig-prename descclassname"><span class="pre">mech.disc_f_sphinx.</span></span><span class="sig-name descname"><span class="pre">find_3_coord</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mech.disc_f_sphinx.find_3_coord" title="Link to this definition">¶</a></dt>
+<dd><p>Find node labels for three measurement points.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>filename</strong> (<em>str</em>) – Mesh filename</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Node labels for measurement points if known, otherwise prints instructions</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mech.disc_f_sphinx.find_3_coord_hexa">
+<span class="sig-prename descclassname"><span class="pre">mech.disc_f_sphinx.</span></span><span class="sig-name descname"><span class="pre">find_3_coord_hexa</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mech.disc_f_sphinx.find_3_coord_hexa" title="Link to this definition">¶</a></dt>
+<dd><p>Retrieve predefined node coordinates for specific hexahedral mesh files.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>filename</strong> (<em>str</em>) – Name of the mesh file to look up.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of node coordinates if found, None otherwise.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mech.disc_f_sphinx.find_common_e">
+<span class="sig-prename descclassname"><span class="pre">mech.disc_f_sphinx.</span></span><span class="sig-name descname"><span class="pre">find_common_e</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bcs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bcs_lists</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mech.disc_f_sphinx.find_common_e" title="Link to this definition">¶</a></dt>
+<dd><p>Find common elements between boundary condition sets.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bcs</strong> (<em>set</em>) – Primary boundary condition set</p></li>
+<li><p><strong>bcs_lists</strong> (<em>list</em>) – List of boundary condition sets to compare</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Common elements found in all sets</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mech.disc_f_sphinx.get_rub_coordinate">
+<span class="sig-prename descclassname"><span class="pre">mech.disc_f_sphinx.</span></span><span class="sig-name descname"><span class="pre">get_rub_coordinate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mech.disc_f_sphinx.get_rub_coordinate" title="Link to this definition">¶</a></dt>
+<dd><p>Get coordinates of rubbing elements from embedded GMSH cylinder definitions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Lists of x and y coordinates for all rubbing elements</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mech.disc_f_sphinx.get_time_step_from_angular">
+<span class="sig-prename descclassname"><span class="pre">mech.disc_f_sphinx.</span></span><span class="sig-name descname"><span class="pre">get_time_step_from_angular</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">angular2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mesh_max2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c_contact2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mech.disc_f_sphinx.get_time_step_from_angular" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate time steps from angular velocity parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>angular2</strong> (<em>float</em>) – Angular velocity parameter.</p></li>
+<li><p><strong>mesh_max2</strong> (<em>int</em>) – Maximum mesh size parameter.</p></li>
+<li><p><strong>c_contact2</strong> (<em>float</em>) – Contact area coefficient.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Total number of time steps.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mech.disc_f_sphinx.got_T_check_location">
+<span class="sig-prename descclassname"><span class="pre">mech.disc_f_sphinx.</span></span><span class="sig-name descname"><span class="pre">got_T_check_location</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mech.disc_f_sphinx.got_T_check_location" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate coordinates for temperature measurement points.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>A1</strong> (<em>list</em>) – Base coordinates [x,y]</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Three measurement point coordinates rotated 120° apart</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mech.disc_f_sphinx.mesh_brake_all">
+<span class="sig-prename descclassname"><span class="pre">mech.disc_f_sphinx.</span></span><span class="sig-name descname"><span class="pre">mesh_brake_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mesh_min</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mesh_max</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pad_v_tag</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mech.disc_f_sphinx.mesh_brake_all" title="Link to this definition">¶</a></dt>
+<dd><p>Handle mesh generation/loading for brake simulation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mesh_min</strong> (<em>int</em>) – Minimum mesh size parameter.</p></li>
+<li><p><strong>mesh_max</strong> (<em>int</em>) – Maximum mesh size parameter.</p></li>
+<li><p><strong>pad_v_tag</strong> (<em>int</em>) – Physical tag for pad volume.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>(domain, cell_markers, facet_markers, mesh_name, mesh_name1, mesh_name2)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mech.disc_f_sphinx.mesh_brake_disc">
+<span class="sig-prename descclassname"><span class="pre">mech.disc_f_sphinx.</span></span><span class="sig-name descname"><span class="pre">mesh_brake_disc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">min_mesh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_mesh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mesh_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pad_v_tag</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mech.disc_f_sphinx.mesh_brake_disc" title="Link to this definition">¶</a></dt>
+<dd><p>Generate 3D brake disc mesh with GMSH.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>min_mesh</strong> (<em>float</em>) – Minimum mesh size</p></li>
+<li><p><strong>max_mesh</strong> (<em>float</em>) – Maximum mesh size</p></li>
+<li><p><strong>filename</strong> (<em>str</em>) – Output filename</p></li>
+<li><p><strong>mesh_type</strong> (<em>str</em>) – ‘hexa’ or ‘tetra’ mesh type</p></li>
+<li><p><strong>pad_v_tag</strong> (<em>int</em>) – Physical group tag for brake pad volume</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Status code from GMSH write operation</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mech.disc_f_sphinx.read_msh_nodes">
+<span class="sig-prename descclassname"><span class="pre">mech.disc_f_sphinx.</span></span><span class="sig-name descname"><span class="pre">read_msh_nodes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mech.disc_f_sphinx.read_msh_nodes" title="Link to this definition">¶</a></dt>
+<dd><p>Read node coordinates from GMSH .msh file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>filename</strong> (<em>str</em>) – Path to .msh file</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of (node_tag, coordinates) pairs and list of node tags</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mech.disc_f_sphinx.read_t_T">
+<span class="sig-prename descclassname"><span class="pre">mech.disc_f_sphinx.</span></span><span class="sig-name descname"><span class="pre">read_t_T</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">csv_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mech.disc_f_sphinx.read_t_T" title="Link to this definition">¶</a></dt>
+<dd><p>Read time-temperature data from CSV file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>csv_name</strong> (<em>str</em>) – Input filename</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Lists of time points and corresponding temperatures</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mech.disc_f_sphinx.rub_rotation">
+<span class="sig-prename descclassname"><span class="pre">mech.disc_f_sphinx.</span></span><span class="sig-name descname"><span class="pre">rub_rotation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rotation_degree</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mech.disc_f_sphinx.rub_rotation" title="Link to this definition">¶</a></dt>
+<dd><p>Rotate x,y coordinates by specified angle.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>array</em>) – X coordinates</p></li>
+<li><p><strong>y</strong> (<em>array</em>) – Y coordinates</p></li>
+<li><p><strong>rotation_degree</strong> (<em>float</em>) – Rotation angle in degrees</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Rotated x and y coordinates</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mech.disc_f_sphinx.save_t_T">
+<span class="sig-prename descclassname"><span class="pre">mech.disc_f_sphinx.</span></span><span class="sig-name descname"><span class="pre">save_t_T</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">csv_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T_array</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mech.disc_f_sphinx.save_t_T" title="Link to this definition">¶</a></dt>
+<dd><p>Save time-temperature data to CSV file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>csv_name</strong> (<em>str</em>) – Output filename</p></li>
+<li><p><strong>T_array</strong> (<em>list</em>) – List of [time, temperature] pairs</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mech.disc_f_sphinx.silent_gmshio_read_mesh">
+<span class="sig-prename descclassname"><span class="pre">mech.disc_f_sphinx.</span></span><span class="sig-name descname"><span class="pre">silent_gmshio_read_mesh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mesh_name1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mech.disc_f_sphinx.silent_gmshio_read_mesh" title="Link to this definition">¶</a></dt>
+<dd><p>Read GMSH mesh while suppressing output.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>mesh_name1</strong> (<em>str</em>) – Path to mesh file.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>(domain, cell_markers, facet_markers)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mech.disc_f_sphinx.silent_meshio_read_mesh">
+<span class="sig-prename descclassname"><span class="pre">mech.disc_f_sphinx.</span></span><span class="sig-name descname"><span class="pre">silent_meshio_read_mesh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mesh_name1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mech.disc_f_sphinx.silent_meshio_read_mesh" title="Link to this definition">¶</a></dt>
+<dd><p>Read mesh file while suppressing output.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>mesh_name1</strong> (<em>str</em>) – Path to mesh file.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Mesh object.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>meshio.Mesh</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mech.disc_f_sphinx.target_facets">
+<span class="sig-prename descclassname"><span class="pre">mech.disc_f_sphinx.</span></span><span class="sig-name descname"><span class="pre">target_facets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_co</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_co</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">S_rub_circle</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mech.disc_f_sphinx.target_facets" title="Link to this definition">¶</a></dt>
+<dd><p>Locate facets on contact surface and apply markers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>domain</strong> – Mesh domain</p></li>
+<li><p><strong>x_co</strong> (<em>list</em>) – X coordinates of rubbing elements</p></li>
+<li><p><strong>y_co</strong> (<em>list</em>) – Y coordinates of rubbing elements</p></li>
+<li><p><strong>S_rub_circle</strong> (<em>list</em>) – Contact area for each rubbing element</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Contains facet indices, markers and sorted indices</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mech.disc_f_sphinx.target_facets_ini">
+<span class="sig-prename descclassname"><span class="pre">mech.disc_f_sphinx.</span></span><span class="sig-name descname"><span class="pre">target_facets_ini</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_co</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_co</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">S_rub_circle_ini</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mech.disc_f_sphinx.target_facets_ini" title="Link to this definition">¶</a></dt>
+<dd><p>Initial version of target_facets with single contact area.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>domain</strong> – Mesh domain</p></li>
+<li><p><strong>x_co</strong> (<em>list</em>) – X coordinates of rubbing elements</p></li>
+<li><p><strong>y_co</strong> (<em>list</em>) – Y coordinates of rubbing elements</p></li>
+<li><p><strong>S_rub_circle_ini</strong> (<em>float</em>) – Initial contact area</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Contains facet indices, markers and sorted indices</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mech.disc_f_sphinx.vehicle_initial">
+<span class="sig-prename descclassname"><span class="pre">mech.disc_f_sphinx.</span></span><span class="sig-name descname"><span class="pre">vehicle_initial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">angular_r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v_vehicle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c_contact</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c_acc</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mech.disc_f_sphinx.vehicle_initial" title="Link to this definition">¶</a></dt>
+<dd><p>Initialize vehicle braking parameters for thermal simulation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>angular_r</strong> (<em>float</em>) – Angular rotation per time step (degrees)</p></li>
+<li><p><strong>v_vehicle</strong> (<em>float</em>) – Vehicle speed (km/h)</p></li>
+<li><p><strong>c_contact</strong> (<em>float</em>) – Contact area coefficient</p></li>
+<li><p><strong>c_acc</strong> (<em>int</em>) – Acceleration flag (1=full acc, 0=no acc)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>Contains time steps, pressures, heat sources, step counts,</dt><dd><p>convection/radiation coefficients, velocities, temperatures,
+material properties and geometry parameters</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="mech-disc-f-wear-module">
+<h2>mech.disc_f_wear module<a class="headerlink" href="#mech-disc-f-wear-module" title="Link to this heading">¶</a></h2>
+</section>
+<section id="module-mech">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-mech" title="Link to this heading">¶</a></h2>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">thermomechanical analysis with friction contact and wear</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="disc_f_sphinx.html">disc_f_sphinx module</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, yanjun zhang.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/mech.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
